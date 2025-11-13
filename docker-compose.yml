@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  # Serviço do Banco de Dados (Postgres)
+  postgres_db:
+    image: postgres:16-alpine
+    container_name: englishverse_db
+    restart: always
+    environment:
+      POSTGRES_DB: englishverse_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: suasenha
+    ports:
+      - "5432:5432"
+    volumes:
+      # Isso aqui salva os dados numa pasta local pra tu não perder quando desligar o container
+      - ./postgres-data:/var/lib/postgresql/data
