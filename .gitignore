@@ -1,0 +1,2 @@
+# Ignorar a pasta de dados do Postgres no contexto do build
+postgres-data/

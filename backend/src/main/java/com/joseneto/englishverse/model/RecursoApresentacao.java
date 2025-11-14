@@ -42,6 +42,6 @@ public class RecursoApresentacao {
     @Column(columnDefinition = "TEXT")
     private String transcricao;
 
-    // Pra controlar se esse vídeo aparece antes ou depois do áudio
+    // Pra controlar se esse vídeo aparece antes ou depois
     private Integer ordem;
 }
