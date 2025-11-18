@@ -1,6 +1,7 @@
 package com.joseneto.englishverse.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -10,4 +11,6 @@ public interface ModuloRepository extends JpaRepository<Modulo, Long> {
     List<Modulo> findByTopicoId(Long topicoId);
     
     List<Modulo> findByPublicadoTrue();
+
+    Optional<Modulo> findByTitulo(String titulo);
 }

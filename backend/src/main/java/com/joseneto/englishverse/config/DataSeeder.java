@@ -46,108 +46,114 @@ public class DataSeeder implements CommandLineRunner {
         System.out.println(">>> Iniciando o Data Seeder (Nível 1)...");
 
         // 1. CRIAR TÓPICO "INICIANTE"
-        Topico topicoIniciante = new Topico();
-        topicoIniciante.setNome("Iniciante");
-        topicoIniciante.setDescricao("Fundamentos essenciais: Pronomes, Verbo To Be, Artigos e Advérbios de Frequencia.");
-        
-        // Salva no banco e guarda a referência (caso a gente precise dela pro Módulo depois)
-        topicoIniciante = topicoRepository.save(topicoIniciante);
+        Topico topicoIniciante = topicoRepository.findByNome("Iniciante")
+            .orElseGet(() -> {
+                Topico novoTopico = new Topico();
+                novoTopico.setNome("Iniciante");
+                novoTopico.setDescricao("Fundamentos essenciais: Pronomes, Verbo To Be, Artigos e Advérbios de Frequencia.");
+                return topicoRepository.save(novoTopico);
+            });
 
-        System.out.println(">>> Tópico 'Iniciante' criado com ID: " + topicoIniciante.getId());
-
-        System.out.println(">>> Cadastrando Módulo: Subject Pronouns...");
+        System.out.println(">>> Tópico 'Iniciante' verificado/criado com ID: " + topicoIniciante.getId());
 
         // --- CRIAR O MÓDULO ---
-        Modulo modPronouns = new Modulo();
-        modPronouns.setTopico(topicoIniciante);
-        modPronouns.setTitulo("Subject Pronouns (I, You, He, She, It, We, They)");
-        modPronouns.setDescricao("Aprenda os pronomes pessoais com clássicos da música.");
-        modPronouns.setImagemCapaUrl("https://img.youtube.com/vi/5tc0gLSSU1M/hqdefault.jpg"); // Capa dos Beatles
-        modPronouns.setPublicado(true);
-        modPronouns = moduloRepository.save(modPronouns);
+        moduloRepository.findByTitulo("Subject Pronouns (I, You, He, She, It, We, They)")
+            .ifPresentOrElse(
+                (mod) -> System.out.println(">>> Módulo 'Subject Pronouns' já existe. ID: " + mod.getId()),
+                () -> {
+                    System.out.println(">>> Cadastrando Módulo: Subject Pronouns...");
+                    Modulo modPronouns = new Modulo();
+                    modPronouns.setTopico(topicoIniciante);
+                    modPronouns.setTitulo("Subject Pronouns (I, You, He, She, It, We, They)");
+                    modPronouns.setDescricao("Aprenda os pronomes pessoais com clássicos da música.");
+                    modPronouns.setImagemCapaUrl("https://img.youtube.com/vi/5tc0gLSSU1M/hqdefault.jpg"); // Capa dos Beatles
+                    modPronouns.setPublicado(true);
+                    modPronouns = moduloRepository.save(modPronouns);
 
-        // ==========================================
-        // ETAPA 1: PRESENTATION (Os Vídeos de Estudo)
-        // ==========================================
-        
-        // 1. And I Love Her (Beatles)
-        criarRecurso(modPronouns, TipoRecurso.VIDEO, 
-            "https://youtu.be/5tc0gLSSU1M?si=mi-GCh9941-MoVUx", 
-            "Observe como Paul McCartney usa o 'I' (Eu) e 'She' (Ela) para falar de amor nesta canção clássica.", 1);
+                    // ==========================================
+                    // ETAPA 1: PRESENTATION (Os Vídeos de Estudo)
+                    // ==========================================
+                    
+                    // 1. And I Love Her (Beatles)
+                    criarRecurso(modPronouns, TipoRecurso.VIDEO, 
+                        "https://youtu.be/5tc0gLSSU1M?si=mi-GCh9941-MoVUx", 
+                        "Observe como Paul McCartney usa o 'I' (Eu) e 'She' (Ela) para falar de amor nesta canção clássica.", 1);
 
-        // 2. We Can Work It Out (Beatles)
-        criarRecurso(modPronouns, TipoRecurso.VIDEO, 
-            "https://youtu.be/IgRrWPdzkao?si=hV1_iiHQmqVQQYHt", 
-            "Aqui o foco é no 'We' (Nós). 'We can work it out' significa 'Nós podemos resolver isso'.", 2);
+                    // 2. We Can Work It Out (Beatles)
+                    criarRecurso(modPronouns, TipoRecurso.VIDEO, 
+                        "https://youtu.be/IgRrWPdzkao?si=hV1_iiHQmqVQQYHt", 
+                        "Aqui o foco é no 'We' (Nós). 'We can work it out' significa 'Nós podemos resolver isso'.", 2);
 
-        // 3. He Is They Are (Harry Connick JR)
-        criarRecurso(modPronouns, TipoRecurso.VIDEO, 
-            "https://youtu.be/YuzEs_Yo1W8?si=UlQKHaPwun5n5Vw1", 
-            "Uma aula cantada! Preste atenção na diferença entre singular (He is) e plural (They are).", 3);
-
-
-        // ==========================================
-        // ETAPA 2: PRACTICE (Os Quizzes com Vídeo no JSON)
-        // ==========================================
-
-        // 1. Happy Together (The Turtles) -> Identificar Pronomes
-        Map<String, Object> dadosP1 = new HashMap<>();
-        dadosP1.put("video_url", "https://youtu.be/BqZ6sRHpWIk?si=wx1kOFBgQUA-7ZfQ");
-        dadosP1.put("instrucao_video", "Ouça o refrão: 'Imagine me and you, I do...'");
-        dadosP1.put("texto_base", "Imagine me and you, I do, I think about you day and night...");
-        dadosP1.put("palavras_corretas", List.of("I", "you")); // O sistema valida essas
-        criarPractice(modPronouns, TipoAtividade.SELECIONAR_PALAVRAS, "Clique nos pronomes (Subject Pronouns) que aparecem na letra.", dadosP1);
-
-        // 2. She's Leaving Home (Beatles) -> Identificar Pronomes
-        Map<String, Object> dadosP2 = new HashMap<>();
-        dadosP2.put("video_url", "https://youtu.be/VaBPY78D88g?si=tzMxMWiwFR7jGQZS");
-        dadosP2.put("texto_base", "She is leaving home after living alone for so many years...");
-        dadosP2.put("palavras_corretas", List.of("She"));
-        criarPractice(modPronouns, TipoAtividade.SELECIONAR_PALAVRAS, "Identifique quem está saindo de casa (She/Ela).", dadosP2);
-
-        // 3. Rei Leão -> Identificar Pronomes
-        Map<String, Object> dadosP3 = new HashMap<>();
-        dadosP3.put("video_url", "https://youtu.be/leDXfrt2r9A?si=_8QEf89wWZ_ZGlzi"); // Trecho específico
-        dadosP3.put("pergunta", "Quem Timão diz que é um 'menino mau'? (He/She/It?)");
-        dadosP3.put("opcoes", List.of("He (Pumba)", "She (Nala)", "It (The Bug)"));
-        dadosP3.put("resposta_correta", "He (Pumba)");
-        criarPractice(modPronouns, TipoAtividade.MULTIPLA_ESCOLHA, "Assista ao trecho e responda.", dadosP3);
-
-        // 4. Esquete de Piada -> Ordenar Pronomes (Frase)
-        Map<String, Object> dadosP4 = new HashMap<>();
-        dadosP4.put("video_url", "https://youtu.be/i2mTGBRVRr0?si=mqWoZRfght6wPPJc");
-        dadosP4.put("frase_correta", "He is a doctor");
-        dadosP4.put("palavras_embaralhadas", List.of("doctor", "is", "He", "a"));
-        criarPractice(modPronouns, TipoAtividade.ORDENAR_FRASE, "Coloque a frase da piada na ordem correta.", dadosP4);
-
-        // 5. Fast Car (Tracy Chapman) -> Preencher Lacunas
-        Map<String, Object> dadosP5 = new HashMap<>();
-        dadosP5.put("video_url", "https://youtu.be/AIOAlaACuv4?si=EqFzQnbjtjtH1_7V");
-        dadosP5.put("frase_com_lacuna", "You got a fast car, ___ want a ticket to anywhere.");
-        dadosP5.put("resposta_correta", "I"); // "I want a ticket..."
-        criarPractice(modPronouns, TipoAtividade.PREENCHER_LACUNA, "Complete a letra da música.", dadosP5);
+                    // 3. He Is They Are (Harry Connick JR)
+                    criarRecurso(modPronouns, TipoRecurso.VIDEO, 
+                        "https://youtu.be/YuzEs_Yo1W8?si=UlQKHaPwun5n5Vw1", 
+                        "Uma aula cantada! Preste atenção na diferença entre singular (He is) e plural (They are).", 3);
 
 
-        // ==========================================
-        // ETAPA 3: PRODUCTION (Os Desafios Criativos)
-        // ==========================================
+                    // ==========================================
+                    // ETAPA 2: PRACTICE (Os Quizzes com Vídeo no JSON)
+                    // ==========================================
 
-        // 1. Meme Generator
-        Map<String, Object> dadosProd1 = new HashMap<>();
-        dadosProd1.put("link_externo", "https://imgflip.com/memegenerator");
-        dadosProd1.put("formatos_aceitos", List.of("png", "jpg", "jpeg"));
-        criarProduction(modPronouns, TipoDesafio.FOTO_E_TEXTO, 
-            "Crie um meme usando pelo menos um pronome (I, You, He...). Use o site sugerido e faça o upload da imagem aqui.", 
-            null, dadosProd1);
+                    // 1. Happy Together (The Turtles) -> Identificar Pronomes
+                    Map<String, Object> dadosP1 = new HashMap<>();
+                    dadosP1.put("video_url", "https://youtu.be/BqZ6sRHpWIk?si=wx1kOFBgQUA-7ZfQ");
+                    dadosP1.put("instrucao_video", "Ouça o refrão: 'Imagine me and you, I do...'");
+                    dadosP1.put("texto_base", "Imagine me and you, I do, I think about you day and night...");
+                    dadosP1.put("palavras_corretas", List.of("I", "you")); // O sistema valida essas
+                    criarPractice(modPronouns, TipoAtividade.SELECIONAR_PALAVRAS, "Clique nos pronomes (Subject Pronouns) que aparecem na letra.", dadosP1);
 
-        // 2. Vídeo Pergunta (Qual o único pronome?)
-        Map<String, Object> dadosProd2 = new HashMap<>();
-        dadosProd2.put("tipo_resposta", "texto_curto"); // Espera uma palavra
-        criarProduction(modPronouns, TipoDesafio.TEXTO_LONGO, 
-            "Assista ao vídeo e responda: Qual é o único Pronome Pessoal Sujeito mencionado neste trecho?", 
-            "https://www.youtube.com/watch?v=DE8qVfNW5B0", dadosProd2);
+                    // 2. She's Leaving Home (Beatles) -> Identificar Pronomes
+                    Map<String, Object> dadosP2 = new HashMap<>();
+                    dadosP2.put("video_url", "https://youtu.be/VaBPY78D88g?si=tzMxMWiwFR7jGQZS");
+                    dadosP2.put("texto_base", "She is leaving home after living alone for so many years...");
+                    dadosP2.put("palavras_corretas", List.of("She"));
+                    criarPractice(modPronouns, TipoAtividade.SELECIONAR_PALAVRAS, "Identifique quem está saindo de casa (She/Ela).", dadosP2);
 
-        System.out.println(">>> Módulo 'Subject Pronouns' criado com sucesso!");
+                    // 3. Rei Leão -> Identificar Pronomes
+                    Map<String, Object> dadosP3 = new HashMap<>();
+                    dadosP3.put("video_url", "https://youtu.be/leDXfrt2r9A?si=_8QEf89wWZ_ZGlzi"); // Trecho específico
+                    dadosP3.put("pergunta", "Quem Timão diz que é um 'menino mau'? (He/She/It?)");
+                    dadosP3.put("opcoes", List.of("He (Pumba)", "She (Nala)", "It (The Bug)"));
+                    dadosP3.put("resposta_correta", "He (Pumba)");
+                    criarPractice(modPronouns, TipoAtividade.MULTIPLA_ESCOLHA, "Assista ao trecho e responda.", dadosP3);
+
+                    // 4. Esquete de Piada -> Ordenar Pronomes (Frase)
+                    Map<String, Object> dadosP4 = new HashMap<>();
+                    dadosP4.put("video_url", "https://youtu.be/i2mTGBRVRr0?si=mqWoZRfght6wPPJc");
+                    dadosP4.put("frase_correta", "He is a doctor");
+                    dadosP4.put("palavras_embaralhadas", List.of("doctor", "is", "He", "a"));
+                    criarPractice(modPronouns, TipoAtividade.ORDENAR_FRASE, "Coloque a frase da piada na ordem correta.", dadosP4);
+
+                    // 5. Fast Car (Tracy Chapman) -> Preencher Lacunas
+                    Map<String, Object> dadosP5 = new HashMap<>();
+                    dadosP5.put("video_url", "https://youtu.be/AIOAlaACuv4?si=EqFzQnbjtjtH1_7V");
+                    dadosP5.put("frase_com_lacuna", "You got a fast car, ___ want a ticket to anywhere.");
+                    dadosP5.put("resposta_correta", "I"); // "I want a ticket..."
+                    criarPractice(modPronouns, TipoAtividade.PREENCHER_LACUNA, "Complete a letra da música.", dadosP5);
+
+
+                    // ==========================================
+                    // ETAPA 3: PRODUCTION (Os Desafios Criativos)
+                    // ==========================================
+
+                    // 1. Meme Generator
+                    Map<String, Object> dadosProd1 = new HashMap<>();
+                    dadosProd1.put("link_externo", "https://imgflip.com/memegenerator");
+                    dadosProd1.put("formatos_aceitos", List.of("png", "jpg", "jpeg"));
+                    criarProduction(modPronouns, TipoDesafio.FOTO_E_TEXTO, 
+                        "Crie um meme usando pelo menos um pronome (I, You, He...). Use o site sugerido e faça o upload da imagem aqui.", 
+                        null, dadosProd1);
+
+                    // 2. Vídeo Pergunta (Qual o único pronome?)
+                    Map<String, Object> dadosProd2 = new HashMap<>();
+                    dadosProd2.put("tipo_resposta", "texto_curto"); // Espera uma palavra
+                    criarProduction(modPronouns, TipoDesafio.TEXTO_LONGO, 
+                        "Assista ao vídeo e responda: Qual é o único Pronome Pessoal Sujeito mencionado neste trecho?", 
+                        "https://www.youtube.com/watch?v=DE8qVfNW5B0", dadosProd2);
+
+                    System.out.println(">>> Módulo 'Subject Pronouns' criado com sucesso!");
+                }
+            );
     }
 
     private void criarRecurso(Modulo mod, TipoRecurso tipo, String url, String transcricao, int ordem) {
