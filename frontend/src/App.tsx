@@ -31,10 +31,7 @@ function App() {
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
-      <Header />
-      <Container maxWidth={false} disableGutters>
-        <AppRoutes />
-      </Container>
+      <AppRoutes />
     </ThemeProvider>
   );
 }
