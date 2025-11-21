@@ -96,7 +96,7 @@ const TopicCard = ({ topic }: { topic: Topic }) => (
 
 export default function Secoes() {
   return (
-    <Box sx={{ my: 4 }}>
+    <Box sx={{ my: 4, mx: 6 }}>
       {sections.map(section => (
         <Box key={section.title} sx={{ mb: 4 }}>
           <Typography variant="h5" component="h2" sx={{ color: 'white', mb: 2, fontWeight: 'bold' }}>
