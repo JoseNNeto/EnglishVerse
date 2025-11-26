@@ -3,6 +3,7 @@ package com.joseneto.englishverse.service;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.Date;
 
 import javax.crypto.SecretKey;
 
@@ -29,8 +30,8 @@ public class TokenService {
             return Jwts.builder()
                     .setIssuer("englishverse-api")
                     .setSubject(usuario.getEmail())
-                    .setIssuedAt(Instant.now())
-                    .setExpiration(genExpirationDate())
+                    .setIssuedAt(Date.from(Instant.now()))
+                    .setExpiration(Date.from(genExpirationDate()))
                     .signWith(secretKey, SignatureAlgorithm.HS256)
                     .compact();
         } catch (Exception e) {
@@ -41,7 +42,7 @@ public class TokenService {
     public String validateToken(String token) {
         secretKey = Keys.hmacShaKeyFor(secret.getBytes());
         try {
-            return Jwts.parserBuilder()
+            return Jwts.parser()
                     .setSigningKey(secretKey)
                     .build()
                     .parseClaimsJws(token)

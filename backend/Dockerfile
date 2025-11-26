@@ -6,7 +6,7 @@ COPY src ./src
 RUN mvn clean package -DskipTests
 
 # Estágio de Execução
-FROM openjdk:17-jdk-slim
+FROM openjdk:25-ea-21-jdk-slim 
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
