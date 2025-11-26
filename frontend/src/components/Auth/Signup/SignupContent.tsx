@@ -1,23 +1,61 @@
 
-import { Box, Typography, TextField, Button, Link, IconButton } from '@mui/material';
+import { Box, Typography, TextField, Button, Link, IconButton, CircularProgress, Alert } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import EventIcon from '@mui/icons-material/Event';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LogoEnglishVerse from '../../../assets/englishverse-sem-fundo.png';
+import api from '../../../services/api';
+import { useAuth } from '../../../contexts/AuthContext';
 
 export default function SignupContent() {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [nome, setNome] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
+
     const navigate = useNavigate();
+    const { login } = useAuth();
 
     const handleTogglePasswordVisibility = () => setShowPassword((prev) => !prev);
     const handleToggleConfirmPasswordVisibility = () => setShowConfirmPassword((prev) => !prev);
     
-    const handleSignup = () => {
-        // Implement signup logic here
-        console.log('Signup clicked');
+    const handleSignup = async (event: React.FormEvent) => {
+        event.preventDefault();
+        setError('');
+
+        if (password !== confirmPassword) {
+            setError('As senhas não coincidem.');
+            return;
+        }
+
+        setLoading(true);
+        try {
+            const response = await api.post('/api/usuarios', {
+                nome: nome,
+                email: email,
+                senha: password,
+            });
+            
+            const { token } = response.data;
+            login(token); // Log the user in with the new token
+            
+            navigate('/'); // Redirect to home page
+
+        } catch (err: any) {
+            if (err.response && err.response.data && err.response.data.message) {
+                setError(err.response.data.message);
+            } else {
+                setError('Não foi possível realizar o cadastro. Verifique os dados e tente novamente.');
+            }
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handleLogin = () => {
@@ -59,21 +97,15 @@ export default function SignupContent() {
                 Crie sua conta
             </Typography>
 
-            <Box component="form" sx={{ width: '100%' }}>
+            <Box component="form" onSubmit={handleSignup} sx={{ width: '100%' }}>
+                {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
                 <Typography variant="body1" sx={{ color: '#e0e0e0', mb: 1 }}>Nome completo</Typography>
-                <TextField fullWidth placeholder="Seu nome completo" variant="outlined" sx={{ ...inputStyles, mb: 2 }} />
+                <TextField fullWidth placeholder="Seu nome completo" variant="outlined" sx={{ ...inputStyles, mb: 2 }} value={nome} onChange={(e) => setNome(e.target.value)} required />
 
                 <Typography variant="body1" sx={{ color: '#e0e0e0', mb: 1 }}>E-mail</Typography>
-                <TextField fullWidth placeholder="seuemail@ifpe.edu.br" variant="outlined" sx={{ ...inputStyles, mb: 2 }} />
+                <TextField fullWidth placeholder="seuemail@ifpe.edu.br" variant="outlined" sx={{ ...inputStyles, mb: 2 }} type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
                 
-                <Typography variant="body1" sx={{ color: '#e0e0e0', mb: 1 }}>Data de nascimento</Typography>
-                <TextField
-                    fullWidth
-                    type="date"
-                    variant="outlined"
-                    sx={{ ...inputStyles, mb: 2 }}
-                    InputLabelProps={{ shrink: true }}
-                />
+                {/* O campo de data de nascimento foi removido da lógica pois não existe no DTO do backend */}
 
                 <Typography variant="body1" sx={{ color: '#e0e0e0', mb: 1 }}>Senha</Typography>
                 <TextField
@@ -81,6 +113,9 @@ export default function SignupContent() {
                     type={showPassword ? 'text' : 'password'}
                     placeholder="Mínimo 6 caracteres"
                     variant="outlined"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
                     InputProps={{
                         endAdornment: (
                             <IconButton onClick={handleTogglePasswordVisibility} edge="end">
@@ -97,6 +132,9 @@ export default function SignupContent() {
                     type={showConfirmPassword ? 'text' : 'password'}
                     placeholder="Digite a senha novamente"
                     variant="outlined"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    required
                     InputProps={{
                         endAdornment: (
                             <IconButton onClick={handleToggleConfirmPasswordVisibility} edge="end">
@@ -108,12 +146,13 @@ export default function SignupContent() {
                 />
 
                 <Button
+                    type="submit"
                     fullWidth
                     variant="contained"
+                    disabled={loading}
                     sx={{ bgcolor: '#007aff', color: 'white', py: 1.5, borderRadius: '14px', textTransform: 'uppercase', fontSize: '1rem', mb: 3 }}
-                    onClick={handleSignup}
                 >
-                    Criar conta
+                    {loading ? <CircularProgress size={24} color="inherit" /> : 'Criar conta'}
                 </Button>
 
                 <Box sx={{ textAlign: 'center' }}>

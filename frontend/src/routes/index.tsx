@@ -16,10 +16,11 @@ import ProductionPostagem from '../pages/Production/Postagem';
 import Login from '../pages/Auth/Login';
 import Signup from '../pages/Auth/Signup';
 import Layout from '../components/Layout/Layout';
+import ProtectedRoute from '../components/ProtectedRoute'; // Import ProtectedRoute
 
 const router = createBrowserRouter([
   {
-    element: <Layout />,
+    element: <ProtectedRoute><Layout /></ProtectedRoute>, // Wrap Layout with ProtectedRoute
     children: [
       { path: '/', element: <Home /> },
       { path: '/user', element: <User /> },

@@ -8,6 +8,7 @@ export default function Chamada() {
   return (
     <Box
       sx={{
+        mx: 6,
         position: 'relative',
         height: '400px',
         borderRadius: '14px',

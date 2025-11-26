@@ -30,7 +30,7 @@ const learningItems = [
 
 export default function ContinuarAprendendo() {
   return (
-    <Box sx={{ my: 4 }}>
+    <Box sx={{ my: 4, mx: 6 }}>
       <Typography variant="h5" component="h2" sx={{ color: 'white', mb: 2, fontWeight: 'bold' }}>
         Continuar Aprendendo
       </Typography>
