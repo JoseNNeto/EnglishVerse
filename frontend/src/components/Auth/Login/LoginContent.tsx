@@ -1,22 +1,48 @@
 
-import { Box, Typography, TextField, Button, Link } from '@mui/material';
+import { Box, Typography, TextField, Button, Link, CircularProgress, Alert } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LogoEnglishVerse from '../../../assets/englishverse-sem-fundo.png';
+import api from '../../../services/api';
+import { useAuth } from '../../../contexts/AuthContext';
 
 export default function LoginContent() {
     const [showPassword, setShowPassword] = useState(false);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const { login } = useAuth();
 
     const handleTogglePasswordVisibility = () => {
         setShowPassword((prev) => !prev);
     };
 
-    const handleLogin = () => {
-        // Implement login logic here
-        console.log('Login clicked');
+    const handleLogin = async (event: React.FormEvent) => {
+        event.preventDefault();
+        setLoading(true);
+        setError('');
+
+        try {
+            const response = await api.post('/auth/login', {
+                email: email,
+                senha: password,
+            });
+            
+            const { token } = response.data;
+            login(token); // Use the login function from AuthContext
+            
+            navigate('/'); // Redirect to home page on successful login
+
+        } catch (err) {
+            setError('E-mail ou senha inválidos. Tente novamente.');
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handleForgotPassword = () => {
@@ -51,7 +77,8 @@ export default function LoginContent() {
                 Bem-vindo de volta!
             </Typography>
 
-            <Box component="form" sx={{ width: '100%' }}>
+            <Box component="form" onSubmit={handleLogin} sx={{ width: '100%' }}>
+                {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
                 <Typography variant="body1" sx={{ color: '#e0e0e0', mb: 1 }}>
                     E-mail
                 </Typography>
@@ -59,6 +86,8 @@ export default function LoginContent() {
                     fullWidth
                     placeholder="seuemail@ifpe.edu.br"
                     variant="outlined"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     sx={{
                         mb: 2,
                         '& .MuiOutlinedInput-root': {
@@ -92,6 +121,8 @@ export default function LoginContent() {
                     type={showPassword ? 'text' : 'password'}
                     placeholder="••••••••"
                     variant="outlined"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     InputProps={{
                         endAdornment: (
                             <Button
@@ -134,12 +165,13 @@ export default function LoginContent() {
                 </Box>
 
                 <Button
+                    type="submit"
                     fullWidth
                     variant="contained"
+                    disabled={loading}
                     sx={{ bgcolor: '#007aff', color: 'white', py: 1.5, borderRadius: '14px', textTransform: 'uppercase', fontSize: '1rem', mb: 3 }}
-                    onClick={handleLogin}
                 >
-                    Entrar
+                    {loading ? <CircularProgress size={24} color="inherit" /> : 'Entrar'}
                 </Button>
 
                 <Box sx={{ textAlign: 'center' }}>

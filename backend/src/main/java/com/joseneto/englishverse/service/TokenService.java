@@ -29,6 +29,7 @@ public class TokenService {
         try {
             return Jwts.builder()
                     .setIssuer("englishverse-api")
+                    .claim("nome", usuario.getNome()) // Adiciona o nome do usuário ao token
                     .setSubject(usuario.getEmail())
                     .setIssuedAt(Date.from(Instant.now()))
                     .setExpiration(Date.from(genExpirationDate()))

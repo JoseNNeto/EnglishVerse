@@ -9,12 +9,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.joseneto.englishverse.model.enums.TipoUsuario;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -42,48 +40,49 @@ public class Usuario implements UserDetails {
     @Column(nullable = false)
     private String senha; 
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "tipo_usuario", nullable = false)
-    private TipoUsuario tipoUsuario;
-
     @CreationTimestamp
     @Column(name = "data_criacao", updatable = false)
     private LocalDateTime dataCriacao;
 
     @Override
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (this.tipoUsuario == TipoUsuario.ADMIN) {
-            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
-        }
         return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
     @Override
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     public String getPassword() {
         return this.senha;
     }
 
+
     @Override
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     public String getUsername() {
         return this.email;
     }
 
     @Override
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     public boolean isAccountNonExpired() {
         return true;
     }
 
     @Override
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     public boolean isAccountNonLocked() {
         return true;
     }
 
     @Override
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
     @Override
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     public boolean isEnabled() {
         return true;
     }
