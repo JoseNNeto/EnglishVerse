@@ -4,27 +4,23 @@ import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, us
 import type { DragEndEvent, DragStartEvent } from '@dnd-kit/core';
 import { SortableContext, useSortable, arrayMove, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 
-const initialQuotes = [
-    { id: 'quote-1', text: `'It's Levi-O-sa, not Levio-SA!'` },
-    { id: 'quote-2', text: `'Bloody hell!'` },
-    { id: 'quote-3', text: `'I can see you've got dirt on your nose'` },
-];
+interface ProductionRelacionarContentProps {
+    data: {
+        id: number;
+        instrucaoDesafio: string;
+        midiaDesafioUrl?: string;
+        dadosDesafio: Record<string, any>;
+    };
+}
 
-const initialCharacters = [
-    { id: 'harry', name: 'Harry Potter' },
-    { id: 'hermione', name: 'Hermione' },
-    { id: 'ron', name: 'Ron Weasley' },
-];
-
-const initialContainers: Record<string, { id: UniqueIdentifier, text: string }[]> = {
-    'unassigned': initialQuotes,
-    'harry': [],
-    'hermione': [],
-    'ron': [],
-};
+// Assuming data structure for RELACIONAR type in dadosDesafio
+interface RelacionarData {
+    quotes: { id: string; text: string; }[];
+    characters: { id: string; name: string; }[];
+}
 
 interface Character {
     id: string;
@@ -86,7 +82,19 @@ function DroppableColumn({ id, title, items }: { id: UniqueIdentifier, title: st
     );
 }
 
-export default function ProductionRelacionarContent() {
+export default function ProductionRelacionarContent({ data }: ProductionRelacionarContentProps) {
+    const relacionarData = data.dadosDesafio as RelacionarData;
+
+    const initialContainers = useMemo(() => {
+        const containers: Record<string, { id: UniqueIdentifier, text: string }[]> = {
+            unassigned: relacionarData.quotes || [],
+        };
+        (relacionarData.characters || []).forEach(char => {
+            containers[char.id] = [];
+        });
+        return containers;
+    }, [relacionarData.quotes, relacionarData.characters]);
+
     const [containers, setContainers] = useState(initialContainers);
     const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
 
@@ -113,7 +121,7 @@ export default function ProductionRelacionarContent() {
         const overContainerId = findContainer(over.id);
     
         if (!originalContainerId || !overContainerId || originalContainerId === overContainerId) {
-            if (originalContainerId === 'unassigned' && overContainerId === 'unassigned') {
+            if (originalContainerId === 'unassigned' && overContainerId === 'unassigned' && containers['unassigned'].findIndex(i => i.id === over.id) >= 0) {
                  setContainers(prev => {
                     const newUnassigned = arrayMove(prev.unassigned, prev.unassigned.findIndex(i => i.id === active.id), prev.unassigned.findIndex(i => i.id === over.id));
                     return {...prev, unassigned: newUnassigned};
@@ -162,41 +170,40 @@ export default function ProductionRelacionarContent() {
 
                         <Box sx={{ mb: 3 }}>
                             <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                                <Typography sx={{ flexGrow: 1, color: '#b3b3b3' }}>Atividade 5 de 7</Typography>
-                                <Typography sx={{ color: '#b3b3b3' }}>71%</Typography>
+                                <Typography sx={{ flexGrow: 1, color: '#b3b3b3' }}>Progresso: 0%</Typography> {/* Placeholder */}
                             </Box>
-                            <LinearProgress variant="determinate" value={71} sx={{ height: 8, borderRadius: 4 }} />
+                            <LinearProgress variant="determinate" value={0} sx={{ height: 8, borderRadius: 4 }} /> {/* Placeholder */}
                         </Box>
 
-                        <Typography variant="h4" sx={{ mb: 3 }}>Etapa 3: Desafio de Produção</Typography>
+                        <Typography variant="h4" sx={{ mb: 3 }}>Etapa: Desafio de Produção - Relacionar</Typography>
                         
                         <Paper sx={{ bgcolor: '#1a1a1a', p: 3, borderRadius: 3, mb: 3 }}>
-                            <Typography variant="h5" sx={{ mb: 1 }}>Seu Desafio: Quem disse o quê?</Typography>
+                            <Typography variant="h5" sx={{ mb: 1 }}>Seu Desafio</Typography>
                             <Typography variant="body1" sx={{ color: '#b3b3b3' }}>
-                            Você viu a cena de apresentação. Agora, arraste a fala (Coluna B) e solte ao lado do personagem correto (Coluna A).
+                                {data.instrucaoDesafio}
                             </Typography>
                         </Paper>
 
                         <Grid container spacing={4}>
-                            <Grid size={{ xs: 6 }}>
-                                <Typography variant="h6" sx={{mb: 2}}>Coluna A: Personagens</Typography>
-                                {initialCharacters.map((char: Character) => (
+                            <Grid item xs={6}>
+                                <Typography variant="h6" sx={{mb: 2}}>Personagens</Typography>
+                                {(relacionarData.characters || []).map((char: Character) => (
                                     <DroppableCharacter
                                         key={char.id}
                                         char={char}
-                                        quote={containers[char.id][0]}
+                                        quote={containers[char.id] ? containers[char.id][0] : undefined}
                                         onRemoveQuote={handleRemoveQuote}
                                     />
                                 ))}
                             </Grid>
-                            <Grid size={{ xs: 6 }}>
-                                <DroppableColumn id="unassigned" title="Coluna B: Falas" items={containers.unassigned} />
+                            <Grid item xs={6}>
+                                <DroppableColumn id="unassigned" title="Falas" items={containers.unassigned || []} />
                             </Grid>
                         </Grid>
 
                         <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3 }}>
                             <Button variant="contained" size="large" sx={{ textTransform: 'none', borderRadius: 3, opacity: 0.5 }}>
-                            Enviar Desafio e Concluir Módulo!
+                            Enviar Desafio
                             </Button>
                         </Box>
                     </Box>

@@ -107,22 +107,21 @@ public class DataSeeder implements CommandLineRunner {
                     dadosP2.put("video_url", "https://youtu.be/VaBPY78D88g?si=tzMxMWiwFR7jGQZS");
                     dadosP2.put("texto_base", "She is leaving home after living alone for so many years...");
                     dadosP2.put("palavras_corretas", List.of("She"));
-                    criarPractice(modPronouns, TipoAtividade.SELECIONAR_PALAVRAS, "Identifique quem está saindo de casa (She/Ela).", dadosP2);
+                    criarPractice(modPronouns, TipoAtividade.SELECIONAR_PALAVRAS, "Identifique quem está saindo de casa.", dadosP2);
 
                     // 3. Rei Leão -> Identificar Pronomes
                     Map<String, Object> dadosP3 = new HashMap<>();
                     dadosP3.put("video_url", "https://youtu.be/leDXfrt2r9A?si=_8QEf89wWZ_ZGlzi"); // Trecho específico
                     dadosP3.put("pergunta", "Quem Timão diz que é um 'menino mau'? (He/She/It?)");
-                    dadosP3.put("opcoes", List.of("He (Pumba)", "She (Nala)", "It (The Bug)"));
+                    dadosP3.put("opcoes", List.of("He (Pumba)", "She (Nala)", "It (The Bug)", "They (The Lions)"));
                     dadosP3.put("resposta_correta", "He (Pumba)");
                     criarPractice(modPronouns, TipoAtividade.MULTIPLA_ESCOLHA, "Assista ao trecho e responda.", dadosP3);
 
-                    // 4. Esquete de Piada -> Ordenar Pronomes (Frase)
+                    // 4. Atividade de Listar Palavras
                     Map<String, Object> dadosP4 = new HashMap<>();
-                    dadosP4.put("video_url", "https://youtu.be/i2mTGBRVRr0?si=mqWoZRfght6wPPJc");
-                    dadosP4.put("frase_correta", "He is a doctor");
-                    dadosP4.put("palavras_embaralhadas", List.of("doctor", "is", "He", "a"));
-                    criarPractice(modPronouns, TipoAtividade.ORDENAR_FRASE, "Coloque a frase da piada na ordem correta.", dadosP4);
+                    dadosP4.put("imageUrl", "https://i.ytimg.com/vi/i2mTGBRVRr0/hqdefault.jpg"); // Thumbnail from the original video
+                    dadosP4.put("numberOfInputs", 3);
+                    criarPractice(modPronouns, TipoAtividade.LISTA_PALAVRAS, "Observe a imagem e liste 3 pronomes que você pode inferir da cena.", dadosP4);
 
                     // 5. Fast Car (Tracy Chapman) -> Preencher Lacunas
                     Map<String, Object> dadosP5 = new HashMap<>();

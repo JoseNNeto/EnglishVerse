@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.joseneto.englishverse.model.Modulo;
@@ -26,6 +27,11 @@ public class ModuloController {
     @GetMapping
     public List<Modulo> listar() {
         return moduloService.listarTodos();
+    }
+
+    @GetMapping("/search")
+    public List<Modulo> search(@RequestParam("q") String query) {
+        return moduloService.buscarPorTitulo(query);
     }
 
     // Endpoint especial: Listar módulos de um tópico X

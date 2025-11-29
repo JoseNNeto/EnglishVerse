@@ -3,6 +3,7 @@ import { jwtDecode } from 'jwt-decode';
 import api from '../services/api';
 
 interface User {
+    id: number;
     nome: string;
     sub: string; // Subject, which is the email
 }
@@ -36,9 +37,19 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         if (storedToken) {
             try {
                 const decodedUser = jwtDecode<User>(storedToken);
-                setUser(decodedUser);
-                setToken(storedToken);
-                api.defaults.headers.common['Authorization'] = `Bearer ${storedToken}`;
+                const currentTime = Date.now() / 1000; // current time in seconds
+
+                if (decodedUser.exp && decodedUser.exp < currentTime) {
+                    // Token is expired
+                    localStorage.removeItem('authToken');
+                    setToken(null);
+                    setUser(null);
+                    console.warn("Expired token found in storage, removed.");
+                } else {
+                    // Token is valid
+                    setUser(decodedUser);
+                    setToken(storedToken);
+                }
             } catch (error) {
                 // If token is invalid, remove it
                 localStorage.removeItem('authToken');
@@ -54,7 +65,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             localStorage.setItem('authToken', newToken);
             setUser(decodedUser);
             setToken(newToken);
-            api.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
         } catch (error) {
             console.error("Failed to decode token", error);
         }

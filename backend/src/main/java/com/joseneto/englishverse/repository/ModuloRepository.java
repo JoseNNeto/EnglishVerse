@@ -13,4 +13,6 @@ public interface ModuloRepository extends JpaRepository<Modulo, Long> {
     List<Modulo> findByPublicadoTrue();
 
     Optional<Modulo> findByTitulo(String titulo);
+
+    List<Modulo> findByTituloContainingIgnoreCase(String titulo);
 }

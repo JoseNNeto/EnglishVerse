@@ -67,4 +67,8 @@ public class ModuloService {
     public void deletar(Long id) {
         moduloRepository.deleteById(id);
     }
+
+    public List<Modulo> buscarPorTitulo(String titulo) {
+        return moduloRepository.findByTituloContainingIgnoreCase(titulo);
+    }
 }

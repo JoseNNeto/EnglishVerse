@@ -18,7 +18,7 @@ import com.joseneto.englishverse.service.TokenService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthenticationController {
 
     @Autowired
