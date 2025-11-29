@@ -4,7 +4,7 @@ import Secoes from '../components/Home/Secoes';
 import { useSearchParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import api from '../services/api';
-import { Modulo } from '../contexts/ModuleContext';
+import type { Modulo } from '../contexts/ModuleContext';
 import { Box, Typography, Grid, CircularProgress } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { Card, CardActionArea, CardMedia, CardContent } from '@mui/material';
@@ -13,7 +13,7 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 
 // A simple card component for displaying a module, similar to the one in Secoes.tsx
 const ModuleCard = ({ module }: { module: Modulo }) => (
-    <Grid item xs={12} sm={6} md={2.4}>
+    <Grid size={{ xs:12, sm:6, md:2.4 }}>
       <Card sx={{ 
         backgroundColor: '#1a1a1a', 
         color: 'white', 

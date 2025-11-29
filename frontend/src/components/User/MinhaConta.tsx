@@ -23,7 +23,7 @@ export default function MinhaConta() {
   const handleNomeSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
-      const response = await api.put('/api/usuarios/me/nome', { nome });
+      const response = await api.put('/usuarios/me/nome', { nome });
       const { token } = response.data;
       login(token); // Atualiza o contexto e o localStorage com o novo token
       setSnackbar({ open: true, message: 'Nome alterado com sucesso!', severity: 'success' });
@@ -40,7 +40,7 @@ export default function MinhaConta() {
       return;
     }
     try {
-      const response = await api.put('/api/usuarios/me/senha', { senhaAntiga, senhaNova });
+      const response = await api.put('/usuarios/me/senha', { senhaAntiga, senhaNova });
       const { token } = response.data;
       login(token); // Atualiza a sessão com um novo token por segurança
       setSnackbar({ open: true, message: 'Senha alterada com sucesso!', severity: 'success' });
