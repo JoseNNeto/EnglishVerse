@@ -1,25 +1,46 @@
-
 import { Box, Typography, LinearProgress, Button, Grid, TextField } from '@mui/material';
 import LightbulbOutlinedIcon from '@mui/icons-material/LightbulbOutlined';
+import { useState } from 'react';
 
-// Temporary image import for development, will be replaced with dynamic content
-const imgImageWithFallback = "https://www.figma.com/api/mcp/asset/3e10356c-c9b8-400e-8ab7-81e5e0b2dce1";
+// This component receives the practice data as a prop
+interface PracticeListaContentProps {
+    data: {
+        id: number;
+        instrucao: string;
+        dadosAtividade: Record<string, any>;
+    };
+}
 
-export default function PracticeListaContent() {
+// Assuming data structure for PracticeListaContent
+interface ListaPalavrasData {
+    imageUrl: string;
+    numberOfInputs: number;
+}
+
+export default function PracticeListaContent({ data }: PracticeListaContentProps) {
+    const listaPalavrasData = data.dadosAtividade as ListaPalavrasData;
+
+    const [inputs, setInputs] = useState<string[]>(Array(listaPalavrasData.numberOfInputs || 3).fill(''));
+
+    const handleInputChange = (index: number, value: string) => {
+        const newInputs = [...inputs];
+        newInputs[index] = value;
+        setInputs(newInputs);
+    };
+
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-      <Box sx={{ width: '90%' }}> {/* Using 'md' for now as initial interpretation */}
+      <Box sx={{ width: '90%' }}>
         <Box sx={{ color: '#e0e0e0' }}>
-          <Typography variant="h6">Etapa 2: Prática</Typography>
+          <Typography variant="h6">Etapa: Prática - Lista de Palavras</Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', my: 2 }}>
-            <Typography sx={{ flexGrow: 1, color: '#b3b3b3' }}>Pergunta 2 de 4</Typography>
-            <Typography sx={{ color: '#b3b3b3' }}>50%</Typography>
+            <Typography sx={{ flexGrow: 1, color: '#b3b3b3' }}>Progresso: 0%</Typography> {/* Placeholder */}
           </Box>
-          <LinearProgress variant="determinate" value={50} sx={{ height: 8, borderRadius: 4, mb: 3 }} />
+          <LinearProgress variant="determinate" value={0} sx={{ height: 8, borderRadius: 4, mb: 3 }} /> {/* Placeholder */}
 
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
             <Typography variant="body1" sx={{ color: '#b3b3b3' }}>
-              Observe a imagem da cena e digite 3 advérbios de frequência que você poderia usar para descrevê-la.
+              {data.instrucao}
             </Typography>
             {/* <Button
               startIcon={<LightbulbOutlinedIcon />}
@@ -29,42 +50,46 @@ export default function PracticeListaContent() {
             </Button> */}
           </Box>
 
-          <Box
-            sx={{
-              borderRadius: '14px',
-              overflow: 'hidden',
-              mb: 3,
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              backgroundColor: 'grey.800', // Placeholder background
-            }}
-          >
+          {listaPalavrasData.imageUrl && (
             <Box
-              component="img"
-              src={imgImageWithFallback}
-              alt="Cena de The Office"
               sx={{
-                width: '100%', // Adjust as needed
-                height: 'auto',
-                maxWidth: 700, // Matching the video player's size
-                display: 'block',
+                borderRadius: '14px',
+                overflow: 'hidden',
+                mb: 3,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: 'grey.800', // Placeholder background
               }}
-            />
-          </Box>
+            >
+              <Box
+                component="img"
+                src={listaPalavrasData.imageUrl}
+                alt="Cena da atividade"
+                sx={{
+                  width: '100%',
+                  height: 'auto',
+                  maxWidth: 700,
+                  display: 'block',
+                }}
+              />
+            </Box>
+          )}
 
           <Box sx={{ bgcolor: '#1a1a1a', p: 3, borderRadius: 3, mb: 3 }}>
             <Grid container spacing={2} alignItems="center">
-              {[1, 2, 3].map((num) => (
-                <Grid size={{ xs: 12 }} key={num}> {/* Using xs={12} to make each item take full width */}
+              {inputs.map((value, index) => (
+                <Grid size={{xs: 12}} key={index}>
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                     <Typography variant="h6" sx={{ color: '#b3b3b3', width: '20px' }}>
-                      {num}.
+                      {index + 1}.
                     </Typography>
                     <TextField
                       variant="outlined"
                       placeholder="Digite uma palavra..."
                       fullWidth
+                      value={value}
+                      onChange={(e) => handleInputChange(index, e.target.value)}
                       sx={{
                         '& .MuiOutlinedInput-root': {
                           '& fieldset': {

@@ -4,14 +4,18 @@ import SearchIcon from '@mui/icons-material/Search';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import LogoEnglishVerse from '../../assets/englishverse-sem-fundo.png';
 import { useAuth } from '../../contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 export default function Header() {
   const { isAuthenticated, user, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [openDialog, setOpenDialog] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const isHomePage = location.pathname === '/';
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -38,7 +42,13 @@ export default function Header() {
   const handleLogout = () => {
     logout();
     handleCloseDialog();
-    // A navegação será tratada automaticamente pelo ProtectedRoute
+  };
+
+  const handleSearchSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/?q=${searchQuery.trim()}`);
+    }
   };
 
   return (
@@ -63,26 +73,36 @@ export default function Header() {
             src={LogoEnglishVerse}
             onClick={() => navigate('/')}
           />
-          <Box sx={{
-            position: 'relative',
-            backgroundColor: '#282828',
-            borderRadius: '24px',
-            width: '600px',
-            height: '50px',
-            display: 'flex',
-            alignItems: 'center'
-          }}>
-            <SearchIcon sx={{ position: 'absolute', left: '16px', color: 'white' }} />
-            <InputBase
-              placeholder="Buscar por série, música ou tópico..."
+
+          {isHomePage && (
+            <Box 
+              component="form"
+              onSubmit={handleSearchSubmit}
               sx={{
-                color: 'white',
-                width: '100%',
-                paddingLeft: '48px'
+                position: 'relative',
+                backgroundColor: '#282828',
+                borderRadius: '24px',
+                width: '600px',
+                height: '50px',
+                display: 'flex',
+                alignItems: 'center'
               }}
-            />
-          </Box>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            >
+              <SearchIcon sx={{ position: 'absolute', left: '16px', color: 'white' }} />
+              <InputBase
+                placeholder="Buscar por série, música ou tópico..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                sx={{
+                  color: 'white',
+                  width: '100%',
+                  paddingLeft: '48px'
+                }}
+              />
+            </Box>
+          )}
+
+          <Box sx={{ display: 'flex', alignItems: 'center', minWidth: isHomePage ? 'auto' : '600px', justifyContent: 'flex-end' }}>
             {isAuthenticated && user && (
               <>
                 <IconButton color="inherit">
