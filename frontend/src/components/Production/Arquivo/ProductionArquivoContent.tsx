@@ -1,15 +1,18 @@
 
 import { Box, Typography, Button, TextareaAutosize, styled, Paper, LinearProgress } from '@mui/material';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
-import { useState } from 'react'; // Assuming local state for comments/file handling
+import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
+import { useState, useRef, type ChangeEvent, type DragEvent } from 'react';
+import { useModule } from '../../../contexts/ModuleContext';
 
-const Dropzone = styled('div')(({ theme }) => ({
-    border: `2px dashed ${theme.palette.grey[700]}`,
+const Dropzone = styled('div')<{ isDragActive: boolean }>(({ theme, isDragActive }) => ({
+    border: `2px dashed ${isDragActive ? theme.palette.primary.main : theme.palette.grey[700]}`,
     borderRadius: theme.shape.borderRadius,
     padding: theme.spacing(4),
     textAlign: 'center',
     cursor: 'pointer',
-    backgroundColor: '#1a1a1a',
+    backgroundColor: isDragActive ? 'rgba(0, 122, 255, 0.1)' : '#1a1a1a',
+    transition: 'background-color 0.2s ease-in-out, border-color 0.2s ease-in-out',
     '&:hover': {
         borderColor: theme.palette.primary.main,
     },
@@ -22,13 +25,11 @@ interface ProductionArquivoContentProps {
         midiaDesafioUrl?: string;
         dadosDesafio: Record<string, any>;
     };
+    isLast?: boolean;
 }
 
-// Assuming data structure for ARQUIVO type in dadosDesafio
 interface ArquivoData {
-    // The video URL will come from midiaDesafioUrl
-    // The instruction/title will come from instrucaoDesafio
-    acceptedFormats?: string[]; // e.g., ["PDF", "DOCX", "PNG", "JPG"]
+    acceptedFormats?: string[];
 }
 
 const getYouTubeEmbedUrl = (url: string) => {
@@ -47,33 +48,80 @@ const getYouTubeEmbedUrl = (url: string) => {
     return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
 };
 
-export default function ProductionArquivoContent({ data }: ProductionArquivoContentProps) {
+export default function ProductionArquivoContent({ data, isLast }: ProductionArquivoContentProps) {
+    const { positionalProgressPercentage, activeItem, allItems, setActiveItem, markItemAsCompleted } = useModule();
     const arquivoData = data.dadosDesafio as ArquivoData;
     const embedUrl = getYouTubeEmbedUrl(data.midiaDesafioUrl || '');
-    const [comment, setComment] = useState(''); // State for the optional comment
+    const [comment, setComment] = useState('');
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    const [isDragActive, setIsDragActive] = useState(false);
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
+    const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            setSelectedFile(e.target.files[0]);
+        }
+    };
+
+    const handleDrop = (e: DragEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsDragActive(false);
+        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+            setSelectedFile(e.dataTransfer.files[0]);
+        }
+    };
+
+    const handleDragActivity = (e: DragEvent<HTMLDivElement>, isActive: boolean) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsDragActive(isActive);
+    };
+
+    const handleDropzoneClick = () => {
+        fileInputRef.current?.click();
+    };
+
+    const handleNext = () => {
+        if (!activeItem) return;
+        const currentItemIndex = allItems.findIndex(item => item.type === activeItem.type && item.data.id === activeItem.data.id);
+        const hasNextItem = currentItemIndex !== -1 && currentItemIndex < allItems.length - 1;
+        if (hasNextItem) {
+            setActiveItem(allItems[currentItemIndex + 1]);
+        }
+    };
+
+    const handleSubmit = () => {
+        if (!selectedFile || !activeItem) return;
+        markItemAsCompleted(`${activeItem.type}-${activeItem.data.id}`);
+        handleNext();
+    };
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%', mt: 4 }}>
-      <Box sx={{ width: '90%' }}>
+    <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+      <Box sx={{ width: '100%' }}>
         <Box sx={{ color: '#e0e0e0' }}>
 
-        <Box sx={{ mb: 3 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                <Typography sx={{ flexGrow: 1, color: '#b3b3b3' }}>Progresso: 0%</Typography> {/* Placeholder */}
-            </Box>
-            <LinearProgress variant="determinate" value={0} sx={{ height: 8, borderRadius: 4 }} /> {/* Placeholder */}
-        </Box>
+          <Typography variant="h4">Etapa: Desafio de Produção - Arquivo</Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', my: 1 }}>
+            <Typography sx={{ flexGrow: 1, color: '#b3b3b3' }}>Progresso: {Math.round(positionalProgressPercentage)}%</Typography>
+          </Box>
+          <LinearProgress variant="determinate" value={positionalProgressPercentage} sx={{ height: 8, borderRadius: 4, mb: 3 }} />
 
-          <Typography variant="h4" sx={{ mb: 3 }}>Etapa: Desafio de Produção - Arquivo</Typography>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+            <Typography variant="body1" sx={{ color: '#b3b3b3' }}>
+              {data.instrucaoDesafio}
+            </Typography>
+          </Box>
 
           {embedUrl && (
-            <Box sx={{ display: 'flex', justifyContent: 'center', mb: 1 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', mb: 3 }}>
               <Box sx={{
                 position: 'relative',
-                paddingTop: '35%', // Adjusting aspect ratio for a different video size
+                paddingTop: '28.125%', 
                 borderRadius: '14px',
                 overflow: 'hidden',
-                width: '65%',
+                width: '50%',
                 maxWidth: 700,
                 border: '1px solid #282828',
                 boxShadow: '0 8px 24px rgba(0,0,0,0.5)'
@@ -92,27 +140,51 @@ export default function ProductionArquivoContent({ data }: ProductionArquivoCont
             </Box>
           )}
 
-          <Paper sx={{ bgcolor: '#1a1a1a', p: 3, borderRadius: 3, mb: 1 }}>
-            <Typography variant="h5" sx={{ mb: 1 }}>Seu Desafio</Typography> {/* Could be dynamic from instrucaoDesafio if it needs a separate title */}
-            <Typography variant="body1" sx={{ color: '#b3b3b3' }}>
-              {data.instrucaoDesafio}
-            </Typography>
-          </Paper>
-
           <Box sx={{ mb: 1 }}>
-            <Dropzone>
-              <UploadFileIcon sx={{ fontSize: 64, color: '#b3b3b3' }} />
-              <Typography variant="h6" sx={{ color: '#e0e0e0', mt: 2 }}>
-                Arraste e solte seu arquivo aqui
-              </Typography>
-              <Typography variant="body1" sx={{ color: '#b3b3b3' }}>
-                ou <Button component="span" sx={{ color: '#007aff', textTransform: 'none' }}>clique para procurar</Button>
-              </Typography>
-              {arquivoData.acceptedFormats && arquivoData.acceptedFormats.length > 0 && (
-                <Typography variant="caption" sx={{ color: '#b3b3b3', mt: 2 }}>
-                  Formatos aceitos: {arquivoData.acceptedFormats.join(', ').toUpperCase()}
-                </Typography>
-              )}
+            <input 
+                type="file" 
+                ref={fileInputRef} 
+                onChange={handleFileChange} 
+                style={{ display: 'none' }} 
+                accept={arquivoData.acceptedFormats?.map(f => `.${f.toLowerCase()}`).join(',')}
+            />
+            <Dropzone
+                isDragActive={isDragActive}
+                onClick={handleDropzoneClick}
+                onDrop={handleDrop}
+                onDragOver={(e) => handleDragActivity(e, true)}
+                onDragEnter={(e) => handleDragActivity(e, true)}
+                onDragLeave={(e) => handleDragActivity(e, false)}
+            >
+                {selectedFile ? (
+                    <>
+                        <InsertDriveFileIcon sx={{ fontSize: 64, color: '#007aff' }} />
+                        <Typography variant="h6" sx={{ color: '#e0e0e0', mt: 2 }}>
+                            {selectedFile.name}
+                        </Typography>
+                        <Typography variant="body2" sx={{ color: '#b3b3b3' }}>
+                            ({(selectedFile.size / 1024).toFixed(2)} KB)
+                        </Typography>
+                        <Button component="span" sx={{ color: '#007aff', textTransform: 'none', mt:1 }}>
+                            Clique para trocar
+                        </Button>
+                    </>
+                ) : (
+                    <>
+                        <UploadFileIcon sx={{ fontSize: 64, color: '#b3b3b3' }} />
+                        <Typography variant="h6" sx={{ color: '#e0e0e0', mt: 2 }}>
+                            Arraste e solte seu arquivo aqui
+                        </Typography>
+                        <Typography variant="body1" sx={{ color: '#b3b3b3' }}>
+                            ou <Button component="span" sx={{ color: '#007aff', textTransform: 'none' }}>clique para procurar</Button>
+                        </Typography>
+                    </>
+                )}
+                 {arquivoData.acceptedFormats && arquivoData.acceptedFormats.length > 0 && !selectedFile && (
+                    <Typography variant="caption" sx={{ color: '#b3b3b3', mt: 2 }}>
+                    Formatos aceitos: {arquivoData.acceptedFormats.join(', ').toUpperCase()}
+                    </Typography>
+                )}
             </Dropzone>
           </Box>
 
@@ -137,8 +209,14 @@ export default function ProductionArquivoContent({ data }: ProductionArquivoCont
           </Box>
 
           <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <Button variant="contained" size="large" sx={{ textTransform: 'none', borderRadius: 3, opacity: 0.5 }}>
-              Enviar Desafio
+            <Button 
+                variant="contained" 
+                size="large" 
+                sx={{ textTransform: 'none', borderRadius: 3 }} 
+                onClick={handleSubmit}
+                disabled={!selectedFile}
+            >
+              {isLast ? 'Enviar Desafio e concluir módulo' : 'Enviar Desafio'}
             </Button>
           </Box>
         </Box>
