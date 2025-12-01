@@ -13,7 +13,7 @@ export default function SideBar() {
   const getItemText = (item: (typeof allItems)[number]) => {
     switch(item.type) {
       case 'presentation':
-        return `Apresentação: ${item.data.tipoRecurso}`;
+        return `Apresentação: ${item.data.tipoRecurso.charAt(0).toUpperCase() + item.data.tipoRecurso.slice(1).toLowerCase()}`;
       case 'practice':
         switch (item.data.tipoAtividade) {
           case 'MULTIPLA_ESCOLHA':

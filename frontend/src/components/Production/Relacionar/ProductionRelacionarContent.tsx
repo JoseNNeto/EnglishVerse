@@ -185,7 +185,7 @@ export default function ProductionRelacionarContent({ data }: ProductionRelacion
                         </Paper>
 
                         <Grid container spacing={4}>
-                            <Grid item xs={6}>
+                            < Grid size={{ xs:6 }}>
                                 <Typography variant="h6" sx={{mb: 2}}>Personagens</Typography>
                                 {(relacionarData.characters || []).map((char: Character) => (
                                     <DroppableCharacter
@@ -196,7 +196,7 @@ export default function ProductionRelacionarContent({ data }: ProductionRelacion
                                     />
                                 ))}
                             </Grid>
-                            <Grid item xs={6}>
+                            <Grid size={{ xs:6 }}>
                                 <DroppableColumn id="unassigned" title="Falas" items={containers.unassigned || []} />
                             </Grid>
                         </Grid>

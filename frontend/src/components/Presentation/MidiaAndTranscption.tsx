@@ -97,25 +97,34 @@ export default function MidiaAndTranscption() {
                 Etapa: Apresentação
             </Typography>
             <Typography variant="body1" sx={{ color: '#b3b3b3', mb: 3 }}>
-                Recurso: {presentationData.tipoRecurso}
+                Recurso: {presentationData.tipoRecurso
+                    ? presentationData.tipoRecurso.charAt(0).toUpperCase() + presentationData.tipoRecurso.slice(1).toLowerCase()
+                    : ''
+                }
             </Typography>
             
-            <MediaViewer recurso={presentationData} />
+            <Box sx={{ display: 'flex', gap: 2, flexDirection: { xs: 'column', md: 'row' } }}>
+                <Box sx={{ flex: 1 }}>
+                    <MediaViewer recurso={presentationData} />
+                </Box>
 
-            {presentationData.transcricao && (
-                <>
+                <Box sx={{ flex: 1, minWidth: 0 }}> {/* minWidth 0 for flex item to shrink */}
                     <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                         <Tabs value={value} onChange={handleChange} aria-label="transcription tabs">
                             <Tab label="Transcrição" sx={{color: value === 0 ? '#007aff' : '#b3b3b3', textTransform: 'none', fontSize: '16px'}}/>
                         </Tabs>
                     </Box>
                     <TabPanel value={value} index={0}>
-                        <Paper sx={{p: 3, backgroundColor: '#1a1a1a', color: 'white', borderRadius: '14px'}}>
-                            {presentationData.transcricao}
-                        </Paper>
+                        {presentationData.transcricao ? (
+                            <Paper sx={{p: 3, backgroundColor: '#1a1a1a', color: 'white', borderRadius: '14px', maxHeight: '500px', overflowY: 'auto' }}>
+                                {presentationData.transcricao}
+                            </Paper>
+                        ) : (
+                            <Typography sx={{color: '#b3b3b3', p: 3}}>Nenhuma transcrição disponível para este recurso.</Typography>
+                        )}
                     </TabPanel>
-                </>
-            )}
+                </Box>
+            </Box>
         </Box>
     );
 }

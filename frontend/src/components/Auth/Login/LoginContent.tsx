@@ -158,11 +158,11 @@ export default function LoginContent() {
                     }}
                 />
 
-                <Box sx={{ textAlign: 'right', mb: 3 }}>
+                {/* <Box sx={{ textAlign: 'right', mb: 3 }}>
                     <Link href="#" onClick={handleForgotPassword} sx={{ color: '#007aff', textDecoration: 'none' }}>
                         Esqueceu sua senha?
                     </Link>
-                </Box>
+                </Box> */}
 
                 <Button
                     type="submit"

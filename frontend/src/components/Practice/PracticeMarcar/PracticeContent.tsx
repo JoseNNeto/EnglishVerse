@@ -35,7 +35,7 @@ export default function PracticeMarcarContent({ data }: PracticeMarcarContentPro
 
       <Grid container spacing={2} paddingX={2}>
         {marcarData.opcoes && marcarData.opcoes.map((option, index) => (
-            <Grid item xs={6} key={index}>
+            <Grid size={{ xs:6 }} key={index}>
                 <Button
                     variant="outlined"
                     fullWidth
