@@ -1,10 +1,10 @@
-import { Box, Typography, LinearProgress, Button, Paper, Chip } from '@mui/material';
+import { Box, Typography, LinearProgress, Button, Paper, Chip, CircularProgress } from '@mui/material';
 import LightbulbOutlinedIcon from '@mui/icons-material/LightbulbOutlined';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
-// import PlayArrowIcon from '@mui/icons-material/PlayArrow'; // Not used
 import { useState } from 'react';
+import { useModule } from '../../../contexts/ModuleContext';
+import api from '../../../services/api';
 
-// This component receives the practice data as a prop
 interface PracticeSelecionarContentProps {
     data: {
         id: number;
@@ -13,8 +13,8 @@ interface PracticeSelecionarContentProps {
     };
 }
 
-// Assuming data structure for PracticeSelecionarContent
 interface SelecaoData {
+    palavras_corretas: string[];
     video_url: string;
     texto_base: string;
 }
@@ -36,7 +36,10 @@ const getYouTubeEmbedUrl = (url: string) => {
 };
 
 export default function PracticeSelecionarContent({ data }: PracticeSelecionarContentProps) {
+    const { positionalProgressPercentage, activeItem, allItems, setActiveItem, markItemAsCompleted } = useModule();
     const [selectedWords, setSelectedWords] = useState<string[]>([]);
+    const [verificationStatus, setVerificationStatus] = useState<'idle' | 'correct' | 'incorrect' | 'loading'>('idle');
+    const [feedbackMessage, setFeedbackMessage] = useState('');
 
     const selecaoData = data.dadosAtividade as SelecaoData;
     const lyrics = selecaoData.texto_base || '';
@@ -44,6 +47,7 @@ export default function PracticeSelecionarContent({ data }: PracticeSelecionarCo
     const embedUrl = getYouTubeEmbedUrl(selecaoData.video_url || '');
 
     const handleWordClick = (word: string, index: number) => {
+        if (verificationStatus === 'correct') return;
         const wordIdentifier = `${word}-${index}`;
         if (selectedWords.includes(wordIdentifier)) {
             setSelectedWords(selectedWords.filter(w => w !== wordIdentifier));
@@ -52,58 +56,73 @@ export default function PracticeSelecionarContent({ data }: PracticeSelecionarCo
         }
     };
 
+    const handleNext = () => {
+        if (!activeItem) return;
+        const currentItemIndex = allItems.findIndex(item => item.type === activeItem.type && item.data.id === activeItem.data.id);
+        const hasNextItem = currentItemIndex !== -1 && currentItemIndex < allItems.length - 1;
+        if (hasNextItem) {
+            setActiveItem(allItems[currentItemIndex + 1]);
+        }
+    };
+
+    const handleVerify = () => {
+        if (selectedWords.length === 0 || !activeItem) return;
+
+        const userAnswers = selectedWords.map(w => w.split('-')[0]).sort();
+        const correctAnswers = [...(selecaoData.palavras_corretas || [])].sort();
+        const isCorrect = JSON.stringify(userAnswers) === JSON.stringify(correctAnswers);
+
+        const respostaPayload = {
+            atividade: { id: data.id },
+            resposta: { "palavras_selecionadas": userAnswers },
+            estaCorreta: isCorrect
+        };
+        api.post('/api/practice-respostas', respostaPayload).catch(error => {
+            console.error("Failed to save practice attempt:", error);
+        });
+
+        setVerificationStatus('loading');
+        setTimeout(() => {
+            if (isCorrect) {
+                setVerificationStatus('correct');
+                setFeedbackMessage('Correto!');
+                markItemAsCompleted(`${activeItem.type}-${activeItem.data.id}`);
+                setTimeout(() => {
+                    handleNext();
+                }, 2000);
+            } else {
+                setVerificationStatus('incorrect');
+                setFeedbackMessage('Incorreto, tente novamente.');
+            }
+        }, 500);
+    };
+
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%', mt: 4 }}>
-      <Box sx={{ width: '90%' }}>
+    <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+      <Box sx={{ width: '100%' }}>
         <Box sx={{ color: '#e0e0e0' }}>
-          <Typography variant="h6">Etapa: Prática - Seleção</Typography>
+          <Typography variant="h4">Etapa: Prática - Seleção</Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', my: 1 }}>
-            <Typography sx={{ flexGrow: 1, color: '#b3b3b3' }}>Progresso: 0%</Typography> {/* Placeholder */}
+            <Typography sx={{ flexGrow: 1, color: '#b3b3b3' }}>Progresso: {Math.round(positionalProgressPercentage)}%</Typography>
           </Box>
-          <LinearProgress variant="determinate" value={0} sx={{ height: 8, borderRadius: 4, mb: 3 }} /> {/* Placeholder */}
+          <LinearProgress variant="determinate" value={positionalProgressPercentage} sx={{ height: 8, borderRadius: 4, mb: 3 }} />
 
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
             <Typography variant="body1" sx={{ color: '#b3b3b3' }}>
                 {data.instrucao}
             </Typography>
-            <Button
-              startIcon={<LightbulbOutlinedIcon />}
-              sx={{ color: '#007aff', textTransform: 'none', bgcolor: '#1a1a1a', borderRadius: 3, p: '8px 16px' }}
-            >
-              Dica
-            </Button>
           </Box>
 
-          <Box sx={{ display: 'flex', flexDirection: 'row', gap: 3, mb: 3, alignItems: 'flex-start' }}>
+          <Box sx={{ display: 'flex', flexDirection: 'row', gap: 3, mb: 3 }}>
             <Box sx={{ flex: 1, position: 'relative' }}>
-              {embedUrl ? (
-                <Box sx={{
-                    position: 'relative',
-                    paddingTop: '56.25%', // 16:9 Aspect Ratio
-                    borderRadius: '14px',
-                    overflow: 'hidden',
-                    border: '1px solid #282828',
-                    boxShadow: '0 8px 24px rgba(0,0,0,0.5)'
-                }}>
-                    <iframe
-                        width="100%"
-                        height="100%"
-                        src={embedUrl}
-                        title="YouTube video player"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        referrerPolicy="strict-origin-when-cross-origin"
-                        allowFullScreen
-                        style={{ position: 'absolute', top: 0, left: 0 }}
-                    ></iframe>
-                </Box>
-              ) : (
-                <Box sx={{ position: 'relative', paddingTop: '56.25%', borderRadius: '14px', overflow: 'hidden', mb: 3, display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: '#282828', color: '#b3b3b3' }}>
-                    <Typography>Vídeo não disponível</Typography>
+              {embedUrl && (
+                <Box sx={{ position: 'relative', paddingTop: '56.25%', borderRadius: '14px', overflow: 'hidden', border: '1px solid #282828', boxShadow: '0 8px 24px rgba(0,0,0,0.5)' }}>
+                    <iframe width="100%" height="100%" src={embedUrl} title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen style={{ position: 'absolute', top: 0, left: 0 }}></iframe>
                 </Box>
               )}
             </Box>
 
-            <Paper sx={{ flex: 2, bgcolor: '#1a1a1a', p: 3, borderRadius: 3 }}>
+            <Paper sx={{ flex: 2, bgcolor: '#1a1a1a', p: 3, borderRadius: 3, maxHeight: '500px', overflowY: 'auto' }}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
                   <MusicNoteIcon sx={{ color: '#e0e0e0' }} />
                   <Typography variant="h6" sx={{ color: '#e0e0e0' }}>Letra</Typography>
@@ -116,6 +135,7 @@ export default function PracticeSelecionarContent({ data }: PracticeSelecionarCo
                               key={`${word}-${index}`}
                               label={word}
                               onClick={() => handleWordClick(word, index)}
+                              disabled={verificationStatus === 'correct'}
                               sx={{
                                   backgroundColor: selectedWords.includes(`${word}-${index}`) ? '#007aff' : '#282828',
                                   color: 'white',
@@ -123,9 +143,7 @@ export default function PracticeSelecionarContent({ data }: PracticeSelecionarCo
                                   p: '16px 8px',
                                   height: 'auto',
                                   borderRadius: '10px',
-                                  '& .MuiChip-label': {
-                                      p: '0'
-                                  }
+                                  '& .MuiChip-label': { p: '0' }
                               }}
                           />
                       ))
@@ -141,11 +159,22 @@ export default function PracticeSelecionarContent({ data }: PracticeSelecionarCo
             </Paper>
           </Box>
 
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, pt: 2 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 2, pt: 2, minHeight: '48px' }}>
+            {verificationStatus !== 'idle' && verificationStatus !== 'loading' && (
+                <Typography sx={{ color: verificationStatus === 'correct' ? 'lightgreen' : 'red' }}>
+                    {feedbackMessage}
+                </Typography>
+            )}
+            {verificationStatus === 'loading' && <CircularProgress size={24} />}
             <Button sx={{ color: '#b3b3b3', textTransform: 'none', borderRadius: 3, p: '10px 24px' }}>
               Pular Pergunta
             </Button>
-            <Button variant="contained" sx={{ bgcolor: '#007aff', color: 'white', textTransform: 'none', borderRadius: 3, p: '10px 32px', opacity: 0.5 }}>
+            <Button 
+                variant="contained" 
+                sx={{ bgcolor: '#007aff', color: 'white', textTransform: 'none', borderRadius: 3, p: '10px 32px' }}
+                onClick={handleVerify}
+                disabled={selectedWords.length === 0 || verificationStatus === 'correct' || verificationStatus === 'loading'}
+            >
               Verificar Resposta
             </Button>
           </Box>

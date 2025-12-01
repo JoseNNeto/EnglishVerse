@@ -1,4 +1,5 @@
-import { Box, Typography, Tabs, Tab, Paper, CircularProgress } from '@mui/material';
+
+import { Box, Typography, Tabs, Tab, Paper, CircularProgress, LinearProgress } from '@mui/material';
 import { useState } from 'react';
 import { useModule } from '../../contexts/ModuleContext';
 
@@ -11,27 +12,28 @@ function TabPanel(props: { children?: React.ReactNode; index: number; value: num
         hidden={value !== index}
         id={`simple-tabpanel-${index}`}
         aria-labelledby={`simple-tab-${index}`}
+        style={{ flexGrow: 1 }}
         {...other}
       >
         {value === index && (
-          <Box sx={{ p: 3 }}>
-            <Typography component={'span'}>{children}</Typography>
+          <Box sx={{ p: 3, height: '100%' }}>
+            {children}
           </Box>
         )}
       </div>
     );
-  }
+}
 
 export default function MidiaAndTranscption() {
-    const { loading, activeItem } = useModule();
+    const { loading, activeItem, positionalProgressPercentage } = useModule();
     const [value, setValue] = useState(0);
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
       setValue(newValue);
     };
 
-    // --- Helper Functions moved inside the component ---
     const getYouTubeEmbedUrl = (url: string) => {
+        if (!url) return null;
         let videoId;
         try {
             const urlObj = new URL(url);
@@ -46,13 +48,27 @@ export default function MidiaAndTranscption() {
         return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
     };
 
+    if (loading) {
+        return <CircularProgress sx={{ display: 'block', margin: 'auto', mt: 10 }} />;
+    }
+
+    if (!activeItem) {
+        return <Typography sx={{color: 'white'}}>Nenhum item selecionado.</Typography>
+    }
+
+    if (activeItem.type !== 'presentation') {
+        return null; 
+    }
+
+    const presentationData = activeItem.data;
+
     const MediaViewer = ({ recurso }: { recurso: NonNullable<typeof presentationData> }) => {
         if (recurso.tipoRecurso === 'VIDEO') {
             const embedUrl = getYouTubeEmbedUrl(recurso.urlRecurso);
             if (!embedUrl) return <Typography color="error">URL do vídeo inválida.</Typography>
 
             return (
-                <Box sx={{ position: 'relative', paddingTop: '56.25%', borderRadius: '14px', overflow: 'hidden', mb: 3 }}>
+                <Box sx={{ position: 'relative', paddingTop: '56.25%', borderRadius: '14px', overflow: 'hidden' }}>
                     <iframe
                         width="100%"
                         height="100%"
@@ -69,53 +85,37 @@ export default function MidiaAndTranscption() {
         }
         return <Typography>Mídia do tipo '{recurso.tipoRecurso}' ainda não suportada.</Typography>
     }
-    // --- End of Helper Functions ---
-
-
-    if (loading) {
-        return <CircularProgress sx={{ display: 'block', margin: 'auto', mt: 10 }} />;
-    }
-
-    if (!activeItem) {
-        return <Typography sx={{color: 'white'}}>Nenhum item selecionado.</Typography>
-    }
-
-    if (activeItem.type !== 'presentation') {
-        return (
-            <Box sx={{ p: 4, backgroundColor: '#1a1a1a', color: 'white', borderRadius: '14px', textAlign: 'center' }}>
-                <Typography variant="h5">Conteúdo de '{activeItem.type}'</Typography>
-                <Typography>A integração para este tipo de conteúdo será feita a seguir.</Typography>
-            </Box>
-        );
-    }
-
-    const presentationData = activeItem.data;
 
     return (
         <Box>
-            <Typography variant="h4" sx={{ color: '#e0e0e0', mb: 1 }}>
+            <Typography variant="h4" sx={{ color: '#e0e0e0' }}>
                 Etapa: Apresentação
             </Typography>
-            <Typography variant="body1" sx={{ color: '#b3b3b3', mb: 3 }}>
-                Recurso: {presentationData.tipoRecurso}
-            </Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Typography sx={{ flexGrow: 1, color: '#b3b3b3' }}>Progresso: {Math.round(positionalProgressPercentage)}%</Typography>
+            </Box>
+            <LinearProgress variant="determinate" value={positionalProgressPercentage} sx={{ height: 8, borderRadius: 4, mb: 1 }} />
             
-            <MediaViewer recurso={presentationData} />
+            <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, alignItems: 'stretch' }}>
+                <Box sx={{ flex: 1 }}>
+                    <MediaViewer recurso={presentationData} />
+                </Box>
 
-            {presentationData.transcricao && (
-                <>
-                    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                        <Tabs value={value} onChange={handleChange} aria-label="transcription tabs">
-                            <Tab label="Transcrição" sx={{color: value === 0 ? '#007aff' : '#b3b3b3', textTransform: 'none', fontSize: '16px'}}/>
-                        </Tabs>
+                {presentationData.transcricao && (
+                    <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+                        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                            <Tabs value={value} onChange={handleChange} aria-label="transcription tabs">
+                                <Tab label="Transcrição" sx={{color: value === 0 ? '#007aff' : '#b3b3b3', textTransform: 'none', fontSize: '16px'}}/>
+                            </Tabs>
+                        </Box>
+                        <TabPanel value={value} index={0}>
+                            <Paper sx={{p: 3, backgroundColor: '#1a1a1a', color: 'white', borderRadius: '14px', height: '100%', overflowY: 'auto'}}>
+                                {presentationData.transcricao}
+                            </Paper>
+                        </TabPanel>
                     </Box>
-                    <TabPanel value={value} index={0}>
-                        <Paper sx={{p: 3, backgroundColor: '#1a1a1a', color: 'white', borderRadius: '14px'}}>
-                            {presentationData.transcricao}
-                        </Paper>
-                    </TabPanel>
-                </>
-            )}
+                )}
+            </Box>
         </Box>
     );
 }

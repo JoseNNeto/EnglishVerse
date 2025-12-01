@@ -1,4 +1,3 @@
-
 import { Box, Typography, TextField, Button, Link, IconButton, CircularProgress, Alert } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
@@ -16,6 +15,7 @@ export default function SignupContent() {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
+    const [passwordError, setPasswordError] = useState('');
     const [loading, setLoading] = useState(false);
 
     const navigate = useNavigate();
@@ -24,9 +24,31 @@ export default function SignupContent() {
     const handleTogglePasswordVisibility = () => setShowPassword((prev) => !prev);
     const handleToggleConfirmPasswordVisibility = () => setShowConfirmPassword((prev) => !prev);
     
+    const validatePassword = (pwd: string): string => {
+        if (pwd.length < 8) {
+            return 'A senha deve ter no mínimo 8 caracteres.';
+        }
+        if (!/[!@#$%^&*()_+{}\[\]:;<>,.?~\\-]/.test(pwd)) {
+            return 'A senha deve conter pelo menos um caractere especial.';
+        }
+        return '';
+    };
+
+    const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newPassword = e.target.value;
+        setPassword(newPassword);
+        setPasswordError(validatePassword(newPassword));
+    };
+
     const handleSignup = async (event: React.FormEvent) => {
         event.preventDefault();
         setError('');
+
+        const validationError = validatePassword(password);
+        if (validationError) {
+            setPasswordError(validationError);
+            return;
+        }
 
         if (password !== confirmPassword) {
             setError('As senhas não coincidem.');
@@ -42,9 +64,9 @@ export default function SignupContent() {
             });
             
             const { token } = response.data;
-            login(token); // Log the user in with the new token
+            login(token);
             
-            navigate('/'); // Redirect to home page
+            navigate('/');
 
         } catch (err: any) {
             if (err.response && err.response.data && err.response.data.message) {
@@ -105,21 +127,21 @@ export default function SignupContent() {
                 <Typography variant="body1" sx={{ color: '#e0e0e0', mb: 1 }}>E-mail</Typography>
                 <TextField fullWidth placeholder="seuemail@ifpe.edu.br" variant="outlined" sx={{ ...inputStyles, mb: 2 }} type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
                 
-                {/* O campo de data de nascimento foi removido da lógica pois não existe no DTO do backend */}
-
                 <Typography variant="body1" sx={{ color: '#e0e0e0', mb: 1 }}>Senha</Typography>
                 <TextField
                     fullWidth
                     type={showPassword ? 'text' : 'password'}
-                    placeholder="Mínimo 6 caracteres"
+                    placeholder="Mínimo 8 caracteres, 1 especial"
                     variant="outlined"
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={handlePasswordChange}
+                    error={!!passwordError}
+                    helperText={passwordError}
                     required
                     InputProps={{
                         endAdornment: (
                             <IconButton onClick={handleTogglePasswordVisibility} edge="end">
-                                {showPassword ? <VisibilityIcon sx={{ color: '#b3b3b3' }} /> : <VisibilityOffIcon sx={{ color: '#b3b3b3' }} />}
+                                {showPassword ? <VisibilityIcon sx={{ color: '#b3b3b3' }} /> : <VisibilityOffIcon sx={{ color: '#b33' }} />}
                             </IconButton>
                         ),
                     }}
@@ -149,7 +171,7 @@ export default function SignupContent() {
                     type="submit"
                     fullWidth
                     variant="contained"
-                    disabled={loading}
+                    disabled={loading || !!passwordError || !nome || !email || !password || !confirmPassword}
                     sx={{ bgcolor: '#007aff', color: 'white', py: 1.5, borderRadius: '14px', textTransform: 'uppercase', fontSize: '1rem', mb: 3 }}
                 >
                     {loading ? <CircularProgress size={24} color="inherit" /> : 'Criar conta'}

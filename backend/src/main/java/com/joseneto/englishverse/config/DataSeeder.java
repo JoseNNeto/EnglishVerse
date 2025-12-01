@@ -1,5 +1,7 @@
 package com.joseneto.englishverse.config;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -119,8 +121,9 @@ public class DataSeeder implements CommandLineRunner {
 
                     // 4. Atividade de Listar Palavras
                     Map<String, Object> dadosP4 = new HashMap<>();
-                    dadosP4.put("imageUrl", "https://i.ytimg.com/vi/i2mTGBRVRr0/hqdefault.jpg"); // Thumbnail from the original video
+                    dadosP4.put("video_url", "https://youtu.be/i2mTGBRVRr0?si=KFRXRQ8IZv1xESsy"); // Thumbnail from the original video
                     dadosP4.put("numberOfInputs", 3);
+                    dadosP4.put("palavras_esperadas", List.of("I", "You", "He", "She", "It", "We", "They")); // Pronomes esperados
                     criarPractice(modPronouns, TipoAtividade.LISTA_PALAVRAS, "Observe a imagem e liste 3 pronomes que você pode inferir da cena.", dadosP4);
 
                     // 5. Fast Car (Tracy Chapman) -> Preencher Lacunas
@@ -140,7 +143,7 @@ public class DataSeeder implements CommandLineRunner {
                     dadosProd1.put("link_externo", "https://imgflip.com/memegenerator");
                     dadosProd1.put("formatos_aceitos", List.of("png", "jpg", "jpeg"));
                     criarProduction(modPronouns, TipoDesafio.FOTO_E_TEXTO, 
-                        "Crie um meme usando pelo menos um pronome (I, You, He...). Use o site sugerido e faça o upload da imagem aqui.", 
+                        "Crie um meme usando pelo menos um pronome (I, You, He...). Use o site sugerido (https://imgflip.com/memegenerator) e faça o upload da imagem aqui.", 
                         null, dadosProd1);
 
                     // 2. Vídeo Pergunta (Qual o único pronome?)
@@ -149,6 +152,139 @@ public class DataSeeder implements CommandLineRunner {
                     criarProduction(modPronouns, TipoDesafio.TEXTO_LONGO, 
                         "Assista ao vídeo e responda: Qual é o único Pronome Pessoal Sujeito mencionado neste trecho?", 
                         "https://www.youtube.com/watch?v=DE8qVfNW5B0", dadosProd2);
+
+
+                    // 3. AUDIO (Ouvir e Escrever - Forrest Gump)
+                    Map<String, Object> dadosOuvirTexto = new HashMap<>();
+                    
+                    List<Object> textParts = new ArrayList<>();
+                    textParts.add(Map.of(
+                        "label", "De acordo com Forrest Gump, com o que a vida se parece?",
+                        "placeholder", "Digite sua resposta aqui..."
+                    ));
+                    textParts.add(Map.of(
+                        "label", "Qual a implicação dessa comparação em relação ao que você vai receber?",
+                        "placeholder", "Digite sua resposta aqui..."
+                    ));
+                    textParts.add(Map.of(
+                        "label", "Qual a frase famosa que Forrest Gump diz sobre a vida e chocolates?",
+                        "placeholder", "Digite sua resposta aqui..."
+                    ));
+
+                    dadosOuvirTexto.put("title", "Forrest Gump - Caixa de Chocolates");
+                    dadosOuvirTexto.put("subtitle", "Ouça o áudio e responda às perguntas.");
+                    dadosOuvirTexto.put("textParts", textParts);
+                    
+                    criarProduction(modPronouns, TipoDesafio.AUDIO, 
+                        "Ouça o áudio do filme 'Forrest Gump' e responda às perguntas com base no que você ouviu.", 
+                        "https://youtu.be/vdtqSaJO-iM?si=2I5_R3C_8qREitij", 
+                        dadosOuvirTexto);
+            
+                    // 4. UPLOAD_ARQUIVO
+                    Map<String, Object> dadosProdUpload = new HashMap<>();
+                    dadosProdUpload.put("formatos_aceitos", List.of("pdf", "docx", "txt"));
+                    
+                    criarProduction(modPronouns, TipoDesafio.UPLOAD_ARQUIVO, 
+                        "Escreva um pequeno parágrafo (em arquivo de texto ou PDF) descrevendo sua rotina diária. Use pelo menos 4 pronomes pessoais diferentes. Faça o upload do arquivo aqui.", 
+                        null, dadosProdUpload);
+            
+            
+                    // 5. RELACIONAR_COLUNAS
+                    Map<String, Object> dadosProdRelacionar = new HashMap<>();
+                    
+                    List<Map<String, String>> charactersList = new ArrayList<>();
+                    charactersList.add(Map.of("id", "a1", "name", "Um grupo de pessoas (incluindo você)"));
+                    charactersList.add(Map.of("id", "a2", "name", "Um homem"));
+                    charactersList.add(Map.of("id", "a3", "name", "Uma coisa ou animal"));
+                    charactersList.add(Map.of("id", "a4", "name", "Um grupo de pessoas (sem você)"));
+                    
+                    List<Map<String, String>> quotesList = new ArrayList<>();
+                    quotesList.add(Map.of("id", "b1", "text", "He"));
+                    quotesList.add(Map.of("id", "b2", "text", "It"));
+                    quotesList.add(Map.of("id", "b3", "text", "We"));
+                    quotesList.add(Map.of("id", "b4", "text", "They"));
+            
+                    Map<String, String> gabaritoRelacionar = new HashMap<>();
+                    gabaritoRelacionar.put("a1", "b3");
+                    gabaritoRelacionar.put("a2", "b1");
+                    gabaritoRelacionar.put("a3", "b2");
+                    gabaritoRelacionar.put("a4", "b4");
+            
+                    dadosProdRelacionar.put("characters", charactersList);
+                    dadosProdRelacionar.put("quotes", quotesList);
+                    dadosProdRelacionar.put("gabarito", gabaritoRelacionar);
+            
+                    criarProduction(modPronouns, TipoDesafio.RELACIONAR_COLUNAS, 
+                        "Relacione a descrição ao pronome pessoal correto.", 
+                        null, dadosProdRelacionar);
+            
+            
+                    // 6. SUBSTITUIR_PALAVRAS (I Will Always Love You)
+                    String textoBaseSubstituir = "Bittersweet memories\nThat is all I'm taking with me\nSo goodbye, please don't cry\nWe both know I'm not what you, you need\nAnd I will always love you\nI will always love you";
+                    
+                    List<Map<String, Object>> alvosSubstituir = new ArrayList<>();
+                    alvosSubstituir.add(Map.of(
+                        "palavra", "memories",
+                        "opcoes", List.of("recollections", "pasts", "souvenirs"),
+                        "correta", "recollections"
+                    ));
+                    alvosSubstituir.add(Map.of(
+                        "palavra", "goodbye",
+                        "opcoes", List.of("hello", "farewell", "done"),
+                        "correta", "farewell"
+                    ));
+                    alvosSubstituir.add(Map.of(
+                        "palavra", "love",
+                        "opcoes", List.of("like", "adore", "hate"),
+                        "correta", "adore"
+                    ));
+
+                    List<Map<String, Object>> initialTextParts = new ArrayList<>();
+                    Map<String, List<String>> synonymsMap = new HashMap<>();
+                    Map<String, String> correctAnswersMap = new HashMap<>();
+
+                    String remainingText = textoBaseSubstituir;
+                    int wordIndex = 0;
+
+                    alvosSubstituir.sort(Comparator.comparingInt(alvo -> textoBaseSubstituir.indexOf((String)alvo.get("palavra"))));
+
+                    for (Map<String, Object> alvo : alvosSubstituir) {
+                        String palavraAlvo = (String) alvo.get("palavra");
+                        @SuppressWarnings("unchecked")
+                        List<String> opcoes = (List<String>) alvo.get("opcoes");
+                        String correta = (String) alvo.get("correta");
+
+                        int index = remainingText.indexOf(palavraAlvo);
+                        if (index != -1) {
+                            if (index > 0) {
+                                initialTextParts.add(Map.of("type", "text", "content", remainingText.substring(0, index)));
+                            }
+
+                            String wordId = "word_" + wordIndex++;
+                            initialTextParts.add(Map.of("type", "word", "id", wordId, "content", palavraAlvo));
+                            synonymsMap.put(wordId, opcoes);
+                            correctAnswersMap.put(wordId, correta);
+
+                            remainingText = remainingText.substring(index + palavraAlvo.length());
+                        }
+                    }
+                    if (!remainingText.isEmpty()) {
+                        initialTextParts.add(Map.of("type", "text", "content", remainingText));
+                    }
+
+                    Map<String, Object> dadosProdSubstituir = new HashMap<>();
+                    dadosProdSubstituir.put("initialText", initialTextParts);
+                    dadosProdSubstituir.put("synonyms", synonymsMap);
+                    dadosProdSubstituir.put("correctAnswers", correctAnswersMap);
+                    dadosProdSubstituir.put("songTitle", "I Will Always Love You");
+                    dadosProdSubstituir.put("artistName", "Whitney Houston");
+
+                    criarProduction(modPronouns, TipoDesafio.SUBSTITUIR_PALAVRAS, 
+                        "Ouça a música e clique nas palavras destacadas para escolher a que melhor se encaixa no contexto da letra.", 
+                        "https://youtu.be/3JWTaaS7LdU?si=199N19lM0xdtyikD", 
+                        dadosProdSubstituir);
+            
+
 
                     System.out.println(">>> Módulo 'Subject Pronouns' criado com sucesso!");
                 }

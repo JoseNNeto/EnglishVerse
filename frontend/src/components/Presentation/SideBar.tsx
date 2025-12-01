@@ -6,14 +6,16 @@ import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
 import { useModule } from '../../contexts/ModuleContext';
 import { Link } from 'react-router-dom';
 
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+
 export default function SideBar() {
-  const { loading, modulo, allItems, activeItem, setActiveItem } = useModule();
+  const { loading, modulo, allItems, activeItem, setActiveItem, completedItems } = useModule();
 
   // Moved helper functions inside the component
   const getItemText = (item: (typeof allItems)[number]) => {
     switch(item.type) {
       case 'presentation':
-        return `Apresentação: ${item.data.tipoRecurso}`;
+        return `Apresentação: ${item.data.tipoRecurso.charAt(0).toUpperCase() + item.data.tipoRecurso.slice(1).toLowerCase()}`;
       case 'practice':
         switch (item.data.tipoAtividade) {
           case 'MULTIPLA_ESCOLHA':
@@ -87,8 +89,10 @@ export default function SideBar() {
       ) : (
         <List sx={{overflowY: 'auto'}}>
           {allItems.map((item, index) => {
+            const itemKey = `${item.type}-${item.data.id}`;
+            const isCompleted = completedItems.has(itemKey);
             const isActive = activeItem?.type === item.type && activeItem?.data.id === item.data.id;
-            const color = isActive ? '#007aff' : '#b3b3b3';
+            const color = isActive ? '#007aff' : (isCompleted ? 'lightgreen' : '#b3b3b3');
 
             return (
               <ListItem 
@@ -104,6 +108,7 @@ export default function SideBar() {
                   primary={getItemText(item)} 
                   sx={{color}}
                 />
+                {isCompleted && <CheckCircleIcon sx={{ color: 'lightgreen', ml: 1 }} />}
               </ListItem>
             );
           })}
