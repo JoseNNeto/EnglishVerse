@@ -17,9 +17,7 @@ export default function Presentation() {
   return (
     <ModuleProvider moduloId={id}>
       <Box sx={{ display: 'flex' }}>
-        <Box sx={{ position: 'sticky', top: 0, alignSelf: 'flex-start' }}>
-          <SideBar />
-        </Box>
+        <SideBar />
         <Box sx={{ flexGrow: 1, p: 3, display: 'flex', flexDirection: 'column', gap: 3 }}>
           <ModuleItemViewer />
           <Descrition />

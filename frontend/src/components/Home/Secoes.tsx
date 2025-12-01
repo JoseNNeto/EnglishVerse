@@ -1,9 +1,8 @@
 import { Box, Card, CardActionArea, CardMedia, CardContent, Typography, Grid } from '@mui/material';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import api from '../../services/api';
-import { useAuth } from '../../contexts/AuthContext';
 
 // Interfaces based on backend models
 interface Modulo {
@@ -23,78 +22,59 @@ interface Section {
   topics: Modulo[]; // 'topics' here refers to modules, as per component structure
 }
 
-const TopicCard = ({ topic }: { topic: Modulo }) => {
-  const { user } = useAuth();
-  const navigate = useNavigate();
-
-  const handleModuleClick = async () => {
-    if (user) {
-      const requestUrl = `/progresso/iniciar?alunoId=${user.id}&moduloId=${topic.id}`;
-      console.log("Iniciando requisição POST para (URL completa será /api" + requestUrl + "):", requestUrl);
-      try {
-        const response = await api.post(requestUrl);
-        console.log(`Requisição POST para ${requestUrl} bem-sucedida. Resposta:`, response.data);
-      } catch (error) {
-        console.error(`Requisição POST para ${requestUrl} falhou. Erro:`, error);
+const TopicCard = ({ topic }: { topic: Modulo }) => (
+  <Grid size={{ xs: 12, sm: 6, md: 2.4 }}>
+    <Card sx={{ 
+      backgroundColor: '#1a1a1a', 
+      color: 'white', 
+      boxShadow: '0 4px 8px rgba(0,0,0,0.3)', 
+      borderRadius: '14px',
+      transition: 'transform 0.3s, box-shadow 0.3s',
+      height: '350px', // Fixed height for the card
+      display: 'flex',
+      flexDirection: 'column',
+      '&:hover': {
+        transform: 'scale(1.05)',
+        boxShadow: '0 8px 16px rgba(0,0,0,0.5)',
       }
-    }
-    navigate(`/presentation/${topic.id}`);
-  };
-
-  return (
-    <Grid size={{ xs: 12, sm: 6, md: 4, lg: 2.4 }}>
-      <Card sx={{ 
-        backgroundColor: '#1a1a1a', 
-        color: 'white', 
-        boxShadow: '0 4px 8px rgba(0,0,0,0.3)', 
-        borderRadius: '14px',
-        transition: 'transform 0.3s, box-shadow 0.3s',
-        height: '350px', // Fixed height for the card
-        display: 'flex',
-        flexDirection: 'column',
-        '&:hover': {
-          transform: 'scale(1.05)',
-          boxShadow: '0 8px 16px rgba(0,0,0,0.5)',
-        }
-      }}>
-        <CardActionArea onClick={handleModuleClick} sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-          <CardMedia
-            component="img"
-            height="270"
-            image={topic.imagemCapaUrl || 'https://via.placeholder.com/400x270'} // Fallback image
-            alt={topic.titulo}
-            sx={{ borderRadius: '14px 14px 0 0', position: 'relative', flexShrink: 0 }}
-          >
-          </CardMedia>
-          <Box
-            sx={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '270px',
-              backgroundColor: 'rgba(0,0,0,0.6)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              opacity: 0,
-              transition: 'opacity 0.3s',
-              '&:hover': {
-                opacity: 1,
-              },
-              borderRadius: '14px 14px 0 0',
-            }}
-          >
-            <PlayArrowIcon sx={{ color: 'white', fontSize: 60, backgroundColor: '#007aff', borderRadius: '50%', padding: '8px' }} />
-          </Box>
-          <CardContent sx={{ p: '16px', flexGrow: 1, overflowY: 'auto', height: '80px' }}>
-            <Typography variant="body1">{topic.titulo}</Typography>
-          </CardContent>
-        </CardActionArea>
-      </Card>
-    </Grid>
-  );
-};
+    }}>
+      <CardActionArea component={Link} to={`/presentation/${topic.id}`} sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+        <CardMedia
+          component="img"
+          height="270"
+          image={topic.imagemCapaUrl || 'https://via.placeholder.com/400x270'} // Fallback image
+          alt={topic.titulo}
+          sx={{ borderRadius: '14px 14px 0 0', position: 'relative', flexShrink: 0 }}
+        >
+        </CardMedia>
+        <Box
+          sx={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '270px',
+            backgroundColor: 'rgba(0,0,0,0.6)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            opacity: 0,
+            transition: 'opacity 0.3s',
+            '&:hover': {
+              opacity: 1,
+            },
+            borderRadius: '14px 14px 0 0',
+          }}
+        >
+          <PlayArrowIcon sx={{ color: 'white', fontSize: 60, backgroundColor: '#007aff', borderRadius: '50%', padding: '8px' }} />
+        </Box>
+        <CardContent sx={{ p: '16px', flexGrow: 1, overflowY: 'auto', height: '80px' }}>
+          <Typography variant="body1">{topic.titulo}</Typography>
+        </CardContent>
+      </CardActionArea>
+    </Card>
+  </Grid>
+);
 
 export default function Secoes() {
   const [sections, setSections] = useState<Section[]>([]);

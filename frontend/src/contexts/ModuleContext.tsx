@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect, useContext, type ReactNode, useCallback } from 'react';
+import { createContext, useState, useEffect, useContext, ReactNode } from 'react';
 import api from '../services/api';
 
 // --- Interfaces based on backend models ---
@@ -40,7 +40,7 @@ interface ProductionChallenge {
 }
 
 // Unified type for sidebar items
-export type ModuleItem = 
+type ModuleItem = 
     | { type: 'presentation'; data: RecursoApresentacao }
     | { type: 'practice'; data: PracticeAtividade }
     | { type: 'production'; data: ProductionChallenge };
@@ -58,10 +58,6 @@ interface ModuleContextType {
     activeItem: ModuleItem | null;
     setActiveItem: (item: ModuleItem) => void;
     moduloId: string | undefined;
-    completedItems: Set<string>; // Use string for a composite key like 'practice-123'
-    markItemAsCompleted: (itemId: string) => void;
-    completionProgressPercentage: number;
-    positionalProgressPercentage: number;
 }
 
 const ModuleContext = createContext<ModuleContextType | undefined>(undefined);
@@ -81,13 +77,6 @@ export const ModuleProvider = ({ children, moduloId }: ModuleProviderProps) => {
     const [productions, setProductions] = useState<ProductionChallenge[]>([]);
     const [allItems, setAllItems] = useState<ModuleItem[]>([]);
     const [activeItem, setActiveItem] = useState<ModuleItem | null>(null);
-    const [completedItems, setCompletedItems] = useState<Set<string>>(new Set());
-
-    const markItemAsCompleted = useCallback((itemId: string) => {
-        setCompletedItems(prev => new Set(prev).add(itemId));
-        // Here you might also want to post this progress to the backend
-        // Example: api.post('/progresso', { itemId, moduloId });
-    }, []);
 
     useEffect(() => {
         const fetchModuleData = async () => {
@@ -142,13 +131,6 @@ export const ModuleProvider = ({ children, moduloId }: ModuleProviderProps) => {
         fetchModuleData();
     }, [moduloId]);
 
-    const completionProgressPercentage = allItems.length > 0 ? (completedItems.size / allItems.length) * 100 : 0;
-
-    const activeItemIndex = activeItem ? allItems.findIndex(item => item.type === activeItem.type && item.data.id === activeItem.data.id) : -1;
-    const positionalProgressPercentage = allItems.length > 0 && activeItemIndex > -1
-        ? ((activeItemIndex + 1) / allItems.length) * 100
-        : 0;
-
     const value = { 
         loading, 
         modulo,
@@ -158,11 +140,7 @@ export const ModuleProvider = ({ children, moduloId }: ModuleProviderProps) => {
         allItems,
         activeItem, 
         setActiveItem,
-        moduloId,
-        completedItems,
-        markItemAsCompleted,
-        completionProgressPercentage,
-        positionalProgressPercentage
+        moduloId
     };
 
     return <ModuleContext.Provider value={value}>{children}</ModuleContext.Provider>;

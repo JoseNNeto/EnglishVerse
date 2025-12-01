@@ -1,88 +1,69 @@
 import Chamada from '../components/Home/Chamada';
 import ContinuarAprendendo from '../components/Home/ContinuarAprendendo';
 import Secoes from '../components/Home/Secoes';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import api from '../services/api';
 import type { Modulo } from '../contexts/ModuleContext';
 import { Box, Typography, Grid, CircularProgress } from '@mui/material';
+import { Link } from 'react-router-dom';
 import { Card, CardActionArea, CardMedia, CardContent } from '@mui/material';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import { useAuth } from '../contexts/AuthContext';
 
 
 // A simple card component for displaying a module, similar to the one in Secoes.tsx
-const ModuleCard = ({ module }: { module: Modulo }) => {
-    const { user } = useAuth();
-    const navigate = useNavigate();
-
-    const handleModuleClick = async () => {
-        if (user) {
-            const requestUrl = `/progresso/iniciar?alunoId=${user.id}&moduloId=${module.id}`;
-            console.log("Iniciando requisição POST para (URL completa será /api" + requestUrl + "):", requestUrl);
-            try {
-                const response = await api.post(requestUrl);
-                console.log(`Requisição POST para ${requestUrl} bem-sucedida. Resposta:`, response.data);
-            } catch (error) {
-                console.error(`Requisição POST para ${requestUrl} falhou. Erro:`, error);
-            }
+const ModuleCard = ({ module }: { module: Modulo }) => (
+    <Grid size={{ xs:12, sm:6, md:2.4 }}>
+      <Card sx={{ 
+        backgroundColor: '#1a1a1a', 
+        color: 'white', 
+        boxShadow: '0 4px 8px rgba(0,0,0,0.3)', 
+        borderRadius: '14px',
+        transition: 'transform 0.3s, box-shadow 0.3s',
+        height: '350px',
+        display: 'flex',
+        flexDirection: 'column',
+        '&:hover': {
+          transform: 'scale(1.05)',
+          boxShadow: '0 8px 16px rgba(0,0,0,0.5)',
         }
-        navigate(`/presentation/${module.id}`);
-    };
-
-    return (
-        <Grid size={{ xs: 12, sm: 6, md: 4, lg: 2.4 }}>
-            <Card sx={{ 
-                backgroundColor: '#1a1a1a', 
-                color: 'white', 
-                boxShadow: '0 4px 8px rgba(0,0,0,0.3)', 
-                borderRadius: '14px',
-                transition: 'transform 0.3s, box-shadow 0.3s',
-                height: '350px',
-                display: 'flex',
-                flexDirection: 'column',
-                '&:hover': {
-                    transform: 'scale(1.05)',
-                    boxShadow: '0 8px 16px rgba(0,0,0,0.5)',
-                }
-            }}>
-                <CardActionArea onClick={handleModuleClick} sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-                    <CardMedia
-                        component="img"
-                        height="270"
-                        image={module.imagemCapaUrl || 'https://via.placeholder.com/400x270'}
-                        alt={module.titulo}
-                        sx={{ borderRadius: '14px 14px 0 0', position: 'relative', flexShrink: 0 }}
-                    />
-                    <Box
-                        sx={{
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
-                            width: '100%',
-                            height: '270px',
-                            backgroundColor: 'rgba(0,0,0,0.6)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            opacity: 0,
-                            transition: 'opacity 0.3s',
-                            '&:hover': {
-                                opacity: 1,
-                            },
-                            borderRadius: '14px 14px 0 0',
-                        }}
-                    >
-                        <PlayArrowIcon sx={{ color: 'white', fontSize: 60, backgroundColor: '#007aff', borderRadius: '50%', padding: '8px' }} />
-                    </Box>
-                    <CardContent sx={{ p: '16px', flexGrow: 1, overflowY: 'auto', height: '80px' }}>
-                        <Typography variant="body1">{module.titulo}</Typography>
-                    </CardContent>
-                </CardActionArea>
-            </Card>
-        </Grid>
-    );
-};
+      }}>
+        <CardActionArea component={Link} to={`/presentation/${module.id}`} sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+          <CardMedia
+            component="img"
+            height="270"
+            image={module.imagemCapaUrl || 'https://via.placeholder.com/400x270'}
+            alt={module.titulo}
+            sx={{ borderRadius: '14px 14px 0 0', position: 'relative', flexShrink: 0 }}
+          />
+          <Box
+            sx={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '270px',
+              backgroundColor: 'rgba(0,0,0,0.6)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              opacity: 0,
+              transition: 'opacity 0.3s',
+              '&:hover': {
+                opacity: 1,
+              },
+              borderRadius: '14px 14px 0 0',
+            }}
+          >
+            <PlayArrowIcon sx={{ color: 'white', fontSize: 60, backgroundColor: '#007aff', borderRadius: '50%', padding: '8px' }} />
+          </Box>
+          <CardContent sx={{ p: '16px', flexGrow: 1, overflowY: 'auto', height: '80px' }}>
+            <Typography variant="body1">{module.titulo}</Typography>
+          </CardContent>
+        </CardActionArea>
+      </Card>
+    </Grid>
+  );
 
 function Home() {
   const [searchParams] = useSearchParams();

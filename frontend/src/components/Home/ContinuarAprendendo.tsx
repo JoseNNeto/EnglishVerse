@@ -1,8 +1,8 @@
-import { Box, Card, CardContent, CardMedia, Typography, LinearProgress, CardActionArea } from '@mui/material';
+import { Box, Card, CardContent, CardMedia, Typography, LinearProgress } from '@mui/material';
 import { useState, useEffect } from 'react';
 import api from '../../services/api';
 import { useAuth } from '../../contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 interface Modulo {
   id: number;
@@ -22,7 +22,6 @@ interface Progresso {
 
 export default function ContinuarAprendendo() {
   const { user, isAuthenticated } = useAuth();
-  const navigate = useNavigate();
   const [progressoModulos, setProgressoModulos] = useState<Progresso[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -66,35 +65,38 @@ export default function ContinuarAprendendo() {
       </Typography>
       <Box sx={{ display: 'flex', overflowX: 'auto', gap: 2, pb: 2 }}>
         {progressoModulos.map((item) => (
-          <Card key={item.id} sx={{ display: 'flex', backgroundColor: '#1a1a1a', color: 'white', borderRadius: '14px', width: 400, height: 160 }}>
-            <CardActionArea onClick={() => navigate(`/presentation/${item.modulo.id}`)} sx={{ display: 'flex', height: '100%' }}>
-                <CardMedia
-                component="img"
-                sx={{ width: 160, height: 160, objectFit: 'cover' }}
-                image={item.modulo.imagemCapaUrl || 'https://via.placeholder.com/160'} // Fallback image
-                alt={item.modulo.titulo}
-                />
-                <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-                <CardContent sx={{ flex: '1 0 auto' }}>
-                    <Typography component="div" variant="h6">
-                    {item.modulo.titulo}
-                    </Typography>
-                    <Box sx={{ width: '100%', mt: 2 }}>
-                    <LinearProgress variant="determinate" value={item.progressoPercentual} sx={{
-                        height: 4,
-                        borderRadius: 5,
-                        backgroundColor: '#282828',
-                        '& .MuiLinearProgress-bar': {
-                        backgroundColor: '#007aff'
-                        }
-                    }} />
-                    <Typography variant="body2" sx={{ color: '#b3b3b3', mt: 1 }}>
-                        {item.progressoPercentual}% completo
-                    </Typography>
-                    </Box>
-                </CardContent>
+          <Card key={item.id} sx={{ display: 'flex', backgroundColor: '#1a1a1a', color: 'white', borderRadius: '14px', minWidth: 400, height: 160 }}>
+            <CardMedia
+              component="img"
+              sx={{ width: 160, height: 160, objectFit: 'cover' }}
+              image={item.modulo.imagemCapaUrl || 'https://via.placeholder.com/160'} // Fallback image
+              alt={item.modulo.titulo}
+            />
+            <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+              <CardContent sx={{ flex: '1 0 auto' }}>
+                <Typography component="div" variant="h6">
+                  {item.modulo.titulo}
+                </Typography>
+                <Box sx={{ width: '100%', mt: 2 }}>
+                  <LinearProgress variant="determinate" value={item.progressoPercentual} sx={{
+                    height: 4,
+                    borderRadius: 5,
+                    backgroundColor: '#282828',
+                    '& .MuiLinearProgress-bar': {
+                      backgroundColor: '#007aff'
+                    }
+                  }} />
+                  <Typography variant="body2" sx={{ color: '#b3b3b3', mt: 1 }}>
+                    {item.progressoPercentual}% completo
+                  </Typography>
                 </Box>
-            </CardActionArea>
+                <Link to={`/presentation/${item.modulo.id}`} style={{ textDecoration: 'none' }}>
+                  <Typography variant="body2" sx={{ color: '#007aff', mt: 1, cursor: 'pointer' }}>
+                    Continuar
+                  </Typography>
+                </Link>
+              </CardContent>
+            </Box>
           </Card>
         ))}
       </Box>

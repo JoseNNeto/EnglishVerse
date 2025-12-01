@@ -1,4 +1,3 @@
-
 import { Box, Typography, CircularProgress } from '@mui/material';
 import { useModule } from '../../contexts/ModuleContext';
 import MidiaAndTranscption from './MidiaAndTranscption';
@@ -18,7 +17,7 @@ import ProductionTextoContent from '../Production/Texto/ProductionTextoContent';
 
 
 export default function ModuleItemViewer() {
-    const { loading, activeItem, allItems } = useModule();
+    const { loading, activeItem } = useModule();
 
     if (loading) {
         return <CircularProgress sx={{ display: 'block', margin: 'auto', mt: 10 }} />;
@@ -33,24 +32,20 @@ export default function ModuleItemViewer() {
         );
     }
 
-    const activeItemIndex = allItems.findIndex(item => item.type === activeItem.type && item.data.id === activeItem.data.id);
-    const isLast = activeItemIndex === allItems.length - 1;
-
     switch (activeItem.type) {
         case 'presentation':
             return <MidiaAndTranscption />;
         case 'practice':
             const practiceData = activeItem.data;
-            const practiceKey = `practice-${practiceData.id}`;
             switch (practiceData.tipoAtividade) {
                 case 'SELECIONAR_PALAVRAS':
-                    return <PracticeSelecionarContent key={practiceKey} data={practiceData} />;
+                    return <PracticeSelecionarContent data={practiceData} />;
                 case 'PREENCHER_LACUNA':
-                    return <PracticeCompletarContent key={practiceKey} data={practiceData} />;
+                    return <PracticeCompletarContent data={practiceData} />;
                 case 'MULTIPLA_ESCOLHA':
-                    return <PracticeMarcarContent key={practiceKey} data={practiceData} />;
+                    return <PracticeMarcarContent data={practiceData} />;
                 case 'LISTA_PALAVRAS':
-                    return <PracticeListaContent key={practiceKey} data={practiceData} />;
+                    return <PracticeListaContent data={practiceData} />;
                 default:
                     return (
                         <Box sx={{ p: 4, backgroundColor: '#1a1a1a', color: 'white', borderRadius: '14px', textAlign: 'center' }}>
@@ -60,22 +55,21 @@ export default function ModuleItemViewer() {
             }
         case 'production':
             const productionData = activeItem.data;
-            const productionKey = `production-${productionData.id}`;
             switch (productionData.tipoDesafio) {
                 case 'TEXTO_LONGO':
-                    return <ProductionTextoContent key={productionKey} data={productionData} isLast={isLast} />;
+                    return <ProductionTextoContent data={productionData} />;
                 case 'FOTO_E_TEXTO':
-                    return <ProductionPostagemContent key={productionKey} data={productionData} isLast={isLast} />;
+                    return <ProductionPostagemContent data={productionData} />;
                 case 'RELACIONAR_COLUNAS':
-                    return <ProductionRelacionarContent key={productionKey} data={productionData} isLast={isLast} />;
+                    return <ProductionRelacionarContent data={productionData} />;
                 case 'AUDIO':
-                    return <ProductionOuvirTextoContent key={productionKey} data={productionData} isLast={isLast} />;
+                    return <ProductionOuvirTextoContent data={productionData} />;
                 case 'COMPLETAR_IMAGEM':
-                    return <ProductionOuvirCompletarContent key={productionKey} data={productionData} isLast={isLast} />;
+                    return <ProductionOuvirCompletarContent data={productionData} />;
                 case 'SUBSTITUIR_PALAVRAS':
-                    return <ProductionSubstituirContent key={productionKey} data={productionData} isLast={isLast} />;
+                    return <ProductionSubstituirContent data={productionData} />;
                 case 'UPLOAD_ARQUIVO':
-                    return <ProductionArquivoContent key={productionKey} data={productionData} isLast={isLast} />;
+                    return <ProductionArquivoContent data={productionData} />;
                 default:
                     return (
                         <Box sx={{ p: 4, backgroundColor: '#1a1a1a', color: 'white', borderRadius: '14px', textAlign: 'center' }}>
@@ -91,4 +85,3 @@ export default function ModuleItemViewer() {
             );
     }
 }
-
