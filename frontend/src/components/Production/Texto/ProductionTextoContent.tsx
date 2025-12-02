@@ -1,6 +1,8 @@
 
-import { Box, Typography, Button, TextareaAutosize, Paper, LinearProgress } from '@mui/material';
-import { useState } from 'react';
+import { Box, Typography, Button, TextareaAutosize, Paper } from '@mui/material';
+import { useState, useEffect } from 'react';
+import { useModule, ItemType } from '../../../contexts/ModuleContext';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 interface ProductionTextoContentProps {
     data: {
@@ -8,57 +10,62 @@ interface ProductionTextoContentProps {
         instrucaoDesafio: string;
         midiaDesafioUrl?: string;
         dadosDesafio: Record<string, any>;
+        modulo?: { id: number; };
+        moduloId?: number;
     };
 }
 
-
 export default function ProductionTextoContent({ data }: ProductionTextoContentProps) {
+    const { markItemAsCompleted, handleNextItem } = useModule();
+    const [text, setText] = useState('');
+    const [checkStatus, setCheckStatus] = useState<'unchecked' | 'correct'>('unchecked');
+
+    useEffect(() => {
+        setText('');
+        setCheckStatus('unchecked');
+    }, [data.id]);
 
     const getYouTubeEmbedUrl = (url: string) => {
         if (!url) return null;
         let videoId;
         try {
             const urlObj = new URL(url);
-            if (urlObj.hostname === 'youtu.be') {
-                videoId = urlObj.pathname.slice(1);
-            } else if (urlObj.hostname === 'www.youtube.com' || urlObj.hostname === 'youtube.com') {
-                videoId = urlObj.searchParams.get('v');
-            }
-        } catch (e) {
-            return null;
-        }
+            videoId = urlObj.searchParams.get('v') || urlObj.pathname.slice(1);
+        } catch (e) { return null; }
         return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
     };
 
     const embedUrl = getYouTubeEmbedUrl(data.midiaDesafioUrl || '');
-    const [text, setText] = useState('');
     const wordCount = text.trim().split(/\s+/).filter(Boolean).length;
+    const isSubmittable = text.trim() !== '';
+
+    const handleCheckAnswer = async () => {
+        if (!isSubmittable) return;
+        setCheckStatus('correct');
+        await markItemAsCompleted(data.id, ItemType.PRODUCTION);
+    };
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%', mt: 4 }}>
-      <Box sx={{ width: '90%' }}>
+    <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%'}}>
+      <Box sx={{ width: '100%' }}>
         <Box sx={{ color: '#e0e0e0' }}>
-
-        <Box sx={{ mb: 3 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                <Typography sx={{ flexGrow: 1, color: '#b3b3b3' }}>Progresso: 0%</Typography> {/* Placeholder */}
-            </Box>
-            <LinearProgress variant="determinate" value={0} sx={{ height: 8, borderRadius: 4 }} />
-        </Box>
-
           <Typography variant="h4" sx={{ mb: 3 }}>Etapa: Desafio de Produção - Texto Longo</Typography>
+          <Paper sx={{ bgcolor: '#1a1a1a', p: 3, borderRadius: 3, mb: 3 }}>
+            <Typography variant="h5" sx={{ mb: 1 }}>Seu Desafio</Typography>
+            <Typography variant="body1" sx={{ color: '#b3b3b3' }}>
+              {data.instrucaoDesafio}
+            </Typography>
+          </Paper>
 
           {embedUrl && (
             <Box sx={{ display: 'flex', justifyContent: 'center', mb: 3 }}>
                 <Box sx={{
-                position: 'relative',
-                paddingTop: '30%', // Adjusting aspect ratio
-                borderRadius: '14px',
-                overflow: 'hidden',
-                width: '80%',
-                maxWidth: 700,
-                border: '1px solid #282828',
-                boxShadow: '0 8px 24px rgba(0,0,0,0.5)'
+                    position: 'relative',
+                    paddingTop: '30%',
+                    borderRadius: '14px',
+                    overflow: 'hidden',
+                    width: '100%',
+                    maxWidth: '720px'
                 }}>
                 <iframe
                     width="100%"
@@ -74,19 +81,13 @@ export default function ProductionTextoContent({ data }: ProductionTextoContentP
             </Box>
           )}
 
-          <Paper sx={{ bgcolor: '#1a1a1a', p: 3, borderRadius: 3, mb: 3 }}>
-            <Typography variant="h5" sx={{ mb: 1 }}>Seu Desafio</Typography>
-            <Typography variant="body1" sx={{ color: '#b3b3b3' }}>
-              {data.instrucaoDesafio}
-            </Typography>
-          </Paper>
-
           <Box sx={{ mb: 3 }}>
             <Typography variant="h6" sx={{ color: '#e0e0e0', mb: 1 }}>Sua Resposta:</Typography>
             <TextareaAutosize
               minRows={10}
               placeholder={"Comece a escrever sua resposta aqui..."}
               value={text}
+              disabled={checkStatus === 'correct'}
               onChange={(e) => setText(e.target.value)}
               style={{
                 width: '100%',
@@ -104,10 +105,17 @@ export default function ProductionTextoContent({ data }: ProductionTextoContentP
             </Box>
           </Box>
 
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <Button variant="contained" size="large" sx={{ textTransform: 'none', borderRadius: 3, opacity: 0.5 }}>
-              Enviar Desafio
-            </Button>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
+            {checkStatus === 'unchecked' && (
+                <Button variant="contained" size="large" onClick={handleCheckAnswer} disabled={!isSubmittable} sx={{ textTransform: 'none', borderRadius: 3 }}>
+                    Enviar Desafio
+                </Button>
+            )}
+            {checkStatus === 'correct' && (
+                 <Button variant="contained" onClick={handleNextItem} endIcon={<ArrowForwardIcon />} sx={{ bgcolor: 'green', color: 'white', textTransform: 'none' }}>
+                    Próximo
+                </Button>
+            )}
           </Box>
         </Box>
       </Box>

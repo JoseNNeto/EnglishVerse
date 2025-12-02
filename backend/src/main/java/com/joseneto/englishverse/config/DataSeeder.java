@@ -198,7 +198,94 @@ public class DataSeeder implements CommandLineRunner {
                         "Assista ao vídeo e responda: Qual é o único Pronome Pessoal Sujeito mencionado neste trecho?", 
                         "https://www.youtube.com/watch?v=DE8qVfNW5B0", dadosProd2);
 
+                    // 3. Forrest Gump -> Audio com perguntas abertas
+                    Map<String, Object> dadosProd3 = new HashMap<>();
+                    dadosProd3.put("title", "Life is like a box of chocolates");
+                    dadosProd3.put("subtitle", "Forrest Gump");
+                    dadosProd3.put("textParts", List.of(
+                        Map.of("label", "O que a mãe de Forrest dizia sobre a vida?", "placeholder", "Minha mãe sempre dizia..."),
+                        Map.of("label", "Qual a sua interpretação dessa famosa frase?", "placeholder", "Para mim, essa frase significa...")
+                    ));
+                    criarProduction(modPronouns, TipoDesafio.AUDIO, 
+                        "Assista à famosa cena de Forrest Gump e responda às perguntas com suas próprias palavras.", 
+                        "https://youtu.be/vdtqSaJO-iM?si=jU6bhk0Jo-QKthET", dadosProd3);
+
+                    // 4. Poema com Pronomes -> Upload de arquivo
+                    Map<String, Object> dadosProd4 = new HashMap<>();
+                    dadosProd4.put("formatos_aceitos", List.of("doc", "docx", "pdf"));
+                    criarProduction(modPronouns, TipoDesafio.UPLOAD_ARQUIVO,
+                        "Escreva um poema curto (4-8 linhas) usando os pronomes que você aprendeu neste módulo (I, you, he, she, etc.). Envie seu poema em um arquivo .doc, .docx ou .pdf.",
+                        null, dadosProd4);
+
                     System.out.println(">>> Módulo 'Subject Pronouns' criado com sucesso!");
+                }
+            );
+
+        moduloRepository.findByTitulo("Present Simple (‘To Be’) - Am, Is, Are")
+            .ifPresentOrElse(
+                (mod) -> System.out.println(">>> Módulo 'Present Simple (‘To Be’)' já existe. ID: " + mod.getId()),
+                () -> {
+                    System.out.println(">>> Cadastrando Módulo: Present Simple (‘To Be’)...");
+                    Modulo modPronouns = new Modulo();
+                    modPronouns.setTopico(topicoIniciante);
+                    modPronouns.setTitulo("Present Simple (‘To Be’) - Am, Is, Are");
+                    modPronouns.setDescricao("Aprenda os pronomes pessoais com clássicos da música.");
+                    modPronouns.setImagemCapaUrl("https://img.youtube.com/vi/5tc0gLSSU1M/hqdefault.jpg"); // Capa dos Beatles
+                    modPronouns.setPublicado(true);
+                    modPronouns = moduloRepository.save(modPronouns);
+
+                    System.out.println(">>> Módulo 'Present Simple (‘To Be’)' criado com sucesso!");
+                }
+            );
+
+        moduloRepository.findByTitulo("Articles (A, An, The)")
+            .ifPresentOrElse(
+                (mod) -> System.out.println(">>> Módulo 'Articles (A, An, The)' já existe. ID: " + mod.getId()),
+                () -> {
+                    System.out.println(">>> Cadastrando Módulo: Articles (A, An, The)...");
+                    Modulo modPronouns = new Modulo();
+                    modPronouns.setTopico(topicoIniciante);
+                    modPronouns.setTitulo("Articles (A, An, The)");
+                    modPronouns.setDescricao("Aprenda os pronomes pessoais com clássicos da música.");
+                    modPronouns.setImagemCapaUrl("https://img.youtube.com/vi/5tc0gLSSU1M/hqdefault.jpg"); // Capa dos Beatles
+                    modPronouns.setPublicado(true);
+                    modPronouns = moduloRepository.save(modPronouns);
+
+                    System.out.println(">>> Módulo 'Articles (A, An, The)' criado com sucesso!");
+                }
+            );
+
+        moduloRepository.findByTitulo("Present Simple (‘to have’ & other verbs)")
+            .ifPresentOrElse(
+                (mod) -> System.out.println(">>> Módulo 'Present Simple (‘to have’ & other verbs)' já existe. ID: " + mod.getId()),
+                () -> {
+                    System.out.println(">>> Cadastrando Módulo: Present Simple (‘to have’ & other verbs)...");
+                    Modulo modPronouns = new Modulo();
+                    modPronouns.setTopico(topicoIniciante);
+                    modPronouns.setTitulo("Present Simple (‘to have’ & other verbs)");
+                    modPronouns.setDescricao("Aprenda os pronomes pessoais com clássicos da música.");
+                    modPronouns.setImagemCapaUrl("https://img.youtube.com/vi/5tc0gLSSU1M/hqdefault.jpg"); // Capa dos Beatles
+                    modPronouns.setPublicado(true);
+                    modPronouns = moduloRepository.save(modPronouns);
+
+                    System.out.println(">>> Módulo 'Present Simple (‘to have’ & other verbs)' criado com sucesso!");
+                }
+            );
+
+        moduloRepository.findByTitulo("Present Simple (‘to have’ & other verbs)")
+            .ifPresentOrElse(
+                (mod) -> System.out.println(">>> Módulo 'Present Simple (‘to have’ & other verbs)' já existe. ID: " + mod.getId()),
+                () -> {
+                    System.out.println(">>> Cadastrando Módulo: Present Simple (‘to have’ & other verbs)...");
+                    Modulo modPronouns = new Modulo();
+                    modPronouns.setTopico(topicoIniciante);
+                    modPronouns.setTitulo("Present Simple (‘to have’ & other verbs)");
+                    modPronouns.setDescricao("Aprenda os pronomes pessoais com clássicos da música.");
+                    modPronouns.setImagemCapaUrl("https://img.youtube.com/vi/5tc0gLSSU1M/hqdefault.jpg"); // Capa dos Beatles
+                    modPronouns.setPublicado(true);
+                    modPronouns = moduloRepository.save(modPronouns);
+
+                    System.out.println(">>> Módulo 'Present Simple (‘to have’ & other verbs)' criado com sucesso!");
                 }
             );
     }

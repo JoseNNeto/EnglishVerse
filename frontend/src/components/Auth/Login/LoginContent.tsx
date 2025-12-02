@@ -73,9 +73,6 @@ export default function LoginContent() {
                 alt="Englishverse Logo"
                 sx={{ width: 150, height: 'auto', mb: 3 }}
             />
-            <Typography variant="h5" sx={{ color: '#e0e0e0', mb: 3 }}>
-                Bem-vindo de volta!
-            </Typography>
 
             <Box component="form" onSubmit={handleLogin} sx={{ width: '100%' }}>
                 {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}

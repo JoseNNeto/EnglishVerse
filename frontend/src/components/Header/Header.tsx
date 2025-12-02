@@ -105,23 +105,6 @@ export default function Header() {
           <Box sx={{ display: 'flex', alignItems: 'center', minWidth: isHomePage ? 'auto' : '600px', justifyContent: 'flex-end' }}>
             {isAuthenticated && user && (
               <>
-                <IconButton color="inherit">
-                  <Badge 
-                    badgeContent="" 
-                    color="primary" 
-                    variant="dot"
-                    sx={{
-                      "& .MuiBadge-badge": { 
-                        backgroundColor: "#007aff",
-                        width: '8px',
-                        height: '8px',
-                        borderRadius: '50%',
-                      },
-                    }}
-                  >
-                    <NotificationsIcon sx={{color: 'white'}}/>
-                  </Badge>
-                </IconButton>
                 <Avatar sx={{ bgcolor: '#007aff', cursor: 'pointer', ml: 2 }} onClick={handleMenuOpen}>
                   {user.nome.charAt(0).toUpperCase()}
                 </Avatar>
