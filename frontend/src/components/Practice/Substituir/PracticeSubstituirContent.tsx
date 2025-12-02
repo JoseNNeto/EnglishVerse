@@ -67,7 +67,7 @@ export default function PracticeSubstituirContent({ data }: PracticeSubstituirCo
         handleClose();
     };
 
-    const replacedCount = useMemo(() => textParts.filter((p, i) => {
+    const replacedCount = useMemo(() => textParts.filter((p, _i) => {
         const initialPart = initialText.find(initP => initP.id === p.id);
         return p.type === 'word' && initialPart && p.content !== initialPart.content;
     }).length, [textParts, initialText]);

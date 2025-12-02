@@ -2,7 +2,7 @@
 import { Box, Typography, Paper, Button, Grid } from '@mui/material';
 import { DndContext, closestCenter, PointerSensor, useSensor, useSensors, useDroppable, type UniqueIdentifier, DragOverlay } from '@dnd-kit/core';
 import type { DragEndEvent, DragStartEvent } from '@dnd-kit/core';
-import { SortableContext, useSortable, arrayMove, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { useState, useMemo, useEffect } from 'react';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
