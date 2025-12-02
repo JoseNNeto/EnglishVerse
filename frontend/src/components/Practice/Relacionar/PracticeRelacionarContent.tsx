@@ -7,12 +7,11 @@ import { CSS } from '@dnd-kit/utilities';
 import { useState, useMemo } from 'react';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 
-interface ProductionRelacionarContentProps {
+interface PracticeRelacionarContentProps {
     data: {
         id: number;
-        instrucaoDesafio: string;
-        midiaDesafioUrl?: string;
-        dadosDesafio: Record<string, any>;
+        instrucao: string;
+        dadosAtividade: Record<string, any>;
     };
 }
 
@@ -82,8 +81,8 @@ function DroppableColumn({ id, title, items }: { id: UniqueIdentifier, title: st
     );
 }
 
-export default function ProductionRelacionarContent({ data }: ProductionRelacionarContentProps) {
-    const relacionarData = data.dadosDesafio as RelacionarData;
+export default function PracticeRelacionarContent({ data }: PracticeRelacionarContentProps) {
+    const relacionarData = data.dadosAtividade as RelacionarData;
 
     const initialContainers = useMemo(() => {
         const containers: Record<string, { id: UniqueIdentifier, text: string }[]> = {
@@ -175,12 +174,12 @@ export default function ProductionRelacionarContent({ data }: ProductionRelacion
                             <LinearProgress variant="determinate" value={0} sx={{ height: 8, borderRadius: 4 }} /> {/* Placeholder */}
                         </Box>
 
-                        <Typography variant="h4" sx={{ mb: 3 }}>Etapa: Desafio de Produção - Relacionar</Typography>
+                        <Typography variant="h4" sx={{ mb: 3 }}>Etapa: Prática - Relacionar</Typography>
                         
                         <Paper sx={{ bgcolor: '#1a1a1a', p: 3, borderRadius: 3, mb: 3 }}>
-                            <Typography variant="h5" sx={{ mb: 1 }}>Seu Desafio</Typography>
+                            <Typography variant="h5" sx={{ mb: 1 }}>Sua Prática</Typography>
                             <Typography variant="body1" sx={{ color: '#b3b3b3' }}>
-                                {data.instrucaoDesafio}
+                                {data.instrucao}
                             </Typography>
                         </Paper>
 
@@ -202,8 +201,8 @@ export default function ProductionRelacionarContent({ data }: ProductionRelacion
                         </Grid>
 
                         <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3 }}>
-                            <Button variant="contained" size="large" sx={{ textTransform: 'none', borderRadius: 3, opacity: 0.5 }}>
-                            Enviar Desafio
+                            <Button variant="contained" size="large" sx={{ textTransform: 'none', borderRadius: 3 }}>
+                            Verificar
                             </Button>
                         </Box>
                     </Box>

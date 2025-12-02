@@ -25,7 +25,7 @@ interface RecursoApresentacao {
 interface PracticeAtividade {
     id: number;
     moduloId: number;
-    tipoAtividade: 'MULTIPLA_ESCOLHA' | 'PREENCHER_LACUNA' | 'SELECIONAR_PALAVRAS' | 'LISTA_PALAVRAS'; // Enum: TipoAtividade
+    tipoAtividade: 'MULTIPLA_ESCOLHA' | 'PREENCHER_LACUNA' | 'SELECIONAR_PALAVRAS' | 'LISTA_PALAVRAS' | 'RELACIONAR_COLUNAS' | 'SUBSTITUIR_PALAVRAS'; // Enum: TipoAtividade
     instrucao: string;
     dadosAtividade: Record<string, any>; // JSONB as a generic object
 }
@@ -34,7 +34,7 @@ interface PracticeAtividade {
 interface ProductionChallenge {
     id: number;
     moduloId: number;
-    tipoDesafio: 'AUDIO' | 'TEXTO_LONGO' | 'FOTO_E_TEXTO' | 'UPLOAD_ARQUIVO' | 'RELACIONAR_COLUNAS' | 'SUBSTITUIR_PALAVRAS' | 'COMPLETAR_IMAGEM'; // Enum: TipoDesafio
+    tipoDesafio: 'AUDIO' | 'TEXTO_LONGO' | 'FOTO_E_TEXTO' | 'UPLOAD_ARQUIVO' | 'COMPLETAR_IMAGEM'; // Enum: TipoDesafio
     instrucaoDesafio: string;
     midiaDesafioUrl?: string;
     dadosDesafio: Record<string, any>; // JSONB as a generic object

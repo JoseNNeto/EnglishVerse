@@ -9,8 +9,8 @@ import PracticeSelecionar from '../pages/Practice/Selecionar';
 import ProductionArquivo from '../pages/Production/Arquivo';
 import ProductionTexto from '../pages/Production/Texto';
 import ProductionOuvirCompletar from '../pages/Production/OuvirCompletar';
-import ProductionRelacionar from '../pages/Production/Relacionar';
-import ProductionSubstituir from '../pages/Production/Substituir';
+import PracticeRelacionar from '../pages/Practice/Relacionar';
+import PracticeSubstituir from '../pages/Practice/Substituir';
 import ProductionOuvirTexto from '../pages/Production/OuvirTexto';
 import ProductionPostagem from '../pages/Production/Postagem';
 import Login from '../pages/Auth/Login';
@@ -29,11 +29,11 @@ const router = createBrowserRouter([
       { path: '/practice/completar', element: <PracticeCompletar /> },
       { path: '/practice/lista', element: <PracticeLista /> },
       { path: '/practice/selecionar', element: <PracticeSelecionar /> },
+      { path: '/practice/relacionar', element: <PracticeRelacionar /> }, // Changed path
+      { path: '/practice/substituir', element: <PracticeSubstituir /> }, // Changed path
       { path: '/production/arquivo', element: <ProductionArquivo /> },
       { path: '/production/texto', element: <ProductionTexto /> },
       { path: '/production/ouvir-completar', element: <ProductionOuvirCompletar /> },
-      { path: '/production/relacionar', element: <ProductionRelacionar /> },
-      { path: '/production/substituir', element: <ProductionSubstituir /> },
       { path: '/production/ouvir-texto', element: <ProductionOuvirTexto /> },
       { path: '/production/postagem', element: <ProductionPostagem /> },
     ]

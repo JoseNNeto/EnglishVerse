@@ -3,12 +3,11 @@ import { Box, Typography, Paper, LinearProgress, Button, Menu, MenuItem } from '
 import { useState, useMemo } from 'react';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 
-interface ProductionSubstituirContentProps {
+interface PracticeSubstituirContentProps {
     data: {
         id: number;
-        instrucaoDesafio: string;
-        midiaDesafioUrl?: string;
-        dadosDesafio: Record<string, any>;
+        instrucao: string;
+        dadosAtividade: Record<string, any>;
     };
 }
 
@@ -23,8 +22,8 @@ interface SubstituirData {
     synonyms: Record<string, string[]>;
 }
 
-export default function ProductionSubstituirContent({ data }: ProductionSubstituirContentProps) {
-    const substituirData = data.dadosDesafio as SubstituirData;
+export default function PracticeSubstituirContent({ data }: PracticeSubstituirContentProps) {
+    const substituirData = data.dadosAtividade as SubstituirData;
     const initialText = useMemo(() => substituirData.initialText || [], [substituirData.initialText]);
     const synonyms = useMemo(() => substituirData.synonyms || {}, [substituirData.synonyms]);
 
@@ -73,15 +72,15 @@ export default function ProductionSubstituirContent({ data }: ProductionSubstitu
                         <LinearProgress variant="determinate" value={0} sx={{ height: 8, borderRadius: 4 }} />
                     </Box>
 
-                    <Typography variant="h4" sx={{ mb: 3 }}>Etapa: Desafio de Produção - Substituir</Typography>
+                    <Typography variant="h4" sx={{ mb: 3 }}>Etapa: Prática - Substituir</Typography>
                     
-                    {data.midiaDesafioUrl && (
+                    {substituirData.midiaUrl && (
                         <Paper sx={{ bgcolor: '#1a1a1a', p: 3, borderRadius: 3, mb: 3, display: 'flex', alignItems: 'center', gap: 3 }}>
                             <Box component="img" src={substituirData.albumArtUrl} alt="Album Art" sx={{ width: 128, height: 128, borderRadius: '10px' }}/>
                             <Box sx={{ flexGrow: 1 }}>
                                 <Typography variant="h5" sx={{ color: '#e0e0e0' }}>{substituirData.songTitle}</Typography>
                                 <Typography variant="body1" sx={{ color: '#b3b3b3', mb: 2 }}>{substituirData.artistName}</Typography>
-                                <audio controls src={data.midiaDesafioUrl} style={{width: '100%'}}>
+                                <audio controls src={substituirData.midiaUrl} style={{width: '100%'}}>
                                     Seu navegador não suporta o elemento de áudio.
                                 </audio>
                             </Box>
@@ -89,9 +88,9 @@ export default function ProductionSubstituirContent({ data }: ProductionSubstitu
                     )}
 
                     <Paper sx={{ bgcolor: '#1a1a1a', p: 3, borderRadius: 3, mb: 3 }}>
-                        <Typography variant="h5" sx={{ mb: 1 }}>Seu Desafio</Typography>
+                        <Typography variant="h5" sx={{ mb: 1 }}>Sua Prática</Typography>
                         <Typography variant="body1" sx={{ color: '#b3b3b3' }}>
-                            {data.instrucaoDesafio}
+                            {data.instrucao}
                         </Typography>
                     </Paper>
 
@@ -121,8 +120,8 @@ export default function ProductionSubstituirContent({ data }: ProductionSubstitu
                     </Paper>
 
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3 }}>
-                        <Button variant="contained" size="large" sx={{ textTransform: 'none', borderRadius: 3, opacity: 0.5 }}>
-                        Enviar Desafio
+                        <Button variant="contained" size="large" sx={{ textTransform: 'none', borderRadius: 3 }}>
+                        Verificar
                         </Button>
                     </Box>
 

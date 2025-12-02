@@ -1,18 +1,22 @@
 import { Box, Typography, CircularProgress } from '@mui/material';
 import { useModule } from '../../contexts/ModuleContext';
 import MidiaAndTranscption from './MidiaAndTranscption';
+
+// Practice Components
 import PracticeMarcarContent from '../Practice/PracticeMarcar/PracticeContent';
 import PracticeCompletarContent from '../Practice/Completar/PracticeCompletarContent';
 import PracticeSelecionarContent from '../Practice/Selecionar/PracticeSelecionarContent';
 import PracticeListaContent from '../Practice/Lista/PracticeListaContent';
+import PracticeRelacionarContent from '../Practice/Relacionar/PracticeRelacionarContent'; // New Import
+import PracticeSubstituirContent from '../Practice/Substituir/PracticeSubstituirContent'; // New Import
 
 // Production Components
 import ProductionArquivoContent from '../Production/Arquivo/ProductionArquivoContent';
 import ProductionOuvirCompletarContent from '../Production/OuvirCompletar/ProductionOuvirCompletarContent';
 import ProductionOuvirTextoContent from '../Production/OuvirTexto/ProductionOuvirTextoContent';
 import ProductionPostagemContent from '../Production/Postagem/ProductionPostagemContent';
-import ProductionRelacionarContent from '../Production/Relacionar/ProductionRelacionarContent';
-import ProductionSubstituirContent from '../Production/Substituir/ProductionSubstituirContent';
+// Removed: ProductionRelacionarContent
+// Removed: ProductionSubstituirContent
 import ProductionTextoContent from '../Production/Texto/ProductionTextoContent';
 
 
@@ -46,6 +50,10 @@ export default function ModuleItemViewer() {
                     return <PracticeMarcarContent data={practiceData} />;
                 case 'LISTA_PALAVRAS':
                     return <PracticeListaContent data={practiceData} />;
+                case 'RELACIONAR_COLUNAS': // Moved from Production
+                    return <PracticeRelacionarContent data={practiceData} />;
+                case 'SUBSTITUIR_PALAVRAS': // Moved from Production
+                    return <PracticeSubstituirContent data={practiceData} />;
                 default:
                     return (
                         <Box sx={{ p: 4, backgroundColor: '#1a1a1a', color: 'white', borderRadius: '14px', textAlign: 'center' }}>
@@ -60,14 +68,12 @@ export default function ModuleItemViewer() {
                     return <ProductionTextoContent data={productionData} />;
                 case 'FOTO_E_TEXTO':
                     return <ProductionPostagemContent data={productionData} />;
-                case 'RELACIONAR_COLUNAS':
-                    return <ProductionRelacionarContent data={productionData} />;
+                // Removed: case 'RELACIONAR_COLUNAS'
                 case 'AUDIO':
                     return <ProductionOuvirTextoContent data={productionData} />;
                 case 'COMPLETAR_IMAGEM':
                     return <ProductionOuvirCompletarContent data={productionData} />;
-                case 'SUBSTITUIR_PALAVRAS':
-                    return <ProductionSubstituirContent data={productionData} />;
+                // Removed: case 'SUBSTITUIR_PALAVRAS'
                 case 'UPLOAD_ARQUIVO':
                     return <ProductionArquivoContent data={productionData} />;
                 default:
