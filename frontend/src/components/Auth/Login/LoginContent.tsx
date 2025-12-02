@@ -45,10 +45,10 @@ export default function LoginContent() {
         }
     };
 
-    const handleForgotPassword = () => {
-        // Implement forgot password logic here
-        console.log('Forgot password clicked');
-    };
+    // const handleForgotPassword = () => {
+    //     // Implement forgot password logic here
+    //     console.log('Forgot password clicked');
+    // };
 
     const handleSignUp = () => {
         navigate('/signup'); // Assuming a signup route exists

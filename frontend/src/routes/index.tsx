@@ -9,8 +9,8 @@ import PracticeSelecionar from '../pages/Practice/Selecionar';
 import ProductionArquivo from '../pages/Production/Arquivo';
 import ProductionTexto from '../pages/Production/Texto';
 import ProductionOuvirCompletar from '../pages/Production/OuvirCompletar';
-import ProductionRelacionar from '../pages/Production/Relacionar';
-import ProductionSubstituir from '../pages/Production/Substituir';
+import PracticeRelacionar from '../pages/Practice/Relacionar';
+import PracticeSubstituir from '../pages/Practice/Substituir';
 import ProductionOuvirTexto from '../pages/Production/OuvirTexto';
 import ProductionPostagem from '../pages/Production/Postagem';
 import Login from '../pages/Auth/Login';
@@ -25,17 +25,17 @@ const router = createBrowserRouter([
       { path: '/', element: <Home /> },
       { path: '/user', element: <User /> },
       { path: '/presentation/:id', element: <Presentation /> },
-      { path: '/practice/marcar', element: <PracticeMarcar /> },
-      { path: '/practice/completar', element: <PracticeCompletar /> },
-      { path: '/practice/lista', element: <PracticeLista /> },
-      { path: '/practice/selecionar', element: <PracticeSelecionar /> },
-      { path: '/production/arquivo', element: <ProductionArquivo /> },
-      { path: '/production/texto', element: <ProductionTexto /> },
-      { path: '/production/ouvir-completar', element: <ProductionOuvirCompletar /> },
-      { path: '/production/relacionar', element: <ProductionRelacionar /> },
-      { path: '/production/substituir', element: <ProductionSubstituir /> },
-      { path: '/production/ouvir-texto', element: <ProductionOuvirTexto /> },
-      { path: '/production/postagem', element: <ProductionPostagem /> },
+      { path: '/practice/marcar/:id', element: <PracticeMarcar /> },
+      { path: '/practice/completar/:id', element: <PracticeCompletar /> },
+      { path: '/practice/lista/:id', element: <PracticeLista /> },
+      { path: '/practice/selecionar/:id', element: <PracticeSelecionar /> },
+      { path: '/practice/relacionar/:id', element: <PracticeRelacionar /> },
+      { path: '/practice/substituir/:id', element: <PracticeSubstituir /> },
+      { path: '/production/arquivo/:id', element: <ProductionArquivo /> },
+      { path: '/production/texto/:id', element: <ProductionTexto /> },
+      { path: '/production/ouvir-completar/:id', element: <ProductionOuvirCompletar /> },
+      { path: '/production/ouvir-texto/:id', element: <ProductionOuvirTexto /> },
+      { path: '/production/postagem/:id', element: <ProductionPostagem /> },
     ]
   },
   {

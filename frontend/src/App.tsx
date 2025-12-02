@@ -1,5 +1,4 @@
-import { createTheme, ThemeProvider, CssBaseline, Container } from '@mui/material';
-import Header from './components/Header/Header';
+import { createTheme, ThemeProvider, CssBaseline } from '@mui/material';
 import AppRoutes from './routes';
 
 const darkTheme = createTheme({

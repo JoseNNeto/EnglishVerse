@@ -1,6 +1,6 @@
 
 import { Box, CircularProgress, Typography } from '@mui/material';
-import PracticeListaContent from '../../components/Practice/Lista/PracticeListaContent';
+import PracticeRelacionarContent from '../../components/Practice/Relacionar/PracticeRelacionarContent';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../../services/api';
@@ -13,15 +13,15 @@ interface PracticeAtividade {
   modulo: { id: number; nome: string; };
 }
 
-function PracticeListaPageContent({data}: {data: PracticeAtividade}) {
+function PracticeRelacionarPageContent({data}: {data: PracticeAtividade}) {
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <PracticeListaContent data={data} />
+            <PracticeRelacionarContent data={data} />
         </Box>
     );
 }
 
-export default function PracticeLista() {
+export default function PracticeRelacionar() {
   const { id } = useParams<{ id: string }>();
   const [data, setData] = useState<PracticeAtividade | null>(null);
   const [loading, setLoading] = useState(true);
@@ -60,7 +60,7 @@ export default function PracticeLista() {
         )}
         {data && (
           <ModuleProvider moduloId={data.modulo.id.toString()}>
-            <PracticeListaPageContent data={data} />
+            <PracticeRelacionarPageContent data={data} />
           </ModuleProvider>
         )}
         {!loading && !error && !data && (

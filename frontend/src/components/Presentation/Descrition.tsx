@@ -1,9 +1,8 @@
-import { Box, Typography, Button } from '@mui/material';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { Box, Typography } from '@mui/material';
 import { useModule } from '../../contexts/ModuleContext';
 
 export default function Descrition() {
-    const { activeItem, modulo } = useModule();
+    const { activeItem } = useModule();
 
     if (!activeItem) {
         return null;
@@ -18,10 +17,10 @@ export default function Descrition() {
             title = `Transcrição da Apresentação`;
             description = (activeItem.data as any).transcricao || 'Nenhuma transcrição disponível.';
             break;
-        case 'practice':
-            title = `Instruções da Prática`;
-            description = activeItem.data.instrucao;
-            break;
+        // case 'practice':
+        //     title = `Instruções da Prática`;
+        //     description = activeItem.data.instrucao;
+        //     break;
         case 'production':
             title = `Instruções do Desafio`;
             description = activeItem.data.instrucaoDesafio;

@@ -1,35 +1,75 @@
-import { Box, Typography, LinearProgress, Button, Grid } from '@mui/material';
-import { useState } from 'react';
+import { Box, Typography, Button, Grid } from '@mui/material';
+import { useState, useEffect } from 'react';
+import { useModule, ItemType } from '../../../contexts/ModuleContext';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
-// This component receives the practice data as a prop
-// The type is inferred from the parent 'ModuleItemViewer'
 interface PracticeMarcarContentProps {
     data: {
         id: number;
         instrucao: string;
         dadosAtividade: Record<string, any>;
+        modulo?: { id: number; };
+        moduloId?: number;
     };
 }
 
-// Assuming data structure for PracticeMarcarContent
 interface MarcarData {
     pergunta: string;
     opcoes: string[];
+    resposta_correta: string;
 }
 
 export default function PracticeMarcarContent({ data }: PracticeMarcarContentProps) {
-    const marcarData = data.dadosAtividade as MarcarData;
+    const { markItemAsCompleted, handleNextItem } = useModule();
     const [selectedOption, setSelectedOption] = useState<string | null>(null);
+    const [checkStatus, setCheckStatus] = useState<'unchecked' | 'correct' | 'incorrect'>('unchecked');
+
+    useEffect(() => {
+        setSelectedOption(null);
+        setCheckStatus('unchecked');
+    }, [data.id]);
+
+    const marcarData = data.dadosAtividade as MarcarData;
+
+    const handleCheckAnswer = async () => {
+        if (!selectedOption) return;
+        if (selectedOption === marcarData.resposta_correta) {
+            setCheckStatus('correct');
+            await markItemAsCompleted(data.id, ItemType.PRACTICE);
+        } else {
+            setCheckStatus('incorrect');
+        }
+    };
+
+    const handleTryAgain = () => {
+        setCheckStatus('unchecked');
+        setSelectedOption(null);
+    };
+    
+    const getButtonSx = (option: string) => {
+        const isSelected = selectedOption === option;
+        const isCorrect = option === marcarData.resposta_correta;
+
+        if (checkStatus === 'correct' && isSelected) {
+            return { borderColor: 'green', backgroundColor: 'rgba(0, 255, 0, 0.2)' };
+        }
+        if (checkStatus === 'incorrect' && isSelected) {
+            return { borderColor: 'red', backgroundColor: 'rgba(255, 0, 0, 0.2)' };
+        }
+        if (checkStatus !== 'unchecked' && isCorrect) {
+            return { borderColor: 'green', backgroundColor: 'rgba(0, 255, 0, 0.2)' };
+        }
+        if (isSelected) {
+            return { borderColor: '#007aff', backgroundColor: 'rgba(0,122,255,0.2)' };
+        }
+        return { borderColor: '#282828', backgroundColor: 'rgba(40,40,40,0.4)' };
+    };
 
   return (
-    <Box sx={{ color: '#e0e0e0', p: 3 }}>
-      <Typography variant="h6">Etapa: Prática - Múltipla Escolha</Typography>
-      <Box sx={{ display: 'flex', alignItems: 'center', my: 2 }}>
-        <Typography sx={{ flexGrow: 1, color: '#b3b3b3' }}>Progresso: 0%</Typography> {/* Placeholder */}
-      </Box>
-      <LinearProgress variant="determinate" value={0} sx={{ height: 8, borderRadius: 4, mb: 3 }} /> {/* Placeholder */}
+    <Box sx={{ color: '#e0e0e0' }}>
+      <Typography variant="h4">Etapa: Prática - Múltipla Escolha</Typography>
 
-      <Box sx={{ bgcolor: '#1a1a1a', p: 4, borderRadius: 3, mb: 3, textAlign: 'center' }}>
+      <Box sx={{ bgcolor: '#1a1a1a', p: 4, borderRadius: 3, my: 3, textAlign: 'center' }}>
         <Typography variant="h5">{marcarData.pergunta || data.instrucao}</Typography>
       </Box>
 
@@ -39,17 +79,16 @@ export default function PracticeMarcarContent({ data }: PracticeMarcarContentPro
                 <Button
                     variant="outlined"
                     fullWidth
-                    onClick={() => setSelectedOption(option)}
+                    onClick={() => checkStatus === 'unchecked' && setSelectedOption(option)}
                     sx={{
                         p: 4,
-                        borderColor: selectedOption === option ? '#007aff' : '#282828',
-                        backgroundColor: selectedOption === option ? 'rgba(0,122,255,0.2)' : 'rgba(40,40,40,0.4)',
                         color: 'white',
                         textTransform: 'none',
                         borderRadius: 3,
+                        ...getButtonSx(option),
                         '&:hover': {
-                            borderColor: selectedOption === option ? '#007aff' : '#b3b3b3',
-                            backgroundColor: selectedOption === option ? 'rgba(0,122,255,0.3)' : 'rgba(40,40,40,0.6)',
+                            borderColor: '#b3b3b3',
+                            backgroundColor: 'rgba(40,40,40,0.6)',
                         }
                     }}
                 >
@@ -58,14 +97,28 @@ export default function PracticeMarcarContent({ data }: PracticeMarcarContentPro
             </Grid>
         ))}
       </Grid>
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, pt: 2 }}>
-            <Button sx={{ color: '#b3b3b3', textTransform: 'none', borderRadius: 3, p: '10px 24px' }}>
-              Pular Pergunta
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, pt: 4 }}>
+        {checkStatus === 'unchecked' && (
+            <>
+                <Button sx={{ color: '#b3b3b3', textTransform: 'none', borderRadius: 3, p: '10px 24px' }}>
+                    Pular Pergunta
+                </Button>
+                <Button variant="contained" onClick={handleCheckAnswer} disabled={!selectedOption} sx={{ bgcolor: '#007aff', color: 'white', textTransform: 'none', borderRadius: 3, p: '10px 32px' }}>
+                    Verificar Resposta
+                </Button>
+            </>
+        )}
+        {checkStatus === 'correct' && (
+            <Button variant="contained" onClick={handleNextItem} endIcon={<ArrowForwardIcon />} sx={{ bgcolor: 'green', color: 'white', textTransform: 'none', borderRadius: 3, p: '10px 32px' }}>
+                Próximo
             </Button>
-            <Button variant="contained" sx={{ bgcolor: '#007aff', color: 'white', textTransform: 'none', borderRadius: 3, p: '10px 32px' }}>
-              Verificar Resposta
+        )}
+        {checkStatus === 'incorrect' && (
+            <Button variant="contained" onClick={handleTryAgain} sx={{ bgcolor: 'red', color: 'white', textTransform: 'none', borderRadius: 3, p: '10px 32px' }}>
+                Tentar Novamente
             </Button>
-          </Box>
+        )}
+      </Box>
     </Box>
   );
 }

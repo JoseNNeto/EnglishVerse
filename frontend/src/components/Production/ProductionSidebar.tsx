@@ -1,6 +1,6 @@
 
 import { Box, Typography, Button, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
-import { ArrowBack, CheckCircle, Edit, EmojiObjects } from '@mui/icons-material';
+import { ArrowBack, CheckCircle, EmojiObjects } from '@mui/icons-material';
 
 export default function ProductionSidebar() {
   return (

@@ -24,6 +24,10 @@ export default function SideBar() {
             return 'Prática: Selecionar Palavras';
           case 'LISTA_PALAVRAS':
             return 'Prática: Listar Palavras';
+          case 'RELACIONAR_COLUNAS':
+            return 'Prática: Relacionar Colunas';
+          case 'SUBSTITUIR_PALAVRAS':
+            return 'Prática: Substituir Palavras';
           default:
             return 'Prática: Desconhecida';
         }
@@ -37,10 +41,6 @@ export default function SideBar() {
                 return 'Produção: Foto e Texto';
             case 'UPLOAD_ARQUIVO':
                 return 'Produção: Envio de Arquivo';
-            case 'RELACIONAR_COLUNAS':
-                return 'Produção: Relacionar Colunas';
-            case 'SUBSTITUIR_PALAVRAS':
-                return 'Produção: Substituir Palavras';
             case 'COMPLETAR_IMAGEM':
                 return 'Produção: Completar Imagem';
             default:
