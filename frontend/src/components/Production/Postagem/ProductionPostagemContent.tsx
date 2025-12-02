@@ -1,20 +1,16 @@
 
 import { Box, Typography, Paper, LinearProgress, Button, TextareaAutosize, styled } from '@mui/material';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
-import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
-import { useState, useRef, type ChangeEvent, type DragEvent } from 'react';
-import { useModule } from '../../../contexts/ModuleContext';
-import { useAuth } from '../../../contexts/AuthContext';
-import api from '../../../services/api';
+import { useState } from 'react';
 
-const Dropzone = styled('div')<{ isDragActive: boolean }>(({ theme, isDragActive }) => ({
-    border: `2px dashed ${isDragActive ? theme.palette.primary.main : theme.palette.grey[700]}`,
+const Dropzone = styled('div')(({ theme }) => ({
+    border: `2px dashed ${theme.palette.grey[700]}`,
     borderRadius: theme.shape.borderRadius,
     padding: theme.spacing(4),
     textAlign: 'center',
     cursor: 'pointer',
-    backgroundColor: isDragActive ? 'rgba(0, 122, 255, 0.1)' : '#1a1a1a',
-    transition: 'background-color 0.2s ease-in-out, border-color 0.2s ease-in-out',
+    backgroundColor: '#1a1a1a',
     '&:hover': {
         borderColor: theme.palette.primary.main,
     },
@@ -27,9 +23,9 @@ interface ProductionPostagemContentProps {
         midiaDesafioUrl?: string;
         dadosDesafio: Record<string, any>;
     };
-    isLast?: boolean;
 }
 
+// Assuming data structure for FOTO_E_TEXTO type in dadosDesafio
 interface PostagemData {
     link_externo?: string;
     formatos_aceitos?: string[];
@@ -37,136 +33,55 @@ interface PostagemData {
 }
 
 
-export default function ProductionPostagemContent({ data, isLast }: ProductionPostagemContentProps) {
-    const { positionalProgressPercentage, activeItem, allItems, setActiveItem, markItemAsCompleted, modulo } = useModule();
-    const { user } = useAuth();
+export default function ProductionPostagemContent({ data }: ProductionPostagemContentProps) {
     const postagemData = data.dadosDesafio as PostagemData;
     const [text, setText] = useState('');
-    const [selectedFile, setSelectedFile] = useState<File | null>(null);
-    const [isDragActive, setIsDragActive] = useState(false);
-    const fileInputRef = useRef<HTMLInputElement>(null);
-
     const wordCount = text.trim().split(/\s+/).filter(Boolean).length;
-    const minWords = postagemData.minWords || 10;
-
-    const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files[0]) {
-            setSelectedFile(e.target.files[0]);
-        }
-    };
-
-    const handleDrop = (e: DragEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        e.stopPropagation();
-        setIsDragActive(false);
-        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-            setSelectedFile(e.dataTransfer.files[0]);
-        }
-    };
-
-    const handleDragActivity = (e: DragEvent<HTMLDivElement>, isActive: boolean) => {
-        e.preventDefault();
-        e.stopPropagation();
-        setIsDragActive(isActive);
-    };
-
-    const handleDropzoneClick = () => {
-        fileInputRef.current?.click();
-    };
-
-    const handleNext = () => {
-        if (!activeItem) return;
-        const currentItemIndex = allItems.findIndex(item => item.type === activeItem.type && item.data.id === activeItem.data.id);
-        const hasNextItem = currentItemIndex !== -1 && currentItemIndex < allItems.length - 1;
-        if (hasNextItem) {
-            setActiveItem(allItems[currentItemIndex + 1]);
-        } else {
-            if (user && modulo) {
-                api.put(`/api/progresso/concluir?alunoId=${user.id}&moduloId=${modulo.id}`).catch(console.error);
-            }
-        }
-    };
-
-    const handleSubmit = () => {
-        if (!selectedFile || wordCount < minWords || !activeItem) return;
-        markItemAsCompleted(`${activeItem.type}-${activeItem.data.id}`);
-        handleNext();
-    };
+    const minWords = postagemData.minWords || 50;
 
 
     return (
-        <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-            <Box sx={{ width: '100%' }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%', mt: 4 }}>
+            <Box sx={{ width: '90%' }}>
                 <Box sx={{ color: '#e0e0e0' }}>
 
-                    <Typography variant="h4">Etapa: Desafio de Produção - Foto e Texto</Typography>
-                    <Box sx={{ display: 'flex', alignItems: 'center', my: 1 }}>
-                        <Typography sx={{ flexGrow: 1, color: '#b3b3b3' }}>Progresso: {Math.round(positionalProgressPercentage)}%</Typography>
+                    <Box sx={{ mb: 3 }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                            <Typography sx={{ flexGrow: 1, color: '#b3b3b3' }}>Progresso: 0%</Typography> {/* Placeholder */}
+                        </Box>
+                        <LinearProgress variant="determinate" value={0} sx={{ height: 8, borderRadius: 4 }} /> {/* Placeholder */}
                     </Box>
-                    <LinearProgress variant="determinate" value={positionalProgressPercentage} sx={{ height: 8, borderRadius: 4, mb: 3 }} />
 
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+                    <Typography variant="h4" sx={{ mb: 3 }}>Etapa: Desafio de Produção - Foto e Texto</Typography>
+
+                    <Paper sx={{ bgcolor: '#1a1a1a', p: 3, borderRadius: 3, mb: 3 }}>
+                        <Typography variant="h5" sx={{ mb: 1 }}>Seu Desafio</Typography>
                         <Typography variant="body1" sx={{ color: '#b3b3b3' }}>
                             {data.instrucaoDesafio}
                         </Typography>
-                    </Box>
-
-                    {postagemData.link_externo && (
-                        <Box sx={{ mb: 3 }}>
-                            <Typography variant="h6" sx={{ color: '#e0e0e0', mb: 1 }}>Site Sugerido</Typography>
-                            <Button
-                                variant="outlined"
-                                href={postagemData.link_externo}
+                        {postagemData.link_externo && (
+                            <Button 
+                                variant="outlined" 
+                                sx={{mt: 2}} 
+                                href={postagemData.link_externo} 
                                 target="_blank"
-                                rel="noopener noreferrer"
                             >
-                                Visitar
+                                Ir para o site sugerido
                             </Button>
-                        </Box>
-                    )}
+                        )}
+                    </Paper>
 
                     <Box sx={{ mb: 3 }}>
                         <Typography variant="h6" sx={{ color: '#e0e0e0', mb: 1 }}>Sua Imagem:</Typography>
-                        <input
-                            type="file"
-                            ref={fileInputRef}
-                            onChange={handleFileChange}
-                            style={{ display: 'none' }}
-                            accept={postagemData.formatos_aceitos?.join(',')}
-                        />
-                        <Dropzone
-                            isDragActive={isDragActive}
-                            onClick={handleDropzoneClick}
-                            onDrop={handleDrop}
-                            onDragOver={(e) => handleDragActivity(e, true)}
-                            onDragEnter={(e) => handleDragActivity(e, true)}
-                            onDragLeave={(e) => handleDragActivity(e, false)}
-                        >
-                            {selectedFile ? (
-                                <>
-                                    <InsertDriveFileIcon sx={{ fontSize: 64, color: '#007aff' }} />
-                                    <Typography variant="h6" sx={{ color: '#e0e0e0', mt: 2 }}>
-                                        {selectedFile.name}
-                                    </Typography>
-                                    <Typography variant="body2" sx={{ color: '#b3b3b3' }}>
-                                        ({(selectedFile.size / 1024).toFixed(2)} KB)
-                                    </Typography>
-                                    <Button component="span" sx={{ color: '#007aff', textTransform: 'none', mt: 1 }}>
-                                        Clique para trocar
-                                    </Button>
-                                </>
-                            ) : (
-                                <>
-                                    <UploadFileIcon sx={{ fontSize: 64, color: '#b3b3b3' }} />
-                                    <Typography variant="h6" sx={{ color: '#e0e0e0', mt: 2 }}>
-                                        Arraste e solte sua imagem aqui
-                                    </Typography>
-                                    <Typography variant="body1" sx={{ color: '#b3b3b3' }}>
-                                        ou <Button component="span" sx={{ color: '#007aff', textTransform: 'none' }}>clique para procurar</Button>
-                                    </Typography>
-                                </>
-                            )}
-                            {postagemData.formatos_aceitos && !selectedFile && (
+                        <Dropzone>
+                            <UploadFileIcon sx={{ fontSize: 64, color: '#b3b3b3' }} />
+                            <Typography variant="h6" sx={{ color: '#e0e0e0', mt: 2 }}>
+                                Arraste e solte sua imagem aqui
+                            </Typography>
+                            <Typography variant="body1" sx={{ color: '#b3b3b3' }}>
+                                ou <Button component="span" sx={{ color: '#007aff', textTransform: 'none' }}>clique para procurar</Button>
+                            </Typography>
+                            {postagemData.formatos_aceitos && (
                                 <Typography variant="caption" sx={{ color: '#b3b3b3', mt: 2 }}>
                                     Formatos aceitos: {postagemData.formatos_aceitos.join(', ')}
                                 </Typography>
@@ -187,7 +102,7 @@ export default function ProductionPostagemContent({ data, isLast }: ProductionPo
                                 color: '#e0e0e0',
                                 border: '2px solid #282828',
                                 borderRadius: '14px',
-                                padding: '8px 16px',
+                                padding: '16px',
                                 fontFamily: 'inherit',
                                 fontSize: '16px'
                             }}
@@ -198,15 +113,9 @@ export default function ProductionPostagemContent({ data, isLast }: ProductionPo
                         </Box>
                     </Box>
 
-                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', pt: 2 }}>
-                        <Button 
-                            variant="contained" 
-                            size="large" 
-                            sx={{ textTransform: 'none', borderRadius: 3 }} 
-                            onClick={handleSubmit}
-                            disabled={!selectedFile || wordCount < minWords}
-                        >
-                            {isLast ? 'Enviar Desafio e concluir módulo' : 'Enviar Desafio'}
+                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3 }}>
+                        <Button variant="contained" size="large" sx={{ textTransform: 'none', borderRadius: 3, opacity: 0.5 }}>
+                        Enviar Desafio
                         </Button>
                     </Box>
 

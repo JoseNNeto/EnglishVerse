@@ -10,4 +10,5 @@ import com.joseneto.englishverse.model.PracticeAtividade;
 @Repository
 public interface PracticeAtividadeRepository extends JpaRepository<PracticeAtividade, Long> {
     List<PracticeAtividade> findByModuloId(Long moduloId);
+    long countByModuloId(Long moduloId);
 }

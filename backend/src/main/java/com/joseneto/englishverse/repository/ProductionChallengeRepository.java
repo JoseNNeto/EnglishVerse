@@ -10,4 +10,5 @@ import com.joseneto.englishverse.model.ProductionChallenge;
 @Repository
 public interface ProductionChallengeRepository extends JpaRepository<ProductionChallenge, Long> {
     List<ProductionChallenge> findByModuloId(Long moduloId);
+    long countByModuloId(Long moduloId);
 }

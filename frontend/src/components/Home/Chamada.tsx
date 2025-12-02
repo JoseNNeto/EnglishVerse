@@ -2,26 +2,25 @@ import { Box, Button, Typography } from '@mui/material';
 import ImageCall from '../../assets/ImageWithFallback.png';
 import { useEffect, useState } from 'react';
 import api from '../../services/api';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
+import { Link } from 'react-router-dom';
 
 interface Modulo {
   id: number;
   titulo: string;
   descricao: string;
   imagemCapaUrl: string;
+  // Adicione outros campos se necessário
 }
 
 export default function Chamada() {
   const [ultimoModulo, setUltimoModulo] = useState<Modulo | null>(null);
-  const { user } = useAuth();
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchModulos = async () => {
       try {
         const response = await api.get<Modulo[]>('/modulos');
         if (response.data.length > 0) {
+          // Pega o último módulo da lista
           setUltimoModulo(response.data[response.data.length - 1]);
         }
       } catch (error) {
@@ -31,22 +30,6 @@ export default function Chamada() {
 
     fetchModulos();
   }, []);
-
-  const handleModuleClick = async () => {
-    if (user && ultimoModulo) {
-      const requestUrl = `/progresso/iniciar?alunoId=${user.id}&moduloId=${ultimoModulo.id}`;
-      console.log("Iniciando requisição POST para (URL completa será /api" + requestUrl + "):", requestUrl);
-      try {
-        const response = await api.post(requestUrl);
-        console.log(`Requisição POST para ${requestUrl} bem-sucedida. Resposta:`, response.data);
-      } catch (error) {
-        console.error(`Requisição POST para ${requestUrl} falhou. Erro:`, error);
-      }
-    }
-    if (ultimoModulo) {
-      navigate(`/presentation/${ultimoModulo.id}`);
-    }
-  };
 
   return (
     <Box
@@ -89,7 +72,8 @@ export default function Chamada() {
         {ultimoModulo && (
           <Button
             variant="contained"
-            onClick={handleModuleClick}
+            component={Link}
+            to={`/presentation/${ultimoModulo.id}`}
             sx={{
               backgroundColor: '#007aff',
               '&:hover': { backgroundColor: '#0056b3' },
