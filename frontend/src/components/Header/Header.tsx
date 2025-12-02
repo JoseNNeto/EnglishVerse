@@ -1,21 +1,38 @@
-import { useState } from 'react';
-import { AppBar, Toolbar, InputBase, Badge, Avatar, Box, Menu, MenuItem, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button, IconButton } from '@mui/material';
+import { useState, useEffect } from 'react';
+import { AppBar, Toolbar, InputBase, Avatar, Box, Menu, MenuItem, Dialog, DialogActions, DialogContent, DialogContentText, Button, DialogTitle } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import LogoEnglishVerse from '../../assets/englishverse-sem-fundo.png';
 import { useAuth } from '../../contexts/AuthContext';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 
 export default function Header() {
   const { isAuthenticated, user, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [openDialog, setOpenDialog] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState(searchParams.get('q') || '');
 
   const isHomePage = location.pathname === '/';
+
+  // Debounced search effect
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (searchQuery.trim()) {
+        setSearchParams({ q: searchQuery.trim() });
+      } else {
+        // Remove 'q' from URL if search is empty
+        searchParams.delete('q');
+        setSearchParams(searchParams);
+      }
+    }, 500); // 500ms debounce delay
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [searchQuery, setSearchParams]);
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -44,13 +61,6 @@ export default function Header() {
     handleCloseDialog();
   };
 
-  const handleSearchSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (searchQuery.trim()) {
-      navigate(`/?q=${searchQuery.trim()}`);
-    }
-  };
-
   return (
     <>
       <AppBar 
@@ -76,8 +86,6 @@ export default function Header() {
 
           {isHomePage && (
             <Box 
-              component="form"
-              onSubmit={handleSearchSubmit}
               sx={{
                 position: 'relative',
                 backgroundColor: '#282828',
@@ -105,23 +113,6 @@ export default function Header() {
           <Box sx={{ display: 'flex', alignItems: 'center', minWidth: isHomePage ? 'auto' : '600px', justifyContent: 'flex-end' }}>
             {isAuthenticated && user && (
               <>
-                <IconButton color="inherit">
-                  <Badge 
-                    badgeContent="" 
-                    color="primary" 
-                    variant="dot"
-                    sx={{
-                      "& .MuiBadge-badge": { 
-                        backgroundColor: "#007aff",
-                        width: '8px',
-                        height: '8px',
-                        borderRadius: '50%',
-                      },
-                    }}
-                  >
-                    <NotificationsIcon sx={{color: 'white'}}/>
-                  </Badge>
-                </IconButton>
                 <Avatar sx={{ bgcolor: '#007aff', cursor: 'pointer', ml: 2 }} onClick={handleMenuOpen}>
                   {user.nome.charAt(0).toUpperCase()}
                 </Avatar>

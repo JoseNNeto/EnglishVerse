@@ -69,7 +69,7 @@ export default function SideBar() {
         width: '320px', 
         backgroundColor: '#1a1a1a', 
         p: 3, 
-        height: '100vh',
+        height: '100%',
         display: 'flex',
         flexDirection: 'column',
         gap: 4,

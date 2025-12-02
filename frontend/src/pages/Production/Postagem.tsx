@@ -1,16 +1,23 @@
-
 import { Box, CircularProgress, Typography } from '@mui/material';
-import ProductionSidebar from '../../components/Production/ProductionSidebar';
 import ProductionPostagemContent from '../../components/Production/Postagem/ProductionPostagemContent';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../../services/api';
+import { ModuleProvider } from '../../contexts/ModuleContext';
 
 interface ProductionChallenge {
   id: number;
   instrucaoDesafio: string;
-  midiaDesafioUrl?: string;
   dadosDesafio: Record<string, any>;
+  modulo: { id: number; nome: string; };
+}
+
+function ProductionPostagemPageContent({data}: {data: ProductionChallenge}) {
+    return (
+        <Box sx={{ flexGrow: 1 }}>
+            <ProductionPostagemContent data={data} />
+        </Box>
+    );
 }
 
 export default function ProductionPostagem() {
@@ -39,19 +46,21 @@ export default function ProductionPostagem() {
   }, [id]);
 
   return (
-    <Box sx={{ display: 'flex', backgroundColor: '#121212', minHeight: '100vh' }}>
-      <ProductionSidebar />
-      <Box sx={{ flexGrow: 1, p: 3, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        {loading ? (
+    <Box sx={{ display: 'flex', backgroundColor: '#121212', minHeight: '100vh', p: 3, justifyContent: 'center', alignItems: 'center' }}>
+        {loading && (
           <CircularProgress />
-        ) : error ? (
-          <Typography color="error">{error}</Typography>
-        ) : data ? (
-          <ProductionPostagemContent data={data} />
-        ) : (
-          <Typography>No data available.</Typography>
         )}
-      </Box>
+        {error && (
+            <Typography color="error">{error}</Typography>
+        )}
+        {data && (
+          <ModuleProvider moduloId={data.modulo.id.toString()}>
+            <ProductionPostagemPageContent data={data} />
+          </ModuleProvider>
+        )}
+        {!loading && !error && !data && (
+            <Typography>No data available.</Typography>
+        )}
     </Box>
   );
 }

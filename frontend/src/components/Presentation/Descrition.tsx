@@ -21,10 +21,10 @@ export default function Descrition() {
         //     title = `Instruções da Prática`;
         //     description = activeItem.data.instrucao;
         //     break;
-        case 'production':
-            title = `Instruções do Desafio`;
-            description = activeItem.data.instrucaoDesafio;
-            break;
+        // case 'production':
+        //     title = `Instruções do Desafio`;
+        //     description = activeItem.data.instrucaoDesafio;
+        //     break;
         default:
             return null; // Don't render for unknown types
     }

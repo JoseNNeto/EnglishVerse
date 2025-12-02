@@ -1,16 +1,24 @@
 
 import { Box, CircularProgress, Typography } from '@mui/material';
-import ProductionSidebar from '../../components/Production/ProductionSidebar';
 import ProductionOuvirTextoContent from '../../components/Production/OuvirTexto/ProductionOuvirTextoContent';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../../services/api';
+import { ModuleProvider } from '../../contexts/ModuleContext';
 
 interface ProductionChallenge {
   id: number;
   instrucaoDesafio: string;
-  midiaDesafioUrl?: string;
   dadosDesafio: Record<string, any>;
+  modulo: { id: number; nome: string; };
+}
+
+function ProductionOuvirTextoPageContent({data}: {data: ProductionChallenge}) {
+    return (
+        <Box sx={{ flexGrow: 1 }}>
+            <ProductionOuvirTextoContent data={data} />
+        </Box>
+    );
 }
 
 export default function ProductionOuvirTexto() {
@@ -40,16 +48,26 @@ export default function ProductionOuvirTexto() {
 
   return (
     <Box sx={{ display: 'flex', backgroundColor: '#121212', minHeight: '100vh' }}>
-      <ProductionSidebar />
       <Box sx={{ flexGrow: 1, p: 3, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        {loading ? (
-          <CircularProgress />
-        ) : error ? (
-          <Typography color="error">{error}</Typography>
-        ) : data ? (
-          <ProductionOuvirTextoContent data={data} />
-        ) : (
-          <Typography>No data available.</Typography>
+        {loading && (
+          <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <CircularProgress />
+          </Box>
+        )}
+        {error && (
+          <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <Typography color="error">{error}</Typography>
+          </Box>
+        )}
+        {data && (
+          <ModuleProvider moduloId={data.modulo.id.toString()}>
+            <ProductionOuvirTextoPageContent data={data} />
+          </ModuleProvider>
+        )}
+        {!loading && !error && !data && (
+          <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <Typography>No data available.</Typography>
+          </Box>
         )}
       </Box>
     </Box>
