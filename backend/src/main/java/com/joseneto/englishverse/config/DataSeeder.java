@@ -65,7 +65,7 @@ public class DataSeeder implements CommandLineRunner {
                     Modulo modPronouns = new Modulo();
                     modPronouns.setTopico(topicoIniciante);
                     modPronouns.setTitulo("Subject Pronouns (I, You, He, She, It, We, They)");
-                    modPronouns.setDescricao("Aprenda os pronomes pessoais com clássicos da música.");
+                    modPronouns.setDescricao("Aprenda os pronomes pessoais com clássicos da música, esquetes de comédia, trechos de filmes e memes!");
                     modPronouns.setImagemCapaUrl("https://img.youtube.com/vi/5tc0gLSSU1M/hqdefault.jpg"); // Capa dos Beatles
                     modPronouns.setPublicado(true);
                     modPronouns = moduloRepository.save(modPronouns);
@@ -229,8 +229,8 @@ public class DataSeeder implements CommandLineRunner {
                     Modulo modPronouns = new Modulo();
                     modPronouns.setTopico(topicoIniciante);
                     modPronouns.setTitulo("Present Simple (‘To Be’) - Am, Is, Are");
-                    modPronouns.setDescricao("Aprenda os pronomes pessoais com clássicos da música.");
-                    modPronouns.setImagemCapaUrl("https://img.youtube.com/vi/5tc0gLSSU1M/hqdefault.jpg"); // Capa dos Beatles
+                    modPronouns.setDescricao("Domine o verbo mais famoso do inglês: entenda quando usar Am, Is e Are com Star Wars, The Beatles, Poemas, HQs e muito mais!");
+                    modPronouns.setImagemCapaUrl("https://img.youtube.com/vi/t1Jm5epJr10/hqdefault.jpg"); // Capa dos Beatles
                     modPronouns.setPublicado(true);
                     modPronouns = moduloRepository.save(modPronouns);
 
@@ -246,8 +246,8 @@ public class DataSeeder implements CommandLineRunner {
                     Modulo modPronouns = new Modulo();
                     modPronouns.setTopico(topicoIniciante);
                     modPronouns.setTitulo("Articles (A, An, The)");
-                    modPronouns.setDescricao("Aprenda os pronomes pessoais com clássicos da música.");
-                    modPronouns.setImagemCapaUrl("https://img.youtube.com/vi/5tc0gLSSU1M/hqdefault.jpg"); // Capa dos Beatles
+                    modPronouns.setDescricao("Um, uma ou o específico? Aprenda a usar os artigos A, An e The pra não se confundir na hora de falar.");
+                    modPronouns.setImagemCapaUrl("https://m.media-amazon.com/images/I/51wckS2zxwL._AC_UF894,1000_QL80_.jpg"); // Capa dos Beatles
                     modPronouns.setPublicado(true);
                     modPronouns = moduloRepository.save(modPronouns);
 
@@ -263,8 +263,8 @@ public class DataSeeder implements CommandLineRunner {
                     Modulo modPronouns = new Modulo();
                     modPronouns.setTopico(topicoIniciante);
                     modPronouns.setTitulo("Present Simple (‘to have’ & other verbs)");
-                    modPronouns.setDescricao("Aprenda os pronomes pessoais com clássicos da música.");
-                    modPronouns.setImagemCapaUrl("https://img.youtube.com/vi/5tc0gLSSU1M/hqdefault.jpg"); // Capa dos Beatles
+                    modPronouns.setDescricao("Saia do básico! Aprenda a usar 'To Have' e outros verbos essenciais pra falar da tua rotina.");
+                    modPronouns.setImagemCapaUrl("https://img.youtube.com/vi/Yjyj8qnqkYI/hqdefault.jpg"); // Capa dos Beatles
                     modPronouns.setPublicado(true);
                     modPronouns = moduloRepository.save(modPronouns);
 
@@ -272,20 +272,20 @@ public class DataSeeder implements CommandLineRunner {
                 }
             );
 
-        moduloRepository.findByTitulo("Present Simple (‘to have’ & other verbs)")
+        moduloRepository.findByTitulo("Adverbs of frequency")
             .ifPresentOrElse(
-                (mod) -> System.out.println(">>> Módulo 'Present Simple (‘to have’ & other verbs)' já existe. ID: " + mod.getId()),
+                (mod) -> System.out.println(">>> Módulo 'Adverbs of frequency' já existe. ID: " + mod.getId()),
                 () -> {
-                    System.out.println(">>> Cadastrando Módulo: Present Simple (‘to have’ & other verbs)...");
+                    System.out.println(">>> Cadastrando Módulo: Adverbs of frequency...");
                     Modulo modPronouns = new Modulo();
                     modPronouns.setTopico(topicoIniciante);
-                    modPronouns.setTitulo("Present Simple (‘to have’ & other verbs)");
-                    modPronouns.setDescricao("Aprenda os pronomes pessoais com clássicos da música.");
-                    modPronouns.setImagemCapaUrl("https://img.youtube.com/vi/5tc0gLSSU1M/hqdefault.jpg"); // Capa dos Beatles
+                    modPronouns.setTitulo("Adverbs of frequency");
+                    modPronouns.setDescricao("Sempre, às vezes ou nunca? Aprenda a dizer com que frequência as coisas acontecem na tua vida.");
+                    modPronouns.setImagemCapaUrl("https://m.media-amazon.com/images/M/MV5BZTk0ZmUxZTktMDBlNC00YmZhLWJlNzgtMmY4M2NlNWIyYWZhXkEyXkFqcGc@._V1_.jpg"); // Capa dos Beatles
                     modPronouns.setPublicado(true);
                     modPronouns = moduloRepository.save(modPronouns);
 
-                    System.out.println(">>> Módulo 'Present Simple (‘to have’ & other verbs)' criado com sucesso!");
+                    System.out.println(">>> Módulo 'Adverbs of frequency' criado com sucesso!");
                 }
             );
     }
