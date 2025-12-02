@@ -201,10 +201,27 @@ export const ModuleProvider = ({ children, moduloId }: ModuleProviderProps) => {
 
                 setAllItems(combinedItems);
 
-                // Set the first item, but only if one isn't already active
-                if (combinedItems.length > 0 && !activeItem) {
+                // --- LOGIC FOR DEEP LINKING ---
+                const queryParams = new URLSearchParams(window.location.search);
+                const typeParam = queryParams.get('type');
+                const idParam = queryParams.get('id');
+
+                let targetItem: ModuleItem | null = null;
+                
+                if (typeParam && idParam) {
+                    const numericId = Number(idParam);
+                    targetItem = combinedItems.find(item => 
+                        item.type.toUpperCase() === typeParam.toUpperCase() && item.data.id === numericId
+                    ) || null;
+                }
+
+                // Set active item based on deep link or default to first item
+                if (targetItem) {
+                    setActiveItem(targetItem);
+                } else if (combinedItems.length > 0) {
                     setActiveItem(combinedItems[0]);
                 }
+
 
                 // Call to start module progress
                 if (user && user.id) {

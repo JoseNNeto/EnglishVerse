@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.joseneto.englishverse.dtos.ProgressoEmAndamentoResponseDTO; // Added import
 import com.joseneto.englishverse.dtos.ProgressoItemRequestDTO;
 import com.joseneto.englishverse.dtos.ProgressoItemResponseDTO;
+import com.joseneto.englishverse.dtos.UltimoAcessoDTO;
 import com.joseneto.englishverse.model.Progresso;
 import com.joseneto.englishverse.model.ProgressoItem;
 import com.joseneto.englishverse.model.Usuario;
@@ -71,7 +72,7 @@ public class ProgressoController {
             return ResponseEntity.status(HttpStatus.CREATED).body(new ProgressoItemResponseDTO(progressoItem));
         } catch (RuntimeException e) {
             // Em um sistema real, você retornaria uma mensagem de erro mais detalhada
-            return ResponseEntity.badRequest().body(null); 
+            return ResponseEntity.badRequest().body(null);
         }
     }
 
@@ -87,5 +88,14 @@ public class ProgressoController {
                 .map(ProgressoItemResponseDTO::new)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(responseDTOs);
+    }
+
+    @GetMapping("/modulo/{moduloId}/ultimo-acesso")
+    public ResponseEntity<UltimoAcessoDTO> getUltimoAcesso(
+            @AuthenticationPrincipal Usuario usuario,
+            @PathVariable Long moduloId) {
+        return progressoService.getUltimoAcesso(usuario.getId(), moduloId)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 }

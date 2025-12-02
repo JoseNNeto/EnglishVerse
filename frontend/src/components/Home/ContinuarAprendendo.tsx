@@ -2,27 +2,34 @@ import { Box, Card, CardContent, CardMedia, Typography, LinearProgress, CardActi
 import { useState, useEffect } from 'react';
 import api from '../../services/api';
 import { useAuth } from '../../contexts/AuthContext';
-import { Link } from 'react-router-dom';
-import { StatusProgresso } from '../../contexts/ModuleContext'; // Assuming StatusProgresso is exported from ModuleContext
+import { useNavigate } from 'react-router-dom';
+import { StatusProgresso } from '../../contexts/ModuleContext';
 
-// Define the interface mirroring the backend DTO
+// Define interfaces mirroring backend DTOs
 export interface ProgressoEmAndamentoResponseDTO {
   id: number;
   alunoId: number;
   moduloId: number;
   moduloTitulo: string;
   moduloImagemCapaUrl: string;
-  status: StatusProgresso; // Use the actual enum if available, or string
+  status: StatusProgresso;
   dataInicio: string;
   dataConclusao: string | null;
   totalItens: number;
   itensConcluidos: number;
 }
 
+interface UltimoAcessoDTO {
+  itemType: string;
+  itemId: number;
+  moduloId: number;
+}
+
 export default function ContinuarAprendendo() {
   const { user, isAuthenticated } = useAuth();
   const [progressoModulos, setProgressoModulos] = useState<ProgressoEmAndamentoResponseDTO[]>([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProgresso = async () => {
@@ -43,12 +50,31 @@ export default function ContinuarAprendendo() {
     fetchProgresso();
   }, [isAuthenticated, user?.id]);
 
+  const handleCardClick = async (moduloId: number) => {
+    try {
+      const response = await api.get<UltimoAcessoDTO>(`/progresso/modulo/${moduloId}/ultimo-acesso`);
+      if (response.status === 200 && response.data) {
+        const { itemType, itemId } = response.data;
+        navigate(`/presentation/${moduloId}?type=${itemType}&id=${itemId}`);
+      } else {
+        navigate(`/presentation/${moduloId}`);
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 404) {
+        navigate(`/presentation/${moduloId}`);
+      } else {
+        console.error("Erro ao buscar último acesso:", error);
+        navigate(`/presentation/${moduloId}`); // Fallback
+      }
+    }
+  };
+
   if (loading) {
-    return null; // Or a loading spinner
+    return null;
   }
 
   if (progressoModulos.length === 0) {
-    return null; // Hide the section if no modules in progress
+    return null;
   }
 
   return (
@@ -68,21 +94,21 @@ export default function ContinuarAprendendo() {
               backgroundColor: '#1a1a1a',
               color: 'white',
               borderRadius: '14px',
-              minWidth: 320, // Increased width
-              maxWidth: 320, // Increased width
+              minWidth: 320,
+              maxWidth: 320,
               height: 160,
-              flexShrink: 0, // Prevent shrinking in flex container
+              flexShrink: 0,
             }}>
-              <CardActionArea component={Link} to={`/presentation/${item.moduloId}`} sx={{ display: 'flex', height: '100%' }}>
+              <CardActionArea onClick={() => handleCardClick(item.moduloId)} sx={{ display: 'flex', height: '100%' }}>
                 <CardMedia
                   component="img"
                   sx={{ width: 160, height: '100%', objectFit: 'cover' }}
-                  image={item.moduloImagemCapaUrl || 'https://via.placeholder.com/160'} // Fallback image
+                  image={item.moduloImagemCapaUrl || 'https://via.placeholder.com/160'}
                   alt={item.moduloTitulo}
                 />
                 <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
                   <CardContent sx={{ flex: '1 0 auto' }}>
-                    <Typography component="div" variant="body1"> {/* Changed from h6 to body1 */}
+                    <Typography component="div" variant="body1">
                       {item.moduloTitulo}
                     </Typography>
                     <Box sx={{ width: '100%', mt: 2 }}>
