@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
-import { AppBar, Toolbar, InputBase, Badge, Avatar, Box, Menu, MenuItem, Dialog, DialogActions, DialogContent, DialogContentText, Button, IconButton, DialogTitle } from '@mui/material';
+import { AppBar, Toolbar, InputBase, Avatar, Box, Menu, MenuItem, Dialog, DialogActions, DialogContent, DialogContentText, Button, DialogTitle } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import LogoEnglishVerse from '../../assets/englishverse-sem-fundo.png';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';

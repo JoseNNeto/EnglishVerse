@@ -1,4 +1,4 @@
-import { Box, Card, CardActionArea, CardMedia, CardContent, Typography, Grid } from '@mui/material';
+import { Box, Card, CardActionArea, CardContent, Typography, Grid } from '@mui/material';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -39,34 +39,41 @@ const TopicCard = ({ topic }: { topic: Modulo }) => (
       }
     }}>
       <CardActionArea component={Link} to={`/presentation/${topic.id}`} sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-        <CardMedia
-          component="img"
-          height="270"
-          image={topic.imagemCapaUrl || 'https://via.placeholder.com/400x270'} // Fallback image
-          alt={topic.titulo}
-          sx={{ borderRadius: '14px 14px 0 0', position: 'relative', flexShrink: 0 }}
-        >
-        </CardMedia>
-        <Box
-          sx={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '270px',
-            backgroundColor: 'rgba(0,0,0,0.6)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
+        <Box sx={{
+          height: '270px',
+          width: '100%',
+          position: 'relative',
+          borderRadius: '14px 14px 0 0',
+          overflow: 'hidden', // Ensures the background image respects the border radius
+          backgroundImage: `url(${topic.imagemCapaUrl || 'https://via.placeholder.com/400x270'})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'top',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          '& .overlay': {
             opacity: 0,
             transition: 'opacity 0.3s',
-            '&:hover': {
-              opacity: 1,
-            },
-            borderRadius: '14px 14px 0 0',
-          }}
-        >
-          <PlayArrowIcon sx={{ color: 'white', fontSize: 60, backgroundColor: '#007aff', borderRadius: '50%', padding: '8px' }} />
+          },
+          '&:hover .overlay': {
+            opacity: 1,
+          },
+        }}>
+          <Box className="overlay"
+            sx={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              backgroundColor: 'rgba(0,0,0,0.6)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <PlayArrowIcon sx={{ color: 'white', fontSize: 60, backgroundColor: '#007aff', borderRadius: '50%', padding: '8px' }} />
+          </Box>
         </Box>
         <CardContent sx={{ p: '16px', flexGrow: 1, overflowY: 'auto', height: '80px' }}>
           <Typography variant="body1">{topic.titulo}</Typography>

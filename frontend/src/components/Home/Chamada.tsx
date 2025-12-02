@@ -44,7 +44,7 @@ export default function Chamada() {
         alignItems: 'center',
         backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.8), rgba(0,0,0,0.6) 50%, rgba(0,0,0,0)), url(${ultimoModulo ? ultimoModulo.imagemCapaUrl : ImageCall})`,
         backgroundSize: 'cover',
-        backgroundPosition: 'center',
+        backgroundPosition: 'top',
         p: 6,
       }}
     >

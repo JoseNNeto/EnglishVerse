@@ -7,7 +7,7 @@ import api from '../services/api';
 import type { Modulo } from '../contexts/ModuleContext';
 import { Box, Typography, Grid, CircularProgress } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { Card, CardActionArea, CardMedia, CardContent } from '@mui/material';
+import { Card, CardActionArea, CardContent } from '@mui/material';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 
 
@@ -29,33 +29,41 @@ const ModuleCard = ({ module }: { module: Modulo }) => (
         }
       }}>
         <CardActionArea component={Link} to={`/presentation/${module.id}`} sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-          <CardMedia
-            component="img"
-            height="270"
-            image={module.imagemCapaUrl || 'https://via.placeholder.com/400x270'}
-            alt={module.titulo}
-            sx={{ borderRadius: '14px 14px 0 0', position: 'relative', flexShrink: 0 }}
-          />
-          <Box
-            sx={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '270px',
-              backgroundColor: 'rgba(0,0,0,0.6)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
+          <Box sx={{
+            height: '270px',
+            width: '100%',
+            position: 'relative',
+            borderRadius: '14px 14px 0 0',
+            overflow: 'hidden',
+            backgroundImage: `url(${module.imagemCapaUrl || 'https://via.placeholder.com/400x270'})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'top',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            '& .overlay': {
               opacity: 0,
               transition: 'opacity 0.3s',
-              '&:hover': {
-                opacity: 1,
-              },
-              borderRadius: '14px 14px 0 0',
-            }}
-          >
-            <PlayArrowIcon sx={{ color: 'white', fontSize: 60, backgroundColor: '#007aff', borderRadius: '50%', padding: '8px' }} />
+            },
+            '&:hover .overlay': {
+              opacity: 1,
+            },
+          }}>
+            <Box className="overlay"
+              sx={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                backgroundColor: 'rgba(0,0,0,0.6)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <PlayArrowIcon sx={{ color: 'white', fontSize: 60, backgroundColor: '#007aff', borderRadius: '50%', padding: '8px' }} />
+            </Box>
           </Box>
           <CardContent sx={{ p: '16px', flexGrow: 1, overflowY: 'auto', height: '80px' }}>
             <Typography variant="body1">{module.titulo}</Typography>
