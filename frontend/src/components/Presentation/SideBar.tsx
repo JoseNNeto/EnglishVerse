@@ -3,11 +3,11 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import EditIcon from '@mui/icons-material/Edit';
 import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
-import { useModule } from '../../contexts/ModuleContext';
+import { useModule, ItemType } from '../../contexts/ModuleContext';
 import { Link } from 'react-router-dom';
 
 export default function SideBar() {
-  const { loading, modulo, allItems, activeItem, setActiveItem } = useModule();
+  const { loading, modulo, allItems, activeItem, completedItems, handleSelectItem } = useModule();
 
   // Moved helper functions inside the component
   const getItemText = (item: (typeof allItems)[number]) => {
@@ -88,13 +88,26 @@ export default function SideBar() {
         <List sx={{overflowY: 'auto'}}>
           {allItems.map((item, index) => {
             const isActive = activeItem?.type === item.type && activeItem?.data.id === item.data.id;
-            const color = isActive ? '#007aff' : '#b3b3b3';
+            
+            const isCompleted = completedItems.some(
+                (completedItem) => 
+                    completedItem.itemId === item.data.id && 
+                    completedItem.itemType === item.type.toUpperCase() as ItemType
+            );
+
+            const color = isActive ? '#007aff' : (isCompleted ? '#4CAF50' : '#b3b3b3'); // Green for completed, blue for active, grey for others
 
             return (
               <ListItem 
                 key={`${item.type}-${item.data.id}-${index}`} 
-                sx={{ pl: 0, cursor: 'pointer', '&:hover': {backgroundColor: '#282828'}, borderRadius: '8px' }} 
-                onClick={() => setActiveItem(item)}
+                sx={{ 
+                    pl: 0, 
+                    cursor: 'pointer', 
+                    '&:hover': { backgroundColor: '#282828' }, 
+                    borderRadius: '8px',
+                    backgroundColor: isActive ? 'rgba(0, 122, 255, 0.1)' : 'transparent', // Light blue background for active item
+                }} 
+                onClick={() => handleSelectItem(item)}
               >
                 <ListItemIcon sx={{color}}>
                   {getItemIcon(item.type)}

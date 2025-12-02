@@ -3,16 +3,22 @@ package com.joseneto.englishverse.service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.joseneto.englishverse.dtos.ProgressoEmAndamentoResponseDTO;
 import com.joseneto.englishverse.model.Modulo;
 import com.joseneto.englishverse.model.Progresso;
 import com.joseneto.englishverse.model.Usuario;
 import com.joseneto.englishverse.model.enums.StatusProgresso;
 import com.joseneto.englishverse.repository.ModuloRepository;
+import com.joseneto.englishverse.repository.PracticeAtividadeRepository;
+import com.joseneto.englishverse.repository.ProductionChallengeRepository;
+import com.joseneto.englishverse.repository.ProgressoItemRepository;
 import com.joseneto.englishverse.repository.ProgressoRepository;
+import com.joseneto.englishverse.repository.RecursoApresentacaoRepository;
 import com.joseneto.englishverse.repository.UsuarioRepository;
 
 @Service
@@ -23,6 +29,15 @@ public class ProgressoService {
     private UsuarioRepository usuarioRepository;
     @Autowired
     private ModuloRepository moduloRepository;
+    @Autowired
+    private RecursoApresentacaoRepository recursoApresentacaoRepository;
+    @Autowired
+    private PracticeAtividadeRepository practiceAtividadeRepository;
+    @Autowired
+    private ProductionChallengeRepository productionChallengeRepository;
+    @Autowired
+    private ProgressoItemRepository progressoItemRepository;
+
 
     // Quando o aluno clica em "Começar Módulo"
     public Progresso iniciarModulo(Long alunoId, Long moduloId) {
@@ -57,7 +72,20 @@ public class ProgressoService {
         return progressoRepository.save(progresso);
     }
 
-    public List<Progresso> listarEmAndamento(Long alunoId) {
-        return progressoRepository.findByAlunoIdAndStatus(alunoId, StatusProgresso.EM_ANDAMENTO);
+    public List<ProgressoEmAndamentoResponseDTO> listarEmAndamento(Long alunoId) {
+        List<Progresso> progressos = progressoRepository.findByAlunoIdAndStatus(alunoId, StatusProgresso.EM_ANDAMENTO);
+
+        return progressos.stream().map(progresso -> {
+            Long moduloId = progresso.getModulo().getId();
+            
+            long totalRecursos = recursoApresentacaoRepository.countByModuloId(moduloId);
+            long totalPraticas = practiceAtividadeRepository.countByModuloId(moduloId);
+            long totalProducoes = productionChallengeRepository.countByModuloId(moduloId);
+            long totalItens = totalRecursos + totalPraticas + totalProducoes;
+
+            long itensConcluidos = progressoItemRepository.countByAlunoIdAndModuloId(alunoId, moduloId);
+
+            return new ProgressoEmAndamentoResponseDTO(progresso, totalItens, itensConcluidos);
+        }).collect(Collectors.toList());
     }
 }

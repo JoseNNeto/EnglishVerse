@@ -9,8 +9,8 @@ api.interceptors.request.use(async (config) => {
   const token = localStorage.getItem('authToken'); 
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
-    console.log("Token found in localStorage:", token);
-    console.log("Authorization header set:", config.headers.Authorization);
+    // console.log("Token found in localStorage:", token);
+    // console.log("Authorization header set:", config.headers.Authorization);
   } else {
     console.log("No token found in localStorage.");
   }

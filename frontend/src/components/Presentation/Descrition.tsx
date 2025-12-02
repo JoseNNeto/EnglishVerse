@@ -39,24 +39,6 @@ export default function Descrition() {
       <Typography variant="body1" sx={{ color: '#b3b3b3', mb: 2, whiteSpace: 'pre-wrap' }}>
         {description}
       </Typography>
-      
-      {/* The logic for the next button will be implemented later */}
-      <Button
-        variant="contained"
-        endIcon={<ArrowForwardIcon />}
-        disabled={true} // Disabled for now
-        sx={{
-          backgroundColor: '#007aff',
-          '&:hover': { backgroundColor: '#0056b3' },
-          borderRadius: '14px',
-          alignSelf: 'flex-end',
-          textTransform: 'none',
-          fontSize: '16px',
-          mt: 2
-        }}
-      >
-        Próximo
-      </Button>
     </Box>
   );
 }
