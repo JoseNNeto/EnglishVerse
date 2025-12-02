@@ -1,16 +1,16 @@
 import { Box, Typography, Button, Paper, Chip } from '@mui/material';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import { useState, useMemo, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import api from '../../../services/api';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { useModule, ItemType } from '../../../contexts/ModuleContext';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 interface PracticeSelecionarContentProps {
     data: {
         id: number;
         instrucao: string;
         dadosAtividade: Record<string, any>;
-        modulo: { id: number; };
+        modulo?: { id: number; };
+        moduloId?: number;
     };
 }
 
@@ -37,7 +37,7 @@ const getYouTubeEmbedUrl = (url: string) => {
 };
 
 export default function PracticeSelecionarContent({ data }: PracticeSelecionarContentProps) {
-    const navigate = useNavigate();
+    const { markItemAsCompleted, handleNextItem } = useModule();
     const [selectedWords, setSelectedWords] = useState<string[]>([]);
     const [checkStatus, setCheckStatus] = useState<'unchecked' | 'correct' | 'incorrect'>('unchecked');
 
@@ -78,16 +78,7 @@ export default function PracticeSelecionarContent({ data }: PracticeSelecionarCo
         const selectedIds = new Set(selectedWords);
         if (selectedIds.size === correctInstanceIds.size && [...selectedIds].every(id => correctInstanceIds.has(id))) {
             setCheckStatus('correct');
-            try {
-                await api.post('/api/progresso/item', {
-                    moduloId: data.modulo.id,
-                    itemId: data.id,
-                    itemType: 'PRACTICE'
-                });
-            } catch (error) {
-                console.error("Failed to save progress", error);
-                // Handle error silently for now, maybe show a toast later
-            }
+            await markItemAsCompleted(data.id, ItemType.PRACTICE);
         } else {
             setCheckStatus('incorrect');
         }
@@ -96,10 +87,6 @@ export default function PracticeSelecionarContent({ data }: PracticeSelecionarCo
     const handleTryAgain = () => {
         setCheckStatus('unchecked');
         setSelectedWords([]);
-    };
-
-    const handleBackToModule = () => {
-        navigate(`/presentation/${data.modulo.id}`);
     };
 
     const getChipStyle = (word: string, index: number) => {
@@ -201,8 +188,8 @@ export default function PracticeSelecionarContent({ data }: PracticeSelecionarCo
                 </>
             )}
             {checkStatus === 'correct' && (
-                <Button variant="contained" onClick={handleBackToModule} startIcon={<ArrowBackIcon />} sx={{ bgcolor: 'green', color: 'white', textTransform: 'none', borderRadius: 3, p: '10px 32px' }}>
-                    Voltar ao Módulo
+                <Button variant="contained" onClick={handleNextItem} endIcon={<ArrowForwardIcon />} sx={{ bgcolor: 'green', color: 'white', textTransform: 'none', borderRadius: 3, p: '10px 32px' }}>
+                    Próximo
                 </Button>
             )}
             {checkStatus === 'incorrect' && (

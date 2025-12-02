@@ -4,11 +4,21 @@ import PracticeSubstituirContent from '../../components/Practice/Substituir/Prac
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../../services/api';
+import { ModuleProvider } from '../../contexts/ModuleContext';
 
 interface PracticeAtividade {
   id: number;
   instrucao: string;
   dadosAtividade: Record<string, any>;
+  modulo: { id: number; nome: string; };
+}
+
+function PracticeSubstituirPageContent({data}: {data: PracticeAtividade}) {
+    return (
+        <Box sx={{ flexGrow: 1 }}>
+            <PracticeSubstituirContent data={data} />
+        </Box>
+    );
 }
 
 export default function PracticeSubstituir() {
@@ -38,19 +48,22 @@ export default function PracticeSubstituir() {
 
   return (
     <Box sx={{ display: 'flex', backgroundColor: '#121212', minHeight: '100vh', flexGrow: 1, p: 3, flexDirection: 'column', gap: 3 }}>
-        {loading ? (
+        {loading && (
           <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <CircularProgress />
           </Box>
-        ) : error ? (
+        )}
+        {error && (
           <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <Typography color="error">{error}</Typography>
           </Box>
-        ) : data ? (
-          <Box sx={{ flexGrow: 1 }}>
-            <PracticeSubstituirContent data={data} />
-          </Box>
-        ) : (
+        )}
+        {data && (
+          <ModuleProvider moduloId={data.modulo.id.toString()}>
+            <PracticeSubstituirPageContent data={data} />
+          </ModuleProvider>
+        )}
+        {!loading && !error && !data && (
           <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <Typography>No data available.</Typography>
           </Box>

@@ -117,11 +117,12 @@ public class DataSeeder implements CommandLineRunner {
                     dadosP3.put("resposta_correta", "He (Pumba)");
                     criarPractice(modPronouns, TipoAtividade.MULTIPLA_ESCOLHA, "Assista ao trecho e responda.", dadosP3);
 
-                    // 4. Atividade de Listar Palavras
+                    // 4. Atividade de Listar Palavras (Don't Stop Me Now)
                     Map<String, Object> dadosP4 = new HashMap<>();
-                    dadosP4.put("imageUrl", "https://i.ytimg.com/vi/i2mTGBRVRr0/hqdefault.jpg"); // Thumbnail from the original video
+                    dadosP4.put("video_url", "https://youtu.be/i2mTGBRVRr0?si=NskRvqAbcD6OUFLj");
                     dadosP4.put("numberOfInputs", 3);
-                    criarPractice(modPronouns, TipoAtividade.LISTA_PALAVRAS, "Observe a imagem e liste 3 pronomes que você pode inferir da cena.", dadosP4);
+                    dadosP4.put("respostas_possiveis", List.of("I", "You", "He", "She", "It", "We", "They"));
+                    criarPractice(modPronouns, TipoAtividade.LISTA_PALAVRAS, "Assista a cena e liste 3 pronomes (em inglês) que você pode inferir.", dadosP4);
 
                     // 5. Fast Car (Tracy Chapman) -> Preencher Lacunas
                     Map<String, Object> dadosP5 = new HashMap<>();
@@ -130,7 +131,54 @@ public class DataSeeder implements CommandLineRunner {
                     dadosP5.put("resposta_correta", "I"); // "I want a ticket..."
                     criarPractice(modPronouns, TipoAtividade.PREENCHER_LACUNA, "Complete a letra da música.", dadosP5);
 
+                    // 6. The Breakfast Club -> Relacionar Colunas
+                    Map<String, Object> dadosP6 = new HashMap<>();
+                    dadosP6.put("video_url", "https://youtu.be/HhNH2V-K-9g?si=YQVoBMje2P2JJmHs");
+                    dadosP6.put("characters", List.of(
+                        Map.of("id", "1", "name", "Andrew Clark"),
+                        Map.of("id", "2", "name", "Brian Johnson"),
+                        Map.of("id", "3", "name", "Allison Reynolds"),
+                        Map.of("id", "4", "name", "Claire Standish"),
+                        Map.of("id", "5", "name", "John Bender")
+                    ));
+                    dadosP6.put("quotes", List.of(
+                        Map.of("id", "a", "text", "an athlete"),
+                        Map.of("id", "b", "text", "a brain"),
+                        Map.of("id", "c", "text", "a basket case"),
+                        Map.of("id", "d", "text", "a princess"),
+                        Map.of("id", "e", "text", "a criminal")
+                    ));
+                    dadosP6.put("resposta_correta", Map.of(
+                        "a", "1", // athlete -> Andrew
+                        "b", "2", // brain -> Brian
+                        "c", "3", // basket case -> Allison
+                        "d", "4", // princess -> Claire
+                        "e", "5"  // criminal -> Bender
+                    ));
+                    criarPractice(modPronouns, TipoAtividade.RELACIONAR_COLUNAS, "Associe cada estereótipo ao personagem que o representa na carta final.", dadosP6);
 
+                    // 7. I Will Always Love You (Whitney Houston) -> Substituir Palavras
+                    Map<String, Object> dadosP7 = new HashMap<>();
+                    dadosP7.put("video_url", "https://youtu.be/3JWTaaS7LdU?si=RgVOg5HDo3dWZkqo");
+                    dadosP7.put("initialText", List.of(
+                        Map.of("type", "word", "content", "Bittersweet", "id", "w1"),
+                        Map.of("type", "text", "content", " "),
+                        Map.of("type", "word", "content", "memories", "id", "w2"),
+                        Map.of("type", "text", "content", ", that is all I'm "),
+                        Map.of("type", "word", "content", "taking", "id", "w3"),
+                        Map.of("type", "text", "content", " with me. So "),
+                        Map.of("type", "word", "content", "goodbye", "id", "w4"),
+                        Map.of("type", "text", "content", ", please don't cry.")
+                    ));
+                    dadosP7.put("synonyms", Map.of(
+                        "w1", List.of("Poignant", "Nostalgic", "Touching"),
+                        "w2", List.of("recollections", "remembrances", "echoes"),
+                        "w3", List.of("keeping", "holding", "carrying"),
+                        "w4", List.of("farewell", "adieu")
+                    ));
+                    criarPractice(modPronouns, TipoAtividade.SUBSTITUIR_PALAVRAS, "Reescreva o trecho da letra. Clique nas palavras destacadas e escolha um sinônimo.", dadosP7);
+
+                    
                     // ==========================================
                     // ETAPA 3: PRODUCTION (Os Desafios Criativos)
                     // ==========================================
