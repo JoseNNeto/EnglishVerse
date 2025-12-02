@@ -1,7 +1,6 @@
 
 import { Box, Typography, Paper, LinearProgress, Button, Menu, MenuItem } from '@mui/material';
 import { useState, useMemo } from 'react';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 
 interface PracticeSubstituirContentProps {
     data: {
@@ -20,6 +19,7 @@ interface SubstituirData {
     artistName: string;
     initialText: TextPart[];
     synonyms: Record<string, string[]>;
+    midiaUrl?: string;
 }
 
 export default function PracticeSubstituirContent({ data }: PracticeSubstituirContentProps) {
@@ -53,7 +53,7 @@ export default function PracticeSubstituirContent({ data }: PracticeSubstituirCo
         handleClose();
     };
 
-    const replacedCount = textParts.filter((p, i) => {
+    const replacedCount = textParts.filter((p) => {
         const initialPart = initialText.find(initP => initP.id === p.id);
         return p.type === 'word' && initialPart && p.content !== initialPart.content;
     }).length;

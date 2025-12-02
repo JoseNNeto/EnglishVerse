@@ -1,6 +1,5 @@
 
 import { Box, Typography, Paper, LinearProgress, Button, TextareaAutosize } from '@mui/material';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { useState } from 'react';
 
 interface ProductionOuvirTextoContentProps {

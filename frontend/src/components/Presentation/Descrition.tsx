@@ -1,9 +1,8 @@
-import { Box, Typography, Button } from '@mui/material';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { Box, Typography } from '@mui/material';
 import { useModule } from '../../contexts/ModuleContext';
 
 export default function Descrition() {
-    const { activeItem, modulo } = useModule();
+    const { activeItem } = useModule();
 
     if (!activeItem) {
         return null;

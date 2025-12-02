@@ -1,6 +1,6 @@
 
 import { Box, Typography, Button, Paper, LinearProgress, TextField } from '@mui/material';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import { useState } from 'react';
 interface ProductionOuvirCompletarContentProps {
     data: {
         id: number;
@@ -132,7 +132,7 @@ export default function ProductionOuvirCompletarContent({ data }: ProductionOuvi
           )}
           
           <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
-            <Typography variant="body2" sx={{ color: '#b3b3b3' }}>Balões preenchidos: {answers.filter(ans => ans && ans.length > 0).length} / {answers.length}</Typography>
+            <Typography variant="body2" sx={{ color: '#b3b3b3' }}>Balões preenchidos: {answers.filter((ans: string) => ans && ans.length > 0).length} / {answers.length}</Typography>
             <Typography variant="body2" sx={{ color: '#007aff' }}>0%</Typography> {/* Placeholder */}
           </Box>
 
@@ -146,4 +146,3 @@ export default function ProductionOuvirCompletarContent({ data }: ProductionOuvi
     </Box>
   );
 }
-

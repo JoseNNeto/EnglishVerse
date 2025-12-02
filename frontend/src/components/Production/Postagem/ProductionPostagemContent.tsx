@@ -1,6 +1,5 @@
 
 import { Box, Typography, Paper, LinearProgress, Button, TextareaAutosize, styled } from '@mui/material';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import { useState } from 'react';
 

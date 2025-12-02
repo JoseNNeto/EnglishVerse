@@ -25,17 +25,17 @@ const router = createBrowserRouter([
       { path: '/', element: <Home /> },
       { path: '/user', element: <User /> },
       { path: '/presentation/:id', element: <Presentation /> },
-      { path: '/practice/marcar', element: <PracticeMarcar /> },
-      { path: '/practice/completar', element: <PracticeCompletar /> },
-      { path: '/practice/lista', element: <PracticeLista /> },
-      { path: '/practice/selecionar', element: <PracticeSelecionar /> },
-      { path: '/practice/relacionar', element: <PracticeRelacionar /> }, // Changed path
-      { path: '/practice/substituir', element: <PracticeSubstituir /> }, // Changed path
-      { path: '/production/arquivo', element: <ProductionArquivo /> },
-      { path: '/production/texto', element: <ProductionTexto /> },
-      { path: '/production/ouvir-completar', element: <ProductionOuvirCompletar /> },
-      { path: '/production/ouvir-texto', element: <ProductionOuvirTexto /> },
-      { path: '/production/postagem', element: <ProductionPostagem /> },
+      { path: '/practice/marcar/:id', element: <PracticeMarcar /> },
+      { path: '/practice/completar/:id', element: <PracticeCompletar /> },
+      { path: '/practice/lista/:id', element: <PracticeLista /> },
+      { path: '/practice/selecionar/:id', element: <PracticeSelecionar /> },
+      { path: '/practice/relacionar/:id', element: <PracticeRelacionar /> },
+      { path: '/practice/substituir/:id', element: <PracticeSubstituir /> },
+      { path: '/production/arquivo/:id', element: <ProductionArquivo /> },
+      { path: '/production/texto/:id', element: <ProductionTexto /> },
+      { path: '/production/ouvir-completar/:id', element: <ProductionOuvirCompletar /> },
+      { path: '/production/ouvir-texto/:id', element: <ProductionOuvirTexto /> },
+      { path: '/production/postagem/:id', element: <ProductionPostagem /> },
     ]
   },
   {

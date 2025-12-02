@@ -1,5 +1,4 @@
 import { Box, Typography, LinearProgress, Button, Grid, TextField } from '@mui/material';
-import LightbulbOutlinedIcon from '@mui/icons-material/LightbulbOutlined';
 import { useState } from 'react';
 
 // This component receives the practice data as a prop

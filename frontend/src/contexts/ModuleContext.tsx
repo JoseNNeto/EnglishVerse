@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect, useContext, type ReactNode, useRef, useCallback } from 'react';
+import { createContext, useState, useEffect, useContext, type ReactNode, useCallback } from 'react';
 import api from '../services/api';
 import { useAuth } from './AuthContext'; // Import useAuth
 
@@ -112,7 +112,7 @@ export const ModuleProvider = ({ children, moduloId }: ModuleProviderProps) => {
 
     const { user } = useAuth(); // Consume useAuth
 
-    const debounceTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    // const debounceTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     // --- API Call Functions ---
     const markItemAsCompleted = useCallback(async (itemId: number, type: ItemType) => {

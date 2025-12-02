@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect, useContext, ReactNode } from 'react';
+import { createContext, useState, useEffect, useContext, type ReactNode } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import api from '../services/api';
 
@@ -6,6 +6,7 @@ interface User {
     id: number;
     nome: string;
     sub: string; // Subject, which is the email
+    exp: number; // Expiration time as a Unix timestamp
 }
 
 // Define the shape of the context data
@@ -14,6 +15,7 @@ interface AuthContextType {
     user: User | null;
     isAuthenticated: boolean;
     isLoading: boolean;
+    exp: number | null;
     login: (token: string) => void;
     logout: () => void;
 }
@@ -80,7 +82,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     const isAuthenticated = !!token;
 
     return (
-        <AuthContext.Provider value={{ token, user, isAuthenticated, isLoading, login, logout }}>
+        <AuthContext.Provider value={{ token, user, isAuthenticated, isLoading, exp: user ? user.exp : null, login, logout }}>
             {children}
         </AuthContext.Provider>
     );

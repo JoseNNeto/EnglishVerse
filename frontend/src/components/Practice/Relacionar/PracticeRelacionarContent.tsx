@@ -1,6 +1,6 @@
 
 import { Box, Typography, Paper, LinearProgress, Button, Grid } from '@mui/material';
-import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors, useDroppable, type UniqueIdentifier, DragOverlay } from '@dnd-kit/core';
+import { DndContext, closestCenter, PointerSensor, useSensor, useSensors, useDroppable, type UniqueIdentifier, DragOverlay } from '@dnd-kit/core';
 import type { DragEndEvent, DragStartEvent } from '@dnd-kit/core';
 import { SortableContext, useSortable, arrayMove, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
