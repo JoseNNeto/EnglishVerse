@@ -17,10 +17,10 @@ export default function Descrition() {
             title = `Transcrição da Apresentação`;
             description = (activeItem.data as any).transcricao || 'Nenhuma transcrição disponível.';
             break;
-        case 'practice':
-            title = `Instruções da Prática`;
-            description = activeItem.data.instrucao;
-            break;
+        // case 'practice':
+        //     title = `Instruções da Prática`;
+        //     description = activeItem.data.instrucao;
+        //     break;
         case 'production':
             title = `Instruções do Desafio`;
             description = activeItem.data.instrucaoDesafio;

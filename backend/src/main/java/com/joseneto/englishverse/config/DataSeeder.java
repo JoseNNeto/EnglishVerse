@@ -98,8 +98,8 @@ public class DataSeeder implements CommandLineRunner {
                     Map<String, Object> dadosP1 = new HashMap<>();
                     dadosP1.put("video_url", "https://youtu.be/BqZ6sRHpWIk?si=wx1kOFBgQUA-7ZfQ");
                     dadosP1.put("instrucao_video", "Ouça o refrão: 'Imagine me and you, I do...'");
-                    dadosP1.put("texto_base", "Imagine me and you, I do, I think about you day and night...");
-                    dadosP1.put("palavras_corretas", List.of("I", "you")); // O sistema valida essas
+                    dadosP1.put("texto_base", "Imagine me and you , I do \n I think about you day and night \n It 's only right \n To think about the girl you love \n And hold her tight \n So happy together \n ...");
+                    dadosP1.put("palavras_corretas", List.of("I", "you", "It")); // O sistema valida essas
                     criarPractice(modPronouns, TipoAtividade.SELECIONAR_PALAVRAS, "Clique nos pronomes (Subject Pronouns) que aparecem na letra.", dadosP1);
 
                     // 2. She's Leaving Home (Beatles) -> Identificar Pronomes

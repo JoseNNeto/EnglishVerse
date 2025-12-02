@@ -39,19 +39,24 @@ export default function PracticeCompletar() {
   }, [id]);
 
   return (
-    <Box sx={{ display: 'flex', backgroundColor: '#121212', minHeight: '100vh' }}>
-      <ProgressSidebar />
-      <Box sx={{ flexGrow: 1, p: 3, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+    <Box sx={{ display: 'flex', backgroundColor: '#121212', minHeight: '100vh', flexGrow: 1, p: 3, flexDirection: 'column', gap: 3 }}>
         {loading ? (
-          <CircularProgress />
+          <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <CircularProgress />
+          </Box>
         ) : error ? (
-          <Typography color="error">{error}</Typography>
+          <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <Typography color="error">{error}</Typography>
+          </Box>
         ) : data ? (
-          <PracticeCompletarContent data={data} />
+          <Box sx={{ flexGrow: 1 }}>
+            <PracticeCompletarContent data={data} />
+          </Box>
         ) : (
-          <Typography>No data available.</Typography>
+          <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <Typography>No data available.</Typography>
+          </Box>
         )}
-      </Box>
     </Box>
   );
 }

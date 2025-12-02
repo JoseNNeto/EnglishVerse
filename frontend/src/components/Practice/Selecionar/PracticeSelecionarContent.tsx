@@ -1,22 +1,23 @@
-import { Box, Typography, LinearProgress, Button, Paper, Chip } from '@mui/material';
-import LightbulbOutlinedIcon from '@mui/icons-material/LightbulbOutlined';
+import { Box, Typography, Button, Paper, Chip } from '@mui/material';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
-// import PlayArrowIcon from '@mui/icons-material/PlayArrow'; // Not used
-import { useState } from 'react';
+import { useState, useMemo, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import api from '../../../services/api';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
-// This component receives the practice data as a prop
 interface PracticeSelecionarContentProps {
     data: {
         id: number;
         instrucao: string;
         dadosAtividade: Record<string, any>;
+        modulo: { id: number; };
     };
 }
 
-// Assuming data structure for PracticeSelecionarContent
 interface SelecaoData {
     video_url: string;
     texto_base: string;
+    palavras_corretas: string[];
 }
 
 const getYouTubeEmbedUrl = (url: string) => {
@@ -36,14 +37,35 @@ const getYouTubeEmbedUrl = (url: string) => {
 };
 
 export default function PracticeSelecionarContent({ data }: PracticeSelecionarContentProps) {
+    const navigate = useNavigate();
     const [selectedWords, setSelectedWords] = useState<string[]>([]);
+    const [checkStatus, setCheckStatus] = useState<'unchecked' | 'correct' | 'incorrect'>('unchecked');
+
+    // Reset state when a new practice item is loaded
+    useEffect(() => {
+        setSelectedWords([]);
+        setCheckStatus('unchecked');
+    }, [data.id]);
 
     const selecaoData = data.dadosAtividade as SelecaoData;
     const lyrics = selecaoData.texto_base || '';
-    const words = lyrics.split(/(\s+|\/)/).filter(w => w.trim() !== '');
+    const words = useMemo(() => lyrics.split(/(\s+|\/|,)/).filter(w => w.trim() !== ''), [lyrics]);
     const embedUrl = getYouTubeEmbedUrl(selecaoData.video_url || '');
 
+    const correctWordTypes = useMemo(() => new Set(selecaoData.palavras_corretas || []), [selecaoData.palavras_corretas]);
+
+    const correctInstanceIds = useMemo(() => {
+        const ids = new Set<string>();
+        words.forEach((word, index) => {
+            if (correctWordTypes.has(word)) {
+                ids.add(`${word}-${index}`);
+            }
+        });
+        return ids;
+    }, [words, correctWordTypes]);
+
     const handleWordClick = (word: string, index: number) => {
+        if (checkStatus !== 'unchecked') return; // Disable clicking after check
         const wordIdentifier = `${word}-${index}`;
         if (selectedWords.includes(wordIdentifier)) {
             setSelectedWords(selectedWords.filter(w => w !== wordIdentifier));
@@ -52,34 +74,67 @@ export default function PracticeSelecionarContent({ data }: PracticeSelecionarCo
         }
     };
 
+    const handleCheckAnswer = async () => {
+        const selectedIds = new Set(selectedWords);
+        if (selectedIds.size === correctInstanceIds.size && [...selectedIds].every(id => correctInstanceIds.has(id))) {
+            setCheckStatus('correct');
+            try {
+                await api.post('/api/progresso/item', {
+                    moduloId: data.modulo.id,
+                    itemId: data.id,
+                    itemType: 'PRACTICE'
+                });
+            } catch (error) {
+                console.error("Failed to save progress", error);
+                // Handle error silently for now, maybe show a toast later
+            }
+        } else {
+            setCheckStatus('incorrect');
+        }
+    };
+
+    const handleTryAgain = () => {
+        setCheckStatus('unchecked');
+        setSelectedWords([]);
+    };
+
+    const handleBackToModule = () => {
+        navigate(`/presentation/${data.modulo.id}`);
+    };
+
+    const getChipStyle = (word: string, index: number) => {
+        const wordId = `${word}-${index}`;
+        const isSelected = selectedWords.includes(wordId);
+
+        if (checkStatus === 'unchecked') {
+            return { backgroundColor: isSelected ? '#007aff' : '#282828', color: 'white' };
+        }
+
+        const isCorrect = correctWordTypes.has(word);
+        if (isSelected) {
+            return { backgroundColor: isCorrect ? 'green' : 'red', color: 'white' };
+        }
+        return { backgroundColor: '#282828', color: 'white' };
+    };
+
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%', mt: 4 }}>
-      <Box sx={{ width: '90%' }}>
+    <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%'}}>
+      <Box sx={{ width: '100%' }}>
         <Box sx={{ color: '#e0e0e0' }}>
-          <Typography variant="h6">Etapa: Prática - Seleção</Typography>
-          <Box sx={{ display: 'flex', alignItems: 'center', my: 1 }}>
-            <Typography sx={{ flexGrow: 1, color: '#b3b3b3' }}>Progresso: 0%</Typography> {/* Placeholder */}
-          </Box>
-          <LinearProgress variant="determinate" value={0} sx={{ height: 8, borderRadius: 4, mb: 3 }} /> {/* Placeholder */}
+          <Typography variant="h4">Etapa: Prática - Seleção</Typography>
 
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
             <Typography variant="body1" sx={{ color: '#b3b3b3' }}>
                 {data.instrucao}
             </Typography>
-            <Button
-              startIcon={<LightbulbOutlinedIcon />}
-              sx={{ color: '#007aff', textTransform: 'none', bgcolor: '#1a1a1a', borderRadius: 3, p: '8px 16px' }}
-            >
-              Dica
-            </Button>
           </Box>
 
           <Box sx={{ display: 'flex', flexDirection: 'row', gap: 3, mb: 3, alignItems: 'flex-start' }}>
             <Box sx={{ flex: 1, position: 'relative' }}>
-              {embedUrl ? (
+              {embedUrl && (
                 <Box sx={{
                     position: 'relative',
-                    paddingTop: '56.25%', // 16:9 Aspect Ratio
+                    paddingTop: '56.25%',
                     borderRadius: '14px',
                     overflow: 'hidden',
                     border: '1px solid #282828',
@@ -96,10 +151,6 @@ export default function PracticeSelecionarContent({ data }: PracticeSelecionarCo
                         style={{ position: 'absolute', top: 0, left: 0 }}
                     ></iframe>
                 </Box>
-              ) : (
-                <Box sx={{ position: 'relative', paddingTop: '56.25%', borderRadius: '14px', overflow: 'hidden', mb: 3, display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: '#282828', color: '#b3b3b3' }}>
-                    <Typography>Vídeo não disponível</Typography>
-                </Box>
               )}
             </Box>
 
@@ -111,21 +162,18 @@ export default function PracticeSelecionarContent({ data }: PracticeSelecionarCo
               <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, alignItems: 'center' }}>
                   {words.length > 0 ? (
                       words.map((word, index) => (
-                          word === '/' ? <Typography key={index} sx={{ color: '#e0e0e0', mx: 1 }}>/</Typography> :
+                          word === '/' || word === ',' ? <Typography key={index} sx={{ color: '#e0e0e0', mx: 0.5 }}>{word}</Typography> :
                           <Chip
                               key={`${word}-${index}`}
                               label={word}
                               onClick={() => handleWordClick(word, index)}
                               sx={{
-                                  backgroundColor: selectedWords.includes(`${word}-${index}`) ? '#007aff' : '#282828',
-                                  color: 'white',
+                                  ...getChipStyle(word, index),
                                   fontSize: '18px',
                                   p: '16px 8px',
                                   height: 'auto',
                                   borderRadius: '10px',
-                                  '& .MuiChip-label': {
-                                      p: '0'
-                                  }
+                                  '& .MuiChip-label': { p: '0' }
                               }}
                           />
                       ))
@@ -142,15 +190,30 @@ export default function PracticeSelecionarContent({ data }: PracticeSelecionarCo
           </Box>
 
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, pt: 2 }}>
-            <Button sx={{ color: '#b3b3b3', textTransform: 'none', borderRadius: 3, p: '10px 24px' }}>
-              Pular Pergunta
-            </Button>
-            <Button variant="contained" sx={{ bgcolor: '#007aff', color: 'white', textTransform: 'none', borderRadius: 3, p: '10px 32px', opacity: 0.5 }}>
-              Verificar Resposta
-            </Button>
+            {checkStatus === 'unchecked' && (
+                <>
+                    <Button sx={{ color: '#b3b3b3', textTransform: 'none', borderRadius: 3, p: '10px 24px' }}>
+                        Pular Pergunta
+                    </Button>
+                    <Button variant="contained" onClick={handleCheckAnswer} sx={{ bgcolor: '#007aff', color: 'white', textTransform: 'none', borderRadius: 3, p: '10px 32px' }}>
+                        Verificar Resposta
+                    </Button>
+                </>
+            )}
+            {checkStatus === 'correct' && (
+                <Button variant="contained" onClick={handleBackToModule} startIcon={<ArrowBackIcon />} sx={{ bgcolor: 'green', color: 'white', textTransform: 'none', borderRadius: 3, p: '10px 32px' }}>
+                    Voltar ao Módulo
+                </Button>
+            )}
+            {checkStatus === 'incorrect' && (
+                <Button variant="contained" onClick={handleTryAgain} sx={{ bgcolor: 'red', color: 'white', textTransform: 'none', borderRadius: 3, p: '10px 32px' }}>
+                    Tentar Novamente
+                </Button>
+            )}
           </Box>
         </Box>
       </Box>
     </Box>
   );
 }
+

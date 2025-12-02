@@ -7,8 +7,7 @@ import PracticeMarcarContent from '../Practice/PracticeMarcar/PracticeContent';
 import PracticeCompletarContent from '../Practice/Completar/PracticeCompletarContent';
 import PracticeSelecionarContent from '../Practice/Selecionar/PracticeSelecionarContent';
 import PracticeListaContent from '../Practice/Lista/PracticeListaContent';
-import PracticeRelacionarContent from '../Practice/Relacionar/PracticeRelacionarContent'; // New Import
-import PracticeSubstituirContent from '../Practice/Substituir/PracticeSubstituirContent'; // New Import
+
 
 // Production Components
 import ProductionArquivoContent from '../Production/Arquivo/ProductionArquivoContent';
@@ -18,6 +17,8 @@ import ProductionPostagemContent from '../Production/Postagem/ProductionPostagem
 // Removed: ProductionRelacionarContent
 // Removed: ProductionSubstituirContent
 import ProductionTextoContent from '../Production/Texto/ProductionTextoContent';
+import PracticeRelacionarContent from '../Practice/Relacionar/PracticeRelacionarContent';
+import PracticeSubstituirContent from '../Practice/Substituir/PracticeSubstituirContent';
 
 
 export default function ModuleItemViewer() {
