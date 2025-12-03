@@ -1,9 +1,9 @@
 import { Box, Card, CardActionArea, CardContent, Typography, Grid, Chip } from '@mui/material';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../services/api';
-import { AuthContext } from '../../contexts/AuthContext';
+import { useAuth } from '../../contexts/AuthContext';
 
 // Interfaces based on backend models
 interface Modulo {
@@ -41,7 +41,7 @@ interface UltimoAcessoDTO {
 
 const TopicCard = ({ topic, isEmAndamento }: { topic: Modulo, isEmAndamento: boolean }) => {
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
+  const { user } = useAuth();
 
   const handleCardClick = async () => {
     if (user && isEmAndamento) {
@@ -139,7 +139,7 @@ const TopicCard = ({ topic, isEmAndamento }: { topic: Modulo, isEmAndamento: boo
 export default function Secoes() {
   const [sections, setSections] = useState<Section[]>([]);
   const [loading, setLoading] = useState(true);
-  const { user } = useContext(AuthContext);
+  const { user } = useAuth();
   const [progressos, setProgressos] = useState<Progresso[]>([]);
 
   useEffect(() => {
@@ -152,7 +152,7 @@ export default function Secoes() {
         }
 
         const topicosResponse = await api.get<Topico[]>('/topicos');
-        const topicos = topicosResponse.data;
+        const topicos = Array.isArray(topicosResponse.data) ? topicosResponse.data : [];
 
         const modulePromises = topicos.map(topico =>
           api.get<Modulo[]>(`/modulos/topico/${topico.id}`)
