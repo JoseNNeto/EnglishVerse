@@ -1,5 +1,8 @@
 import { Box, Typography } from '@mui/material';
 import { useModule } from '../../contexts/ModuleContext';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import remarkBreaks from 'remark-breaks';
 
 export default function Descrition() {
     const { activeItem } = useModule();
@@ -35,8 +38,8 @@ export default function Descrition() {
       <Typography variant="h6" sx={{ color: '#e0e0e0', mb: 2 }}>
         {title}
       </Typography>
-      <Typography variant="body1" sx={{ color: '#b3b3b3', mb: 2, whiteSpace: 'pre-wrap' }}>
-        {description}
+      <Typography variant="body1" sx={{ color: '#b3b3b3', mb: 2 }}>
+        <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>{description}</ReactMarkdown>
       </Typography>
     </Box>
   );

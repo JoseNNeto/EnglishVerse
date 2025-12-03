@@ -52,12 +52,12 @@ export default function PracticeSelecionarContent({ data }: PracticeSelecionarCo
     const words = useMemo(() => lyrics.split(/(\s+|\/|,)/).filter(w => w.trim() !== ''), [lyrics]);
     const embedUrl = getYouTubeEmbedUrl(selecaoData.video_url || '');
 
-    const correctWordTypes = useMemo(() => new Set(selecaoData.palavras_corretas || []), [selecaoData.palavras_corretas]);
+    const correctWordTypes = useMemo(() => new Set((selecaoData.palavras_corretas || []).map(w => w.toLowerCase())), [selecaoData.palavras_corretas]);
 
     const correctInstanceIds = useMemo(() => {
         const ids = new Set<string>();
         words.forEach((word, index) => {
-            if (correctWordTypes.has(word)) {
+            if (correctWordTypes.has(word.toLowerCase())) {
                 ids.add(`${word}-${index}`);
             }
         });
@@ -97,7 +97,7 @@ export default function PracticeSelecionarContent({ data }: PracticeSelecionarCo
             return { backgroundColor: isSelected ? '#007aff' : '#282828', color: 'white' };
         }
 
-        const isCorrect = correctWordTypes.has(word);
+        const isCorrect = correctWordTypes.has(word.toLowerCase());
         if (isSelected) {
             return { backgroundColor: isCorrect ? 'green' : 'red', color: 'white' };
         }
@@ -111,7 +111,7 @@ export default function PracticeSelecionarContent({ data }: PracticeSelecionarCo
           <Typography variant="h4">Etapa: Prática - Seleção</Typography>
 
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-            <Typography variant="body1" sx={{ color: '#b3b3b3' }}>
+            <Typography variant="body1" sx={{ color: '#b3b3b3', whiteSpace: 'pre-wrap' }}>
                 {data.instrucao}
             </Typography>
           </Box>
@@ -141,7 +141,7 @@ export default function PracticeSelecionarContent({ data }: PracticeSelecionarCo
               )}
             </Box>
 
-            <Paper sx={{ flex: 2, bgcolor: '#1a1a1a', p: 3, borderRadius: 3 }}>
+            <Paper sx={{ flex: 2, bgcolor: '#1a1a1a', p: 2, borderRadius: 3 }}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
                   <MusicNoteIcon sx={{ color: '#e0e0e0' }} />
                   <Typography variant="h6" sx={{ color: '#e0e0e0' }}>Letra</Typography>

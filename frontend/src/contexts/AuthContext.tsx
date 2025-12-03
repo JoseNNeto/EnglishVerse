@@ -21,7 +21,7 @@ interface AuthContextType {
 }
 
 // Create the context with a default undefined value
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 // Define the props for the AuthProvider
 interface AuthProviderProps {

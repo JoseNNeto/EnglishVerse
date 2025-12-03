@@ -190,7 +190,7 @@ export default function Secoes() {
             {section.title}
           </Typography>
           <Grid container spacing={2}>
-            {section.topics.map((topic) => (
+            {section.topics && section.topics.filter(topic => topic).map((topic) => (
               <TopicCard
                 key={topic.id}
                 topic={topic}

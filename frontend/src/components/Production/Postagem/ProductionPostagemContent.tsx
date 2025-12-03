@@ -125,7 +125,7 @@ export default function ProductionPostagemContent({ data }: ProductionPostagemCo
                         <Typography variant="h6" sx={{ color: '#e0e0e0', mb: 1 }}>Explique sua imagem:</Typography>
                         <TextareaAutosize
                             minRows={6}
-                            placeholder="Este meme se conecta com a música porque..."
+                            placeholder="Explique em inglês aqui..."
                             value={text}
                             onChange={(e) => setText(e.target.value)}
                             style={{
