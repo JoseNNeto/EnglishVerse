@@ -17,6 +17,7 @@ interface RecursoApresentacao {
     moduloId: number;
     tipoRecurso: 'VIDEO' | 'TEXTO' | 'AUDIO'; // Enum: TipoRecurso
     urlRecurso: string;
+    letra?: string;
     transcricao?: string;
     ordem: number;
 }

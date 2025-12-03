@@ -180,7 +180,7 @@ export default function Secoes() {
     return <Typography sx={{ color: 'white', textAlign: 'center', my: 4 }}>Carregando seções...</Typography>;
   }
 
-  const modulosEmAndamentoIds = new Set(progressos.map(p => p.modulo.id));
+  const modulosEmAndamentoIds = new Set(progressos.filter(p => p.modulo).map(p => p.modulo.id));
 
   return (
     <Box sx={{ my: 4, mx: 6 }}>
@@ -190,7 +190,7 @@ export default function Secoes() {
             {section.title}
           </Typography>
           <Grid container spacing={2}>
-            {section.topics.map((topic) => (
+            {Array.isArray(section.topics) && section.topics.filter(topic => topic && topic.id).map((topic) => (
               <TopicCard
                 key={topic.id}
                 topic={topic}

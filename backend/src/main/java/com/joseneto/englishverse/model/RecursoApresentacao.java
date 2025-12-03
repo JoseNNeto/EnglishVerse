@@ -38,6 +38,9 @@ public class RecursoApresentacao {
     @Column(name = "url_recurso", nullable = false)
     private String urlRecurso; // Link do YouTube, S3, etc.
 
+    @Column(columnDefinition = "TEXT")
+    private String letra;
+    
     // TEXT permite strings gigantes (maior que 255 caracteres)
     @Column(columnDefinition = "TEXT")
     private String transcricao;
