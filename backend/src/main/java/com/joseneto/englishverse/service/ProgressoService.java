@@ -1,6 +1,7 @@
 package com.joseneto.englishverse.service;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -9,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.joseneto.englishverse.dtos.ProgressoEmAndamentoResponseDTO;
+import com.joseneto.englishverse.dtos.UltimoAcessoDTO;
 import com.joseneto.englishverse.model.Modulo;
 import com.joseneto.englishverse.model.Progresso;
+import com.joseneto.englishverse.model.ProgressoItem;
 import com.joseneto.englishverse.model.Usuario;
 import com.joseneto.englishverse.model.enums.StatusProgresso;
 import com.joseneto.englishverse.repository.ModuloRepository;
@@ -87,5 +90,24 @@ public class ProgressoService {
 
             return new ProgressoEmAndamentoResponseDTO(progresso, totalItens, itensConcluidos);
         }).collect(Collectors.toList());
+    }
+
+    public Optional<UltimoAcessoDTO> getUltimoAcesso(Long alunoId, Long moduloId) {
+        List<ProgressoItem> itensConcluidos = progressoItemRepository.findByAlunoIdAndModuloId(alunoId, moduloId);
+
+        if (itensConcluidos.isEmpty()) {
+            return Optional.empty();
+        }
+
+        // Encontra o item com a data de conclusão mais recente
+        ProgressoItem ultimoItem = itensConcluidos.stream()
+                .max(Comparator.comparing(ProgressoItem::getDataConclusao))
+                .get();
+
+        return Optional.of(new UltimoAcessoDTO(
+                ultimoItem.getItemType().name(),
+                ultimoItem.getItemId(),
+                ultimoItem.getModulo().getId()
+        ));
     }
 }
