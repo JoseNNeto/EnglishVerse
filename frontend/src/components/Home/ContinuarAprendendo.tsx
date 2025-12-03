@@ -36,7 +36,8 @@ export default function ContinuarAprendendo() {
       if (isAuthenticated && user?.id) {
         try {
           const response = await api.get<ProgressoEmAndamentoResponseDTO[]>(`/progresso/em-andamento/${user.id}`);
-          setProgressoModulos(response.data);
+          const data = Array.isArray(response.data) ? response.data : [];
+          setProgressoModulos(data);
         } catch (error) {
           console.error("Erro ao buscar progresso do usuário:", error);
         } finally {
