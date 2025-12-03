@@ -5,8 +5,10 @@ const api = axios.create({
 });
 
 api.interceptors.request.use(async (config) => {
-  // O nome da chave do token pode ser ajustado conforme a sua implementação de login
-  const token = localStorage.getItem('authToken'); 
+  // Adiciona o header para pular o aviso do ngrok
+  config.headers['ngrok-skip-browser-warning'] = 'true';
+
+  const token = localStorage.getItem('authToken');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
     // console.log("Token found in localStorage:", token);
