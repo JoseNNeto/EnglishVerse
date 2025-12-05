@@ -1,4 +1,3 @@
-
 import { Box, Typography, Paper, Button, Menu, MenuItem } from '@mui/material';
 import { useState, useMemo, useEffect } from 'react';
 import { useModule, ItemType } from '../../../contexts/ModuleContext';
@@ -19,7 +18,8 @@ type TextPart = { type: 'text' | 'word' | 'break' | 'italic', content: string, i
 interface SubstituirData {
     video_url: string;
     initialText: TextPart[];
-    synonyms: Record<string, string[]>;
+    substitutions: Record<string, string[]>;
+    respostas_corretas: Record<string, string>;
 }
 
 const getYouTubeEmbedUrl = (url: string) => {
@@ -37,16 +37,19 @@ export default function PracticeSubstituirContent({ data }: PracticeSubstituirCo
     const substituirData = data.dadosAtividade as SubstituirData;
 
     const initialText = useMemo(() => substituirData.initialText || [], [substituirData.initialText]);
-    const synonyms = useMemo(() => substituirData.synonyms || {}, [substituirData.synonyms]);
+    const substitutions = useMemo(() => substituirData.substitutions || {}, [substituirData.substitutions]);
+    const correctAnswers = useMemo(() => substituirData.respostas_corretas || {}, [substituirData.respostas_corretas]);
 
     const [textParts, setTextParts] = useState<TextPart[]>(initialText);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [selectedWordId, setSelectedWordId] = useState<string | null>(null);
     const [checkStatus, setCheckStatus] = useState<'unchecked' | 'correct' | 'incorrect'>('unchecked');
+    const [isCorrectMap, setIsCorrectMap] = useState<Record<string, boolean>>({});
     
     useEffect(() => {
         setTextParts(initialText);
         setCheckStatus('unchecked');
+        setIsCorrectMap({});
     }, [data.id, initialText]);
 
     const handleClick = (event: React.MouseEvent<HTMLElement>, wordId: string) => {
@@ -60,14 +63,14 @@ export default function PracticeSubstituirContent({ data }: PracticeSubstituirCo
         setSelectedWordId(null);
     };
     
-    const handleSelectSynonym = (synonym: string) => {
+    const handleSelectSubstitution = (substitution: string) => {
         if (selectedWordId) {
-            setTextParts(prev => prev.map(part => (part.type === 'word' && part.id === selectedWordId) ? { ...part, content: synonym } : part));
+            setTextParts(prev => prev.map(part => (part.type === 'word' && part.id === selectedWordId) ? { ...part, content: substitution } : part));
         }
         handleClose();
     };
 
-    const replacedCount = useMemo(() => textParts.filter((p, _i) => {
+    const replacedCount = useMemo(() => textParts.filter((p) => {
         const initialPart = initialText.find(initP => initP.id === p.id);
         return p.type === 'word' && initialPart && p.content !== initialPart.content;
     }).length, [textParts, initialText]);
@@ -75,7 +78,27 @@ export default function PracticeSubstituirContent({ data }: PracticeSubstituirCo
     const totalReplaceable = useMemo(() => initialText.filter(p => p.type === 'word').length, [initialText]);
 
     const handleCheckAnswer = async () => {
-        if (replacedCount === totalReplaceable && totalReplaceable > 0) {
+        if (replacedCount !== totalReplaceable && totalReplaceable > 0) {
+            setCheckStatus('incorrect');
+            // Optionally, provide feedback that not all words are replaced.
+            return;
+        }
+
+        const newIsCorrectMap: Record<string, boolean> = {};
+        let allAnswersCorrect = true;
+
+        for (const part of textParts) {
+            if (part.type === 'word' && part.id) {
+                const isCorrect = part.content === correctAnswers[part.id];
+                newIsCorrectMap[part.id] = isCorrect;
+                if (!isCorrect) {
+                    allAnswersCorrect = false;
+                }
+            }
+        }
+        setIsCorrectMap(newIsCorrectMap);
+
+        if (allAnswersCorrect) {
             setCheckStatus('correct');
             await markItemAsCompleted(data.id, ItemType.PRACTICE);
         } else {
@@ -85,7 +108,8 @@ export default function PracticeSubstituirContent({ data }: PracticeSubstituirCo
 
     const handleTryAgain = () => {
         setCheckStatus('unchecked');
-        // Note: We don't reset the text parts, allowing the user to continue from where they left off.
+        setIsCorrectMap({});
+        setTextParts(initialText); // Reset text to initial state
     };
 
     const embedUrl = getYouTubeEmbedUrl(substituirData.video_url);
@@ -106,18 +130,35 @@ export default function PracticeSubstituirContent({ data }: PracticeSubstituirCo
             <Paper sx={{ bgcolor: '#1a1a1a', p: 4, borderRadius: 3, mb: 3 }}>
                 <Typography variant="body1" component="div">
                     {textParts.map((part, index) => {
-                        if (part.type === 'word' && part.id) return (
-                            <Button key={index} onClick={(e) => handleClick(e, part.id!)} sx={{textTransform: 'none', color: '#007aff', p:0, minWidth: 'auto', display: 'inline', fontStyle: 'italic', fontSize: 'inherit', fontFamily: 'inherit' }}>
-                                {part.content}
-                            </Button>
-                        );
+                        if (part.type === 'word' && part.id) {
+                            const isIncorrect = checkStatus === 'incorrect' && isCorrectMap[part.id] === false;
+                            return (
+                                <Button 
+                                    key={index} 
+                                    onClick={(e) => handleClick(e, part.id!)} 
+                                    sx={{
+                                        textTransform: 'none', 
+                                        color: isIncorrect ? 'red' : '#007aff', 
+                                        p:0, 
+                                        minWidth: 'auto', 
+                                        display: 'inline', 
+                                        fontStyle: 'italic', 
+                                        fontSize: 'inherit', 
+                                        fontFamily: 'inherit',
+                                        textDecoration: isIncorrect ? 'underline' : 'none'
+                                    }}
+                                >
+                                    {part.content}
+                                </Button>
+                            );
+                        }
                         return <span key={index}>{part.content}</span>;
                     })}
                 </Typography>
                 <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
-                    {(selectedWordId && synonyms[selectedWordId]) ? synonyms[selectedWordId].map(synonym => (
-                        <MenuItem key={synonym} onClick={() => handleSelectSynonym(synonym)}>{synonym}</MenuItem>
-                    )) : <MenuItem disabled>No synonyms found</MenuItem>}
+                    {(selectedWordId && substitutions[selectedWordId]) ? substitutions[selectedWordId].map(substitution => (
+                        <MenuItem key={substitution} onClick={() => handleSelectSubstitution(substitution)}>{substitution}</MenuItem>
+                    )) : <MenuItem disabled>No substitutions found</MenuItem>}
                 </Menu>
                  <Box sx={{ borderTop: 1, borderColor: '#282828', mt: 3, pt: 2, display: 'flex', justifyContent: 'space-between' }}>
                     <Typography variant="caption" sx={{ color: '#b3b3b3' }}>Palavras substituídas: {replacedCount} / {totalReplaceable}</Typography>
