@@ -14,7 +14,8 @@ interface PracticeCompletarContentProps {
 }
 
 interface CompletarData {
-    video_url: string;
+    video_url?: string;
+    imagem_url?: string;
     frase_com_lacuna: string;
     resposta_correta: string;
 }
@@ -46,7 +47,8 @@ export default function PracticeCompletarContent({ data }: PracticeCompletarCont
     }, [data.id]);
 
     const completarData = data.dadosAtividade as CompletarData;
-    const embedUrl = getYouTubeEmbedUrl(completarData.video_url);
+    const embedUrl = getYouTubeEmbedUrl(completarData.video_url || '');
+    const imageUrl = completarData.imagem_url;
 
     const sentenceWithBlank = completarData.frase_com_lacuna || '___';
     const sentenceParts = sentenceWithBlank.split('___');
@@ -88,14 +90,13 @@ export default function PracticeCompletarContent({ data }: PracticeCompletarCont
             </Typography>
           </Box>
 
-          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-            {embedUrl && (
+          <Box sx={{ display: 'flex', justifyContent: 'center', mb: 3 }}>
+            {embedUrl ? (
                 <Box sx={{
                     position: 'relative',
                     paddingTop: '28.125%',
                     borderRadius: '14px',
                     overflow: 'hidden',
-                    mb: 3,
                     width: '50%'
                 }}>
                     <iframe
@@ -109,6 +110,17 @@ export default function PracticeCompletarContent({ data }: PracticeCompletarCont
                         style={{ position: 'absolute', top: 0, left: 0 }}
                     ></iframe>
                 </Box>
+            ) : imageUrl && (
+                <Box
+                    component="img"
+                    src={imageUrl}
+                    alt="Contexto da atividade"
+                    sx={{
+                        maxWidth: '50%',
+                        height: 'auto',
+                        borderRadius: '14px',
+                    }}
+                />
             )}
           </Box>
 
