@@ -100,9 +100,9 @@ export default function PracticeMarcarContent({ data }: PracticeMarcarContentPro
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, pt: 4 }}>
         {checkStatus === 'unchecked' && (
             <>
-                <Button sx={{ color: '#b3b3b3', textTransform: 'none', borderRadius: 3, p: '10px 24px' }}>
+                {/* <Button sx={{ color: '#b3b3b3', textTransform: 'none', borderRadius: 3, p: '10px 24px' }}>
                     Pular Pergunta
-                </Button>
+                </Button> */}
                 <Button variant="contained" onClick={handleCheckAnswer} disabled={!selectedOption} sx={{ bgcolor: '#007aff', color: 'white', textTransform: 'none', borderRadius: 3, p: '10px 32px' }}>
                     Verificar Resposta
                 </Button>
