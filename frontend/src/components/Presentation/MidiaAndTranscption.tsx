@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/static-components */
 import { Box, Typography, Tabs, Tab, Paper, CircularProgress } from '@mui/material';
 import { useState, useRef, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
@@ -37,7 +38,7 @@ export default function MidiaAndTranscption() {
 
     useEffect(() => {
         const observer = new ResizeObserver(entries => {
-            for (let entry of entries) {
+            for (const entry of entries) {
                 setMediaHeight(entry.contentRect.height);
                 console.log('Measured Media Height:', entry.contentRect.height);
             }
@@ -63,6 +64,7 @@ export default function MidiaAndTranscption() {
             } else if (urlObj.hostname === 'www.youtube.com' || urlObj.hostname === 'youtube.com') {
                 videoId = urlObj.searchParams.get('v');
             }
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (e) {
             return null;
         }
@@ -115,7 +117,7 @@ export default function MidiaAndTranscption() {
     return (
         <Box>
             <Typography variant="h4" sx={{ color: '#e0e0e0', mb: 1 }}>
-                Etapa: Apresentação
+                Presentation
             </Typography>
             <Typography variant="body1" sx={{ color: '#b3b3b3', mb: 3 }}>
                 Recurso: {presentationData.tipoRecurso

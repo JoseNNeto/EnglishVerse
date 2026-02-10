@@ -9,42 +9,44 @@ import { Link } from 'react-router-dom';
 export default function SideBar() {
   const { loading, modulo, allItems, activeItem, completedItems, handleSelectItem } = useModule();
 
+  
+
   // Moved helper functions inside the component
   const getItemText = (item: (typeof allItems)[number]) => {
     switch(item.type) {
       case 'presentation':
-        return `Apresentação: ${item.data.tipoRecurso.charAt(0).toUpperCase() + item.data.tipoRecurso.slice(1).toLowerCase()}`;
+        return `Presentation ${item.data.ordem}: ${item.data.tipoRecurso.charAt(0).toUpperCase() + item.data.tipoRecurso.slice(1).toLowerCase()}`;
       case 'practice':
         switch (item.data.tipoAtividade) {
           case 'MULTIPLA_ESCOLHA':
-            return 'Prática: Múltipla Escolha';
+            return `Practice ${item.data.id}: Multiple Choice`;
           case 'PREENCHER_LACUNA':
-            return 'Prática: Preencher Lacuna';
+            return `Practice ${item.data.id}: Fill in the Blanks`;
           case 'SELECIONAR_PALAVRAS':
-            return 'Prática: Selecionar Palavras';
+            return `Practice ${item.data.id}: Select Words`;
           case 'LISTA_PALAVRAS':
-            return 'Prática: Listar Palavras';
+            return `Practice ${item.data.id}: List Words`;
           case 'RELACIONAR_COLUNAS':
-            return 'Prática: Relacionar Colunas';
+            return `Practice ${item.data.id}: Match Columns`;
           case 'SUBSTITUIR_PALAVRAS':
-            return 'Prática: Substituir Palavras';
+            return `Practice ${item.data.id}: Replace Words`;
           default:
-            return 'Prática: Desconhecida';
+            return 'Practice: Unknown';
         }
       case 'production':
         switch (item.data.tipoDesafio) {
             case 'AUDIO':
-                return 'Produção: Áudio';
+                return `Production ${item.data.id}: Audio`;
             case 'TEXTO_LONGO':
-                return 'Produção: Texto Longo';
+                return `Production ${item.data.id}: Long Text`;
             case 'FOTO_E_TEXTO':
-                return 'Produção: Foto e Texto';
+                return `Production ${item.data.id}: Photo and Text`;
             case 'UPLOAD_ARQUIVO':
-                return 'Produção: Envio de Arquivo';
+                return `Production ${item.data.id}: File Upload`;
             case 'COMPLETAR_IMAGEM':
-                return 'Produção: Completar Imagem';
+                return `Production ${item.data.id}: Complete Image`;
             default:
-                return 'Produção: Desconhecida';
+                return 'Production: Unknown';
         }
       default:
         return 'Item desconhecido';

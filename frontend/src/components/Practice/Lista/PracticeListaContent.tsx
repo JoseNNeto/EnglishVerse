@@ -99,7 +99,7 @@ export default function PracticeListaContent({ data }: PracticeListaContentProps
     <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
       <Box sx={{ width: '100%' }}>
         <Box sx={{ color: '#e0e0e0' }}>
-          <Typography variant="h4">Etapa: Prática - Lista de Palavras</Typography>
+          <Typography variant="h4">Etapa: Practice - List Words</Typography>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', my: 3 }}>
             <Typography variant="body1" sx={{ color: '#b3b3b3' }}>
               {data.instrucao}

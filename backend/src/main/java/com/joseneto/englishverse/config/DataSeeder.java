@@ -79,19 +79,19 @@ public class DataSeeder implements CommandLineRunner {
                     criarRecurso(modPronouns, TipoRecurso.VIDEO, 
                         "https://youtu.be/5tc0gLSSU1M?si=mi-GCh9941-MoVUx", 
                         "**I** give her all my love\nThat's all **I** do\nAnd if **you** saw my love\n**You**'d love her too\n**I** love her\n\n**She** gives me everything\nAnd tenderly\nThe kiss my lover brings\n**She** brings to me\nAnd **I** love her\n\nA love like ours\nCould never die\nAs long as **I**\nHave **you** near me\n\nBright are the stars that shine\nDark is the sky\n**I** know this love of mine\nWill never die\nAnd **I** love her, mm\n\nBright are the stars that shine\nDark is the sky\n**I** know this love of mine\nWill never die\nAnd **I** love her",
-                        "# O Básico: Quem fala e de quem se fala \nOs **Subject Pronouns** (Pronomes Pessoais do Caso Reto) são palavras usadas para substituir os nomes das pessoas ou coisas que realizam a ação em uma frase. Eles são essenciais para evitar repetições desnecessárias. \n O ponto de partida é entender os dois papéis principais em uma conversa: \n1.  **I (Eu):** Refere-se a quem está falando. *⚠️**Regra de Ouro:** Em inglês, o pronome 'I' deve ser escrito **sempre com letra maiúscula**, independente de sua posição na frase. \n 2. **She (Ela):** Refere-se a uma terceira pessoa do gênero feminino (uma mulher ou menina). \n ### Conexão com a Mídia \nNa música **'And I Love Her'**, dos Beatles, observe essa dinâmica em ação. A letra é uma declaração direta onde o cantor utiliza o **'I'** para expressar o que *ele* sente (*'I give her all my love'*) e refere-se à mulher amada como **'She'** ('*She* brings to me').", 1);
+                        "# Distinguindo quem fala e de quem se fala \nOs **_Subject Pronouns_** (Pronomes Pessoais do Caso Reto) são palavras usadas para substituir os nomes das pessoas ou coisas que realizam a ação. Eles são essenciais para evitar repetições desnecessárias. \n O ponto de partida é entender os dois papéis principais em uma conversa: \n1.  **_I_ (Eu):** Refere-se a quem está falando. \n      *⚠️**Regra de Ouro:** Em inglês, o pronome _'I'_ deve ser escrito **sempre com letra maiúscula**, independente de sua posição na frase. \n 2. **_She_ (Ela):** Refere-se a uma terceira pessoa do gênero feminino (uma mulher ou menina). \n ### Conexão com a Mídia \nNa música **_'And I Love Her'_**, dos Beatles, observe essa dinâmica em ação. A letra é uma declaração direta onde o cantor utiliza o **_'I'_** para expressar o que *ele* sente (*'I give her all my love'*) e refere-se à mulher amada como **_'She'_** ('*She* brings to me').\n\n 🎸 Os Beatles foram uma lendária banda de rock britânica formada em Liverpool, Inglaterra, em 1960. Composta por John Lennon, Paul McCartney, George Harrison e Ringo Starr, eles são amplamente considerados o grupo mais influente da história da música popular.", 1);
                    
                     // 3. He Is They Are (Harry Connick JR)
                     criarRecurso(modPronouns, TipoRecurso.VIDEO, 
                         "https://youtu.be/YuzEs_Yo1W8?si=UlQKHaPwun5n5Vw1", 
                         "**He** is good\n**They** are happy\n**He** is strong\n**They** are secure\n**He** is right\n**They** are unquestioning\n**He** is wrong\n**They** are demure\n\nWhen **she** left\n**He** was tortured\n**She** was gone\n**They** were confused\n**He** was forgetful\n**They** were supportive\n**He** was funny\n**They** were amused\n\n**He** did things that only superman could do\nThings that sis and **I** could not believe were true\n\n**He** is older\n**They** are loving\n**He** is hardened\n**They** are grown\n**He** is needing\n**They** are giving\n**He** is glad **they** are his own",
-                        "# Singular vs. Plural: Diferenciando Quantidades \n\nAo falar sobre terceiros, é fundamental saber distinguir entre uma única pessoa e um grupo. \n\n1.  **He (Ele):** É o equivalente masculino de 'She'. Usamos exclusivamente para se referir a **um** homem ou menino.\n 2. **They (Eles ou Elas):** É o pronome do plural. Ele é utilizado para se referir a um grupo de pessoas, animais ou objetos. *💡*Dica:* O 'They' não tem gênero. Serve tanto para um grupo só de homens, só de mulheres ou misto. \n\n ### Conexão com a Mídia \n\nA música **'He Is They Are'**, de Harry Connick Jr., foi desenhada justamente para ensinar essa gramática. O cantor alterna frases mostrando o singular masculino (**'He is'**) e contrasta imediatamente com o plural (**'They are'**), tornando a distinção auditiva muito clara.", 2);
+                        "# Diferenciando Quantidades: Singular vs. Plural \n\nAo falar sobre terceiros, é fundamental saber distinguir entre uma única pessoa e um grupo. \n\n1.  **_He_ (Ele):** É o equivalente masculino de _'She'_. Usamos exclusivamente para se referir a **um** homem ou menino.\n 2. **_They_ (Eles ou Elas):** É o pronome do plural utilizado utilizado para se referir a um grupo de pessoas, animais ou objetos. *💡*Dica:* O _'They'_ não tem gênero. Serve tanto para um grupo só de homens, só de mulheres ou misto. \n\n ### Conexão com a Mídia \n\nA música **_'He Is They Are'_**, de Harry Connick Jr., foi desenhada justamente para ensinar essa gramática. O cantor alterna frases mostrando o singular masculino (**_'He is'_**) e contrasta imediatamente com o plural (**_'They are'_**), tornando a distinção auditiva muito clara. \n\n 🎵 Harry Connick Jr. (nascido em 1967) é um artista norte-americano multifacetado, consagrado como cantor, pianista de jazz, compositor e ator. Natural de Nova Orleans, ele é frequentemente creditado por ajudar a popularizar o estilo big band e o swing para as novas gerações.", 2);
 
                     // 2. We Can Work It Out (Beatles)
                     criarRecurso(modPronouns, TipoRecurso.VIDEO, 
                         "https://youtu.be/IgRrWPdzkao?si=hV1_iiHQmqVQQYHt", 
                         "Try to see **it** my way \nDo **I** have to keep on talking 'til **I** can't go on? \nWhile **you** see **it** your way \nRun the risk of knowing that our love may soon be gone \n**We** can work **it** out \n**We** can work **it** out \n\nThink of what **you**'re saying\n**You** can get **it** wrong and still **you** think that **it**'s alright\nThink of what **I**'m saying \n**We** can work **it** out and get **it** straight, or say good night\n**We** can work **it** out\n**We** can work **it** out\n\nLife is very short, and there's no time\nFor fussing and fighting, my friend\n**I** have always thought that **it**'s a crime\nSo, **I** will ask you once again\nTry to see **it** my way\nOnly time will tell if **I** am right or **I** am wrong\nWhile you see **it** your way\nThere's a chance that **we** might fall apart before too long\n**We** can work **it** out \n**We** can work **it** out\n\n Life is very short, and there's no time\nFor fussing and fighting, my friend\n**I** have always thought that **it**'s a crime\nSo **I** will ask you once again\nTry to see **it** my way\nOnly time will tell if **I** am right or **I** am wrong\nWhile you see **it** your way\nThere's a chance that **we** might fall apart before too long\n**We** can work **it** out\n**We** can work **it** out",
-                        "# O Grupo, O Ouvinte e o 'Neutro'\n\nPara completar os pronomes, precisamos falar sobre interação e objetos.\n\n1. **We (Nós):** Usado quando você se inclui no grupo. A fórmula é simples: *Eu + Outra(s) pessoa(s) = We*\n2.  **You (Você/Vocês):** Usado para falar diretamente com alguém. Em inglês, a palavra é a mesma tanto para o singular quanto para o plural. \n3.  **It (Ele/Ela/Isso):** Este é o pronome 'neutro'. Usamos para objetos, lugares, sentimentos e animais (quando não têm nome próprio). * 🚫 Nunca usamos 'He' ou 'She' para coisas inanimadas. \n\n### Conexão com a Mídia\n\nEm **'We Can Work It Out'**, dos Beatles, a letra gira em torno de um conflito entre duas pessoas. Paul McCartney canta sobre como **'You'** (a outra pessoa) vê as coisas de um jeito, enquanto ele vê de outro. O refrão traz a solução: **'We'** (Nós) podemos resolver isso juntos. É o uso perfeito do pronome para unir os dois lados.", 3);
+                        "# O Grupo, O Ouvinte e o 'Neutro'\n\nPara completar os pronomes, precisamos falar sobre interação e objetos.\n\n1. **We (Nós):** Usado quando você se inclui no grupo. A fórmula é simples: *Eu + Outra(s) pessoa(s) = We*\n2.  **You (Você/Vocês):** Usado para falar diretamente com alguém. Em inglês, a palavra é a mesma tanto para o singular quanto para o plural. \n3.  **It (Ele/Ela/Isso):** Este é o pronome 'neutro'. Usamos para objetos, lugares, sentimentos e animais (quando não têm nome próprio). * 🚫 Nunca usamos 'He' ou 'She' para coisas inanimadas. \n\n### Conexão com a Mídia\n\nEm **'We Can Work It Out'**, dos Beatles, a letra gira em torno de um conflito entre duas pessoas. Paul McCartney canta sobre como **'You'** (a outra pessoa) vê as coisas de um jeito, enquanto ele vê de outro. O refrão traz a solução: **'We'** (Nós) podemos resolver isso juntos. É o uso perfeito do pronome para unir os dois lados. \n\n 🎸 Os Beatles foram uma lendária banda de rock britânica formada em Liverpool, Inglaterra, em 1960. Composta por John Lennon, Paul McCartney, George Harrison e Ringo Starr, eles são amplamente considerados o grupo mais influente da história da música popular.", 3);
 
 
                     // ==========================================
@@ -105,12 +105,12 @@ public class DataSeeder implements CommandLineRunner {
                     dadosP1.put("texto_base", "Imagine me and you , I do \n I think about you day and night \n It 's only right \n To think about the girl you love \n And hold her tight \n So happy together \n ... \n Me and you, and you and me \n No matter how they tossed the dice\n It had to be \n The only one for me is you \nAnd you for me \n So happy together");
                     dadosP1.put("palavras_corretas", List.of("I", "you", "It", "They")); // O sistema valida essas
                     criarPractice(modPronouns, TipoAtividade.SELECIONAR_PALAVRAS, "Clique nos pronomes (Subject Pronouns) que aparecem na letra.", dadosP1);
-
+                    
                     // 2. She's Leaving Home (Beatles) -> Identificar Pronomes
                     Map<String, Object> dadosP2 = new HashMap<>();
                     dadosP2.put("video_url", "https://youtu.be/VaBPY78D88g?si=tzMxMWiwFR7jGQZS");
-                    dadosP2.put("texto_base", "She is leaving home after living alone for so many years...");
-                    dadosP2.put("palavras_corretas", List.of("She"));
+                    dadosP2.put("texto_base", "... Leaving the note that she hoped would say more ... She goes downstairs to the kitchen ... Stepping outside, she is free ... We gave her most of our lives ... She is leaving home after living alone for so many years...");
+                    dadosP2.put("palavras_corretas", List.of("She", "We"));
                     criarPractice(modPronouns, TipoAtividade.SELECIONAR_PALAVRAS, "Identifique quem está saindo de casa.", dadosP2);
 
                     // 3. Rei Leão -> Identificar Pronomes
@@ -126,7 +126,7 @@ public class DataSeeder implements CommandLineRunner {
                     dadosP4.put("video_url", "https://youtu.be/i2mTGBRVRr0?si=NskRvqAbcD6OUFLj");
                     dadosP4.put("numberOfInputs", 3);
                     dadosP4.put("respostas_possiveis", List.of("I", "You", "He", "She", "It", "We", "They"));
-                    criarPractice(modPronouns, TipoAtividade.LISTA_PALAVRAS, "Assista a cena e liste 3 pronomes (em inglês) que você pode inferir.", dadosP4);
+                    criarPractice(modPronouns, TipoAtividade.LISTA_PALAVRAS, "Assista a cena e liste 3 pronomes (em inglês) que são possíveis de identificar.", dadosP4);
 
                     // 5. Fast Car (Tracy Chapman) -> Preencher Lacunas
                     Map<String, Object> dadosP5 = new HashMap<>();
@@ -144,14 +144,14 @@ public class DataSeeder implements CommandLineRunner {
                     dadosProd1.put("link_externo", "https://imgflip.com/memegenerator");
                     dadosProd1.put("formatos_aceitos", List.of("png", "jpg", "jpeg"));
                     criarProduction(modPronouns, TipoDesafio.FOTO_E_TEXTO, 
-                        "Crie um meme usando pelo menos um pronome (I, You, He...). Use o site sugerido e faça o upload da imagem aqui. Depois, explique em inglês o contexto do meme e o significado do pronome usado.", 
+                        "Crie um meme usando pelo menos um pronome (I, You, He...). Use o site sugerido e faça o upload da imagem aqui. Depois, explique em o contexto do meme e o significado do pronome usado.", 
                         null, dadosProd1);
 
                     // 2. Vídeo Pergunta (Qual o único pronome?)
                     Map<String, Object> dadosProd2 = new HashMap<>();
                     dadosProd2.put("tipo_resposta", "texto_curto");
                     criarProduction(modPronouns, TipoDesafio.TEXTO_LONGO, 
-                        "Assista ao vídeo e faça um breve texto em inglês respondendo: Qual é o único 'Subject Pronoun' que é o nome de um dos personagens e onde está o humor deste trecho:",
+                        "Assista ao vídeo e faça um breve texto em inglês respondendo: Qual é o único 'Subject Pronoun' que é o nome de um dos personagens e onde está o humor deste trecho?",
                         "https://www.youtube.com/watch?v=DE8qVfNW5B0", dadosProd2);
 
                     System.out.println(">>> Módulo 'Subject Pronouns' criado com sucesso!");
@@ -192,7 +192,7 @@ public class DataSeeder implements CommandLineRunner {
                     // ==========================================
 
                     Map<String, Object> dadosPrac1 = new HashMap<>();
-                    dadosPrac1.put("video_url", "https://youtu.be/_lOT2p_FCvA?si=1xKeQW7uiijoV9E5"); 
+                    dadosPrac1.put("video_url", "https://youtu.be/2Xmja9Ih99w?si=rtJu_IOJcFXAdOvr"); 
                     dadosPrac1.put("instrucao_video", "Assista à cena. Ligue a frase incompleta ao verbo 'To Be' que a completa corretamente.");
                     
                     // Coluna A (Frases com lacuna)

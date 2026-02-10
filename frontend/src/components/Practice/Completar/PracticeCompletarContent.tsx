@@ -42,6 +42,7 @@ export default function PracticeCompletarContent({ data }: PracticeCompletarCont
     const [checkStatus, setCheckStatus] = useState<'unchecked' | 'correct' | 'incorrect'>('unchecked');
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setAnswer('');
         setCheckStatus('unchecked');
     }, [data.id]);
@@ -83,7 +84,7 @@ export default function PracticeCompletarContent({ data }: PracticeCompletarCont
     <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%'}}>
       <Box sx={{ width: '100%' }}>
         <Box sx={{ color: '#e0e0e0' }}>
-          <Typography variant="h4">Etapa: Prática - Completar</Typography>
+          <Typography variant="h4">Etapa: Practice: Fill in the blanks</Typography>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
             <Typography variant="body1" sx={{ color: '#b3b3b3' }}>
               {data.instrucao}
