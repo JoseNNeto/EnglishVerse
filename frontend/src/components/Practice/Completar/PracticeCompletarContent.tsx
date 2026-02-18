@@ -1,7 +1,8 @@
 import { Box, Typography, Button, TextField } from '@mui/material';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useModule, ItemType } from '../../../contexts/ModuleContext';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ReactMarkdown from 'react-markdown';
 
 interface PracticeCompletarContentProps {
     data: {
@@ -87,7 +88,7 @@ export default function PracticeCompletarContent({ data }: PracticeCompletarCont
           <Typography variant="h4">Etapa: Practice: Fill in the blanks</Typography>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
             <Typography variant="body1" sx={{ color: '#b3b3b3' }}>
-              {data.instrucao}
+              <ReactMarkdown>{data.instrucao}</ReactMarkdown>
             </Typography>
           </Box>
 

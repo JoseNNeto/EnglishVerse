@@ -1,7 +1,8 @@
 import { Box, Typography, Paper, Button, Menu, MenuItem } from '@mui/material';
-import { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useModule, ItemType } from '../../../contexts/ModuleContext';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ReactMarkdown from 'react-markdown';
 
 interface PracticeSubstituirContentProps {
     data: {
@@ -117,7 +118,7 @@ export default function PracticeSubstituirContent({ data }: PracticeSubstituirCo
     return (
         <Box sx={{ width: '100%' }}>
             <Typography variant="h4" sx={{ mb: 1, color: 'white' }}>Etapa: Practice - Substitute</Typography>
-            <Typography variant="body1" sx={{ color: '#b3b3b3', mb: 3 }}>{data.instrucao}</Typography>
+            <Typography variant="body1" sx={{ color: '#b3b3b3', mb: 3 }}><ReactMarkdown>{data.instrucao}</ReactMarkdown></Typography>
             
             {embedUrl && (
                 <Box sx={{ display: 'flex', justifyContent: 'center', mb: 3 }}>

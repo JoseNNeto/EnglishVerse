@@ -115,7 +115,7 @@ export default function SideBar() {
                   {getItemIcon(item.type)}
                 </ListItemIcon>
                 <ListItemText 
-                  primaryTypographyProps={{ sx: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } }}
+                  primaryTypographyProps={{ sx: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontStyle: 'italic' } }}
                   primary={getItemText(item)} 
                   sx={{color}}
                 />

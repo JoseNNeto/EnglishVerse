@@ -1,8 +1,9 @@
 import { Box, Typography, Button, Paper, Chip } from '@mui/material';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
-import { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useModule, ItemType } from '../../../contexts/ModuleContext';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ReactMarkdown from 'react-markdown';
 
 interface PracticeSelecionarContentProps {
     data: {
@@ -112,7 +113,7 @@ export default function PracticeSelecionarContent({ data }: PracticeSelecionarCo
 
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
             <Typography variant="body1" sx={{ color: '#b3b3b3', whiteSpace: 'pre-wrap' }}>
-                {data.instrucao}
+                <ReactMarkdown>{data.instrucao}</ReactMarkdown>
             </Typography>
           </Box>
 

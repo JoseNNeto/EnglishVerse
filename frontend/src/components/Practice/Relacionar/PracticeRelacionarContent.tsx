@@ -8,6 +8,7 @@ import { useState, useMemo, useEffect } from 'react';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import { useModule, ItemType } from '../../../contexts/ModuleContext';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ReactMarkdown from 'react-markdown';
 
 interface PracticeRelacionarContentProps {
     data: {
@@ -194,7 +195,7 @@ export default function PracticeRelacionarContent({ data }: PracticeRelacionarCo
         <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd} collisionDetection={closestCenter}>
             <Box sx={{ width: '100%' }}>
                 <Typography variant="h4" sx={{ mb: 1, color: 'white' }}>Etapa: Practice - Match</Typography>
-                <Typography variant="body1" sx={{ mb: 3, color: '#b3b3b3' }}>{data.instrucao}</Typography>
+                <Typography variant="body1" sx={{ mb: 3, color: '#b3b3b3' }}><ReactMarkdown>{data.instrucao}</ReactMarkdown></Typography>
                 
                 {embedUrl && (
                     <Box sx={{ display: 'flex', justifyContent: 'center', mb: 3 }}>

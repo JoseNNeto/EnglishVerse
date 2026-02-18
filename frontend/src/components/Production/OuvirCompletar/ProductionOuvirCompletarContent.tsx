@@ -1,6 +1,7 @@
 
 import { Box, Typography, Button, Paper, LinearProgress, TextField } from '@mui/material';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import ReactMarkdown from 'react-markdown';
 interface ProductionOuvirCompletarContentProps {
     data: {
         id: number;
@@ -93,7 +94,7 @@ export default function ProductionOuvirCompletarContent({ data }: ProductionOuvi
           <Paper sx={{ bgcolor: '#1a1a1a', p: 3, borderRadius: 3, mb: 3 }}>
             <Typography variant="h5" sx={{ mb: 1 }}>Seu Desafio</Typography>
             <Typography variant="body1" sx={{ color: '#b3b3b3' }}>
-              {data.instrucaoDesafio}
+              <ReactMarkdown>{data.instrucaoDesafio}</ReactMarkdown>
             </Typography>
           </Paper>
 

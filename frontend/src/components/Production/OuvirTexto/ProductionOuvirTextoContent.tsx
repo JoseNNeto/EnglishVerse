@@ -1,8 +1,9 @@
 
 import { Box, Typography, Paper, Button, TextareaAutosize } from '@mui/material';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useModule, ItemType } from '../../../contexts/ModuleContext';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ReactMarkdown from 'react-markdown';
 
 interface ProductionOuvirTextoContentProps {
     data: {
@@ -70,7 +71,7 @@ export default function ProductionOuvirTextoContent({ data }: ProductionOuvirTex
                     <Paper sx={{ bgcolor: '#1a1a1a', p: 3, borderRadius: 3, mb: 3 }}>
                         <Typography variant="h5" sx={{ mb: 1 }}>Seu Desafio</Typography>
                         <Typography variant="body1" sx={{ color: '#b3b3b3' }}>
-                            {data.instrucaoDesafio}
+                            <ReactMarkdown>{data.instrucaoDesafio}</ReactMarkdown>
                         </Typography>
                     </Paper>
 

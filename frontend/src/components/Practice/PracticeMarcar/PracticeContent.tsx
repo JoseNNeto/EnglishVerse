@@ -1,7 +1,8 @@
 import { Box, Typography, Button, Grid } from '@mui/material';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useModule, ItemType } from '../../../contexts/ModuleContext';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ReactMarkdown from 'react-markdown';
 
 interface PracticeMarcarContentProps {
     data: {
@@ -70,7 +71,7 @@ export default function PracticeMarcarContent({ data }: PracticeMarcarContentPro
       <Typography variant="h4">Etapa: Practice - Multiple Choice</Typography>
 
       <Box sx={{ bgcolor: '#1a1a1a', p: 4, borderRadius: 3, my: 3, textAlign: 'center' }}>
-        <Typography variant="h5">{marcarData.pergunta || data.instrucao}</Typography>
+        <Typography variant="h5"><ReactMarkdown>{marcarData.pergunta || data.instrucao}</ReactMarkdown></Typography>
       </Box>
 
       <Grid container spacing={2} paddingX={2}>
