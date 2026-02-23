@@ -179,27 +179,39 @@ public class DataSeeder implements CommandLineRunner {
                     criarRecurso(modToBe, TipoRecurso.VIDEO, 
                         "https://youtu.be/Ws5klxbI87I?si=67ncPJWJq32alQYl", 
                         "I **am** he, as you **are** he \nAs you **are** me, and we **are** all together \nSee how they run like pigs from a gun \nSee how they fly, I'm crying!\n\nSitting on a cornflake \nWaiting for the van to come \nCorporation t-shirt \nStupid bloody Tuesday \n Man, you've been a naughty boy\n You let your face grow long\n\nI **am** the egg man!\n They **are** the egg men! \nI **am** the walrus!\n Goo, goo, goo, joob!\n\nMister City, policeman sitting \nPretty little policemen in a row \n See how they fly like Lucy in the sky!\nSee how they run!\n\nI'm crying! I'm crying!\nI'm crying! I'm crying!\n\nYellow matter custard\nDripping from a dead dog's eye\nCrabalocker fishwife\nPornographic priestess\nBoy, you've been a naughty girl\nYou let your knickers down\n\nI **am** the egg man!\nThey **are** the egg men!\nI **am** the walrus!\nGoo, goo, goo, joob!\n\nSitting in an English garden\nWaiting for the Sun\nIf the Sun don't come, you get a tan\nFrom standing in the English rain\n\nI **am** the egg man!\nThey **are** the egg men!\nI **am** the walrus\nGoo, goo, goo, joob!\n\nExpert, textpert, choking smokers\nDon't you think the joker laughs at you?\nSee how they smile like pigs in a sty\nSee how they snide, I'm crying!\n\nSemolina Pilchard\nClimbing up the Eiffel Tower\nElementary penguin singing Hare Krishna\nMan, you should have seen them\nKicking Edgar Allan Poe\n\nI **am** the egg man!\nThey **are** the egg men!\nI **am** the walrus!\nGoo, goo, goo, joob!\n\nGoo, goo, goo, goo, joob!\nGoo, goo, goo, joob\nGoo, goo, goo, goo, job\nGoo, goo!\n\nJoob! Joob! Joob!\nJoob! Joob! Joob!\nJoob! Joob! Joob!\nJoob! Joob! Joob!\nJoob! Joob! Joob!",
-                        "# I Am, You Are, We Are\n\nO Verbo **_To Be_** (Ser ou Estar) muda de forma dependendo de quem estamos falando. Nesta música psicodélica dos Beatles, John Lennon brinca com a identidade, misturando várias pessoas na mesma frase. É um exemplo perfeito de como conectar os pronomes às formas corretas do verbo.\n\nObserve a linha mais famosa da música:\n*'I **am** he as you **are** he as you **are** me and we **are** all together.'*\n\nAqui vemos a regra em ação:\n1.  **_I am_:** O *'Am'* é exclusivo do *'I'*. Sempre que falar de você mesmo ('Eu sou' ou 'Eu estou'), use **_Am_**.\n2.  **_You are / We are:_** O *'Are'* é a forma do plural (e do 'Você'). Usamos com **_You_** (Você/Vocês), **_We_** (Nós) e **_They_** (Eles).\n\nNa música, eles cantam que 'nós estamos todos juntos' (*we are all together*).\n\n 🎸 **‘I Am the Walrus’** é uma canção dos Beatles lançada em 1967. Escrita por John Lennon, a música é conhecida por sua letra surrealista e *nonsense*, que foi propositalmente criada para confundir acadêmicos que analisavam as letras da banda.", 1);
+                        "# *I Am, You Are, We Are*\n\nO Verbo **_To Be_** (Ser ou Estar) muda de forma dependendo de quem estamos falando. Nesta música psicodélica dos Beatles, John Lennon brinca com a identidade, misturando várias pessoas na mesma frase. É um exemplo perfeito de como conectar os pronomes às formas corretas do verbo.\n\nObserve a linha mais famosa da música:\n*'I **am** he as you **are** he as you **are** me and we **are** all together.'*\n\nAqui vemos a regra em ação:\n1.  **_I am_:** O *'Am'* é exclusivo do *'I'*. Sempre que falar de você mesmo ('Eu sou' ou 'Eu estou'), use **_Am_**.\n2.  **_You are / We are:_** O *'Are'* é a forma do plural (e do 'Você'). Usamos com **_You_** (Você/Vocês), **_We_** (Nós) e **_They_** (Eles).\n\nNa música, eles cantam que 'nós estamos todos juntos' (*we are all together*).\n\n 🎸 **_‘I Am the Walrus’_** é uma canção dos Beatles lançada em 1967. Escrita por John Lennon, a música é conhecida por sua letra surrealista e *nonsense*, que foi propositalmente criada para confundir acadêmicos que analisavam as letras da banda.", 1);
                    
                     // 3. Imagine (John Lennon)
                     criarRecurso(modToBe, TipoRecurso.VIDEO, 
                         "https://youtu.be/YkgkThdzX-8?si=WE4YbJxWqoNW7jFo", 
                         "Imagine **there's** no heaven\n**It's** easy if you try\nNo hell below us\nAbove us only sky\nImagine all the people\nLiving for today\n\nImagine **there's** no countries\n**It isn't** hard to do\nNothing to kill or die for\nAnd no religion too\nImagine all the people\nLiving life in peace\n\nYou may say **I'm** a dreamer\nBut **I'm** not the only one\nI hope someday you'll join us\nAnd the world will be as one\n\nImagine no possessions\nI wonder if you can\nNo need for greed or hunger\nA brotherhood of man\nImagine all the people\nSharing all the world\n\nYou may say **I'm** a dreamer\nBut **I'm** not the only one\nI hope someday you'll join us\nAnd the world will live as one",
-                        "# *It Is*: Descrevendo o Mundo\n\nEnquanto *'I Am The Walrus'* foca nas pessoas, 'Imagine' foca nas coisas, nas ideias e nos lugares. Para isso, usamos a forma singular do Verbo _To Be: **Is**_.\n\nO **_Is_** é usado sempre com a terceira pessoa do singular: **_He_** (Ele), **_She_** (Ela) e **_It_** (Ele/Ela para coisas/ideias).\n\nNa letra, Lennon nos convida a imaginar um mundo diferente:\n* *'Imagine there's no heaven'* -> *'There's'* é a contração de **_There Is_** (Há/Existe). O céu (*heaven*) é uma coisa singular, por isso usamos *Is*.\n* *'It's easy if you try'* -> *'It's'* é a contração de **_It Is_** (É fácil / Isso é fácil).\n\nSempre que você estiver descrevendo uma situação, um objeto ou um sentimento no singular, o **_Is_** será sua escolha.\n\n\n# O Verbo *To Be*: A Regra de Três\n\nO verbo mais importante do inglês tem apenas três formas no presente. A escolha depende do sujeito:\n\n| Sujeito | Verbo *To Be* | Exemplo |\n| :--- | :--- | :--- |\n| **_I_** | **_Am_** | *I am happy*. (Eu estou feliz) |\n| **_He / She / It_** | **_Is_** | *It is easy*. (É fácil) |\n| **_You / We / They_** | **_Are_** | *We are together*. (Nós estamos juntos) |\n\n 🎹 **‘Imagine’** é a canção mais famosa da carreira solo de John Lennon, lançada em 1971. A música é um hino de paz que convida os ouvintes a imaginar um mundo sem fronteiras, religiões ou possessões, focando na humanidade compartilhada.", 2);
+                        "# *It Is*: Descrevendo o Mundo\n\nEnquanto *'I Am The Walrus'* foca nas pessoas, *'Imagine'* foca nas coisas, nas ideias e nos lugares. Para isso, usamos a forma singular do Verbo _To Be: **Is**_.\n\nO **_Is_** é usado sempre com a terceira pessoa do singular: **_He_** (Ele), **_She_** (Ela) e **_It_** (Ele/Ela para coisas/ideias).\n\nNa letra, Lennon nos convida a imaginar um mundo diferente:\n* *'Imagine there's no heaven'* -> *'There's'* é a contração de **_There Is_** (Há/Existe). O céu (*heaven*) é uma coisa singular, por isso usamos *Is*.\n* *'It's easy if you try'* -> *'It's'* é a contração de **_It Is_** (É fácil / Isso é fácil).\n\nSempre que você estiver descrevendo uma situação, um objeto ou um sentimento no singular, o **_Is_** será sua escolha.\n\n\n# O Verbo *To Be*: A Regra de Três\n\nO verbo mais importante do inglês tem apenas três formas no presente. A escolha depende do sujeito:\n\n| Sujeito | Verbo *To Be* | Exemplo |\n| :--- | :--- | :--- |\n| **_I_** | **_Am_** | *I am happy*. (Eu estou feliz) |\n| **_He / She / It_** | **_Is_** | *It is easy*. (É fácil) |\n| **_You / We / They_** | **_Are_** | *We are together*. (Nós estamos juntos) |\n\n 🎹 **_‘Imagine’_** é a canção mais famosa da carreira solo de John Lennon, lançada em 1971. A música é um hino de paz que convida os ouvintes a imaginar um mundo sem fronteiras, religiões ou possessões, focando na humanidade compartilhada.", 2);
 
                     // ==========================================
                     // ETAPA 2: PRACTICE (Os Quizzes com Vídeo no JSON)
                     // ==========================================
+                    // 1. Snoopy (Peanuts) -> Preencher Lacuna (Mudança de Sujeito)
+                    // TIPO: PREENCHER_LACUNA
+                    Map<String, Object> dadosPrac2 = new HashMap<>();
+                    dadosPrac2.put("imagem_url", "https://static1.srcdn.com/wordpress/wp-content/uploads/2024/03/peanuts-lucy-tells-an-indifferent-snoopy-he-s-a-tiny-insignificant-speck-amongst-the-cosmos-1.jpg"); 
+                    
+                    // Contexto: Alteramos "We" para "They". O verbo continua o mesmo?
+                    dadosPrac2.put("frase_com_lacuna", "They ___ only the tiniest speck in an enormous universe!");
+                    dadosPrac2.put("resposta_correta", "are");
+                    
+                    criarPractice(modToBe, TipoAtividade.PREENCHER_LACUNA, 
+                        "Na tirinha original, Lucy diz _'You are'_. Se mudarmos o sujeito para _'They'_ (Eles), qual verbo devemos usar?", dadosPrac2);
 
+                    // 2. Darth Vader (Star Wars) -> Relacionar Colunas (Frases e Verbos)
                     Map<String, Object> dadosPrac1 = new HashMap<>();
                     dadosPrac1.put("video_url", "https://youtu.be/2Xmja9Ih99w?si=rtJu_IOJcFXAdOvr"); 
                     dadosPrac1.put("instrucao_video", "Assista à cena. Ligue a frase incompleta ao verbo _'To Be'_ que a completa corretamente.");
                     
                     // Coluna A (Frases com lacuna)
                     List<Map<String, String>> colA = new ArrayList<>();
-                    colA.add(Map.of("id", "a1", "text", "You ___ beaten"));
-                    colA.add(Map.of("id", "a2", "text", "It ___ useless to resist"));
-                    colA.add(Map.of("id", "a3", "text", "I ___ your father"));
+                    colA.add(Map.of("id", "a1", "text", "*You ___ beaten*"));
+                    colA.add(Map.of("id", "a2", "text", "*It ___ useless to resist*"));
+                    colA.add(Map.of("id", "a3", "text", "*I ___ your father*"));
                     
                     // Coluna B (Verbos)
                     List<Map<String, String>> colB = new ArrayList<>();
@@ -219,18 +231,6 @@ public class DataSeeder implements CommandLineRunner {
                     
                     criarPractice(modToBe, TipoAtividade.RELACIONAR_COLUNAS, 
                         "Relacione as colunas para completar as falas icônicas de Darth Vader.", dadosPrac1);
-
-                    // 2. Snoopy (Peanuts) -> Preencher Lacuna (Mudança de Sujeito)
-                    // TIPO: PREENCHER_LACUNA
-                    Map<String, Object> dadosPrac2 = new HashMap<>();
-                    dadosPrac2.put("imagem_url", "https://static1.srcdn.com/wordpress/wp-content/uploads/2024/03/peanuts-lucy-tells-an-indifferent-snoopy-he-s-a-tiny-insignificant-speck-amongst-the-cosmos-1.jpg"); 
-                    
-                    // Contexto: Alteramos "We" para "They". O verbo continua o mesmo?
-                    dadosPrac2.put("frase_com_lacuna", "They ___ only the tiniest speck in an enormous universe!");
-                    dadosPrac2.put("resposta_correta", "are");
-                    
-                    criarPractice(modToBe, TipoAtividade.PREENCHER_LACUNA, 
-                        "Na tirinha original, Lucy diz _'You are'_. Se mudarmos o sujeito para _'They'_ (Eles), qual verbo devemos usar?", dadosPrac2);
 
                     // 3. We Are The World -> Substituir Palavras (Grammar Check / Concordância)
                     // TIPO: SUBSTITUIR_PALAVRAS
@@ -266,10 +266,14 @@ public class DataSeeder implements CommandLineRunner {
                     criarPractice(modToBe, TipoAtividade.SUBSTITUIR_PALAVRAS, 
                         "Clique nos trechos destacados e escolha a única opção que respeita a regra de conjugação do Verbo _To Be_.", dadosPrac3);
 
+                    // Map<String, Object> dadosProdWhitman = new HashMap<>();
+                    // dadosProdWhitman.put("tipo_resposta", "texto_curto");
+                    // String citacaoWhitman = "\"[...] _I **am** the poet of the Body and I **am** the poet of the Soul, [...]\"\n" + "\"...I believe a leaf of grass **is** no less than the journey-work of the stars,...\"\n" + "\"...These **are** really the thoughts of all men in all ages and lands, they **are** not original with me,..._\"";
+                    // criarProduction(modToBe, TipoDesafio.TEXTO_LONGO, "Agora é sua vez de ser poeta! Inspire-se no trecho de Walt Whitman abaixo e escreva uma letra de música ou poema curto usando as estruturas do Verbo _To Be_ (_I am_, _It is_, _They are_).\n\n ex:" + citacaoWhitman ,null, dadosProdWhitman);
+
                     Map<String, Object> dadosProdWhitman = new HashMap<>();
                     dadosProdWhitman.put("tipo_resposta", "texto_curto");
-                    String citacaoWhitman = "\"[...] _I **am** the poet of the Body and I **am** the poet of the Soul, [...]\"\n" + "\"...I believe a leaf of grass **is** no less than the journey-work of the stars,...\"\n" + "\"...These **are** really the thoughts of all men in all ages and lands, they **are** not original with me,..._\"";
-                    criarProduction(modToBe, TipoDesafio.TEXTO_LONGO, "Agora é sua vez de ser poeta! Inspire-se no trecho de Walt Whitman abaixo e escreva uma letra de música ou poema curto usando as estruturas do Verbo _To Be_ (_I am_, _It is_, _They are_).\n\n ex:" + citacaoWhitman ,null, dadosProdWhitman);
+                    criarProduction(modToBe, TipoDesafio.TEXTO_LONGO, "Agora é sua vez de ser poeta! Inspire-se no trecho de Walt Whitman abaixo (_Song of Myself, 21_) e escreva uma letra de música ou poema curto usando as estruturas do Verbo _To Be_ (_I am_, _It is_, _They are_).\n\n", "https://www.youtube.com/watch?v=T91DX2NcFFU", dadosProdWhitman);
 
                     System.out.println(">>> Módulo 'Present Simple (‘To Be’)' criado com sucesso!");
                 }
