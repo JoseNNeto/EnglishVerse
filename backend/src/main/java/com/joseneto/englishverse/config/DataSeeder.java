@@ -209,9 +209,9 @@ public class DataSeeder implements CommandLineRunner {
                     
                     // Coluna A (Frases com lacuna)
                     List<Map<String, String>> colA = new ArrayList<>();
-                    colA.add(Map.of("id", "a1", "text", "*You ___ beaten*"));
-                    colA.add(Map.of("id", "a2", "text", "*It ___ useless to resist*"));
-                    colA.add(Map.of("id", "a3", "text", "*I ___ your father*"));
+                    colA.add(Map.of("id", "a1", "text", "You ___ beaten"));
+                    colA.add(Map.of("id", "a2", "text", "It ___ useless to resist"));
+                    colA.add(Map.of("id", "a3", "text", "I ___ your father"));
                     
                     // Coluna B (Verbos)
                     List<Map<String, String>> colB = new ArrayList<>();

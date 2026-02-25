@@ -13,38 +13,45 @@ export default function SideBar() {
 
   // Moved helper functions inside the component
   const getItemText = (item: (typeof allItems)[number]) => {
+    let typeIndex = 0;
+    if (item.type === 'practice') {
+      typeIndex = allItems.filter(i => i.type === 'practice').findIndex(i => i.data.id === item.data.id) + 1;
+    } else if (item.type === 'production') {
+      typeIndex = allItems.filter(i => i.type === 'production').findIndex(i => i.data.id === item.data.id) + 1;
+    }
+
     switch(item.type) {
       case 'presentation':
         return `Presentation ${item.data.ordem}: ${item.data.tipoRecurso.charAt(0).toUpperCase() + item.data.tipoRecurso.slice(1).toLowerCase()}`;
       case 'practice':
         switch (item.data.tipoAtividade) {
           case 'MULTIPLA_ESCOLHA':
-            return `Practice ${item.data.id}: Multiple Choice`;
+            return `Practice ${typeIndex}: Multiple Choice`;
           case 'PREENCHER_LACUNA':
-            return `Practice ${item.data.id}: Fill in the Blanks`;
+            return `Practice ${typeIndex}: Fill in the Blanks`;
           case 'SELECIONAR_PALAVRAS':
-            return `Practice ${item.data.id}: Select Words`;
+            return `Practice ${typeIndex}: Select Words`;
           case 'LISTA_PALAVRAS':
-            return `Practice ${item.data.id}: List Words`;
+            return `Practice ${typeIndex}: List Words`;
           case 'RELACIONAR_COLUNAS':
-            return `Practice ${item.data.id}: Match Columns`;
+            return `Practice ${typeIndex}: Match Columns`;
           case 'SUBSTITUIR_PALAVRAS':
-            return `Practice ${item.data.id}: Replace Words`;
+            return `Practice ${typeIndex}: Replace Words`;
           default:
             return 'Practice: Unknown';
         }
       case 'production':
         switch (item.data.tipoDesafio) {
             case 'AUDIO':
-                return `Production ${item.data.id}: Audio`;
+                return `Production ${typeIndex}: Audio`;
             case 'TEXTO_LONGO':
-                return `Production ${item.data.id}: Long Text`;
+                return `Production ${typeIndex}: Long Text`;
             case 'FOTO_E_TEXTO':
-                return `Production ${item.data.id}: Photo and Text`;
+                return `Production ${typeIndex}: Photo and Text`;
             case 'UPLOAD_ARQUIVO':
-                return `Production ${item.data.id}: File Upload`;
+                return `Production ${typeIndex}: File Upload`;
             case 'COMPLETAR_IMAGEM':
-                return `Production ${item.data.id}: Complete Image`;
+                return `Production ${typeIndex}: Complete Image`;
             default:
                 return 'Production: Unknown';
         }

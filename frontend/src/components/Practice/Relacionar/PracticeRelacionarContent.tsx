@@ -63,7 +63,7 @@ function DroppableCharacter({ char, quote, onRemoveQuote, status }: { char: Char
     const borderColor = status === 'correct' ? 'green' : status === 'incorrect' ? 'red' : '#b3b3b3';
     return (
         <Paper ref={setNodeRef} sx={{ p: 2, mb: 2, bgcolor: isOver ? '#333' : '#1a1a1a', border: `1px solid ${borderColor}`, transition: 'background-color 0.2s, border-color 0.2s' }}>
-            <Typography sx={{ color: '#007aff', mb: 1 }}>{char.name}</Typography>
+            <Typography sx={{ color: '#007aff', mb: 1, fontStyle: 'italic' }}>{char.name}</Typography>
             <Box 
                 sx={{ border: `2px dashed ${borderColor}`, borderRadius: 2, p: 2, minHeight: 60, textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                 onClick={() => quote && onRemoveQuote(quote.id, char.id)}
@@ -81,7 +81,7 @@ function DroppableColumn({ id, title, items }: { id: UniqueIdentifier, title: st
             <Typography variant="h6" sx={{mb: 2}}>{title}</Typography>
             <Paper ref={setNodeRef} sx={{ p: 2, bgcolor: isOver ? '#333' : '#1a1a1a', minHeight: 200, borderRadius: 2, transition: 'background-color 0.2s ease-in-out' }}>
                 <SortableContext items={items.map(i => i.id)} strategy={verticalListSortingStrategy}>
-                    <Box sx={{display: 'flex', flexDirection: 'column', gap: 2}}>
+                    <Box sx={{display: 'flex', flexDirection: 'column', gap: 2, fontStyle: 'italic', color: '#b3b3b3'}}>
                         {items.map(item => <DraggableQuote key={item.id} id={item.id} text={item.text} />)}
                     </Box>
                 </SortableContext>
