@@ -1,7 +1,7 @@
 
 import { Box, Typography, Paper, Button, TextareaAutosize, styled } from '@mui/material';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useModule, ItemType } from '../../../contexts/ModuleContext';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';

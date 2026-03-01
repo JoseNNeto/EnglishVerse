@@ -1,6 +1,6 @@
 import { Box, Typography, Button, Paper, Chip } from '@mui/material';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
-import React, { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useModule, ItemType } from '../../../contexts/ModuleContext';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ReactMarkdown from 'react-markdown';
