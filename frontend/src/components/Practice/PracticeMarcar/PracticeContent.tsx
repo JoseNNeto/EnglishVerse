@@ -1,5 +1,5 @@
 import { Box, Typography, Button, Grid } from '@mui/material';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useModule, ItemType } from '../../../contexts/ModuleContext';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ReactMarkdown from 'react-markdown';
