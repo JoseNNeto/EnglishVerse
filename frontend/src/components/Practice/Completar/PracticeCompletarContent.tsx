@@ -85,7 +85,7 @@ export default function PracticeCompletarContent({ data }: PracticeCompletarCont
     <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%'}}>
       <Box sx={{ width: '100%' }}>
         <Box sx={{ color: '#e0e0e0' }}>
-          <Typography variant="h4">Etapa: Practice: Fill in the blanks</Typography>
+          <Typography variant="h4">Etapa: <i>Practice - Fill in the blanks</i></Typography>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
             <Typography variant="body1" sx={{ color: '#b3b3b3' }}>
               <ReactMarkdown>{data.instrucao}</ReactMarkdown>

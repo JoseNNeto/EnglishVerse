@@ -116,7 +116,7 @@ export default function MidiaAndTranscption() {
 
     return (
         <Box>
-            <Typography variant="h4" sx={{ color: '#e0e0e0', mb: 1 }}>
+            <Typography variant="h4" sx={{ color: '#e0e0e0', mb: 1, fontStyle: 'italic' }}>
                 Presentation
             </Typography>
             <Typography variant="body1" sx={{ color: '#b3b3b3', mb: 3 }}>

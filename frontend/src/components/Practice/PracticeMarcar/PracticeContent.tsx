@@ -68,7 +68,7 @@ export default function PracticeMarcarContent({ data }: PracticeMarcarContentPro
 
   return (
     <Box sx={{ color: '#e0e0e0' }}>
-      <Typography variant="h4">Etapa: Practice - Multiple Choice</Typography>
+      <Typography variant="h4">Etapa: <i>Practice - Multiple Choice</i></Typography>
 
       <Box sx={{ bgcolor: '#1a1a1a', p: 4, borderRadius: 3, my: 3, textAlign: 'center' }}>
         <Typography variant="h5"><ReactMarkdown>{marcarData.pergunta || data.instrucao}</ReactMarkdown></Typography>

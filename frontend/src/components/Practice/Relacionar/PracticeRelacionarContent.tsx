@@ -194,7 +194,7 @@ export default function PracticeRelacionarContent({ data }: PracticeRelacionarCo
     return (
         <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd} collisionDetection={closestCenter}>
             <Box sx={{ width: '100%' }}>
-                <Typography variant="h4" sx={{ mb: 1, color: 'white' }}>Etapa: Practice - Match</Typography>
+                <Typography variant="h4" sx={{ mb: 1, color: 'white'}}>Etapa: <i>Practice - Match</i></Typography>
                 <Typography variant="body1" sx={{ mb: 3, color: '#b3b3b3' }}><ReactMarkdown>{data.instrucao}</ReactMarkdown></Typography>
                 
                 {embedUrl && (

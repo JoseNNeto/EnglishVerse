@@ -56,7 +56,7 @@ export default function ProductionOuvirCompletarContent({ data }: ProductionOuvi
               <LinearProgress variant="determinate" value={0} sx={{ height: 8, borderRadius: 4 }} /> {/* Placeholder */}
           </Box>
 
-          <Typography variant="h4" sx={{ mb: 3 }}>Etapa: Desafio de Produção - Ouvir e Completar</Typography>
+          <Typography variant="h4" sx={{ mb: 3 }}>Etapa: <i>Production Challenge - Audio</i></Typography>
 
           {data.midiaDesafioUrl && (
             <Paper sx={{ bgcolor: '#1a1a1a', p: 3, borderRadius: 3, mb: 3, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>

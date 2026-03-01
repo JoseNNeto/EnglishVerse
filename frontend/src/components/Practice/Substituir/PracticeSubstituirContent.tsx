@@ -117,7 +117,7 @@ export default function PracticeSubstituirContent({ data }: PracticeSubstituirCo
 
     return (
         <Box sx={{ width: '100%' }}>
-            <Typography variant="h4" sx={{ mb: 1, color: 'white' }}>Etapa: Practice - Substitute</Typography>
+            <Typography variant="h4" sx={{ mb: 1, color: 'white'}}>Etapa: <i>Practice - Substitute</i></Typography>
             <Typography variant="body1" sx={{ color: '#b3b3b3', mb: 3 }}><ReactMarkdown>{data.instrucao}</ReactMarkdown></Typography>
             
             {embedUrl && (

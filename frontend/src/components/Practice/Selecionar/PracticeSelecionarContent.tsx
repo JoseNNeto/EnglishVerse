@@ -109,7 +109,7 @@ export default function PracticeSelecionarContent({ data }: PracticeSelecionarCo
     <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%'}}>
       <Box sx={{ width: '100%' }}>
         <Box sx={{ color: '#e0e0e0' }}>
-          <Typography variant="h4">Etapa: Practice - Select Words</Typography>
+          <Typography variant="h4">Etapa: <i>Practice - Select Words</i></Typography>
 
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
             <Typography variant="body1" sx={{ color: '#b3b3b3', whiteSpace: 'pre-wrap' }}>

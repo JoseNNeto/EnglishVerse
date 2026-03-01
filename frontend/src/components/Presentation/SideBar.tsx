@@ -13,47 +13,47 @@ export default function SideBar() {
 
   // Moved helper functions inside the component
   const getItemText = (item: (typeof allItems)[number]) => {
-    let typeIndex = 0;
-    if (item.type === 'practice') {
-      typeIndex = allItems.filter(i => i.type === 'practice').findIndex(i => i.data.id === item.data.id) + 1;
-    } else if (item.type === 'production') {
-      typeIndex = allItems.filter(i => i.type === 'production').findIndex(i => i.data.id === item.data.id) + 1;
-    }
+    const sameTypeItems = allItems.filter(i => i.type === item.type);
+    const count = sameTypeItems.length;
+    const typeIndex = sameTypeItems.findIndex(i => i.data.id === item.data.id) + 1;
+    
+    const capitalizedType = item.type.charAt(0).toUpperCase() + item.type.slice(1);
+    const prefix = count > 1 ? `${capitalizedType} ${typeIndex}` : capitalizedType;
 
     switch(item.type) {
       case 'presentation':
-        return `Presentation ${item.data.ordem}: ${item.data.tipoRecurso.charAt(0).toUpperCase() + item.data.tipoRecurso.slice(1).toLowerCase()}`;
+        return `${prefix}: ${item.data.tipoRecurso.charAt(0).toUpperCase() + item.data.tipoRecurso.slice(1).toLowerCase()}`;
       case 'practice':
         switch (item.data.tipoAtividade) {
           case 'MULTIPLA_ESCOLHA':
-            return `Practice ${typeIndex}: Multiple Choice`;
+            return `${prefix}: Multiple Choice`;
           case 'PREENCHER_LACUNA':
-            return `Practice ${typeIndex}: Fill in the Blanks`;
+            return `${prefix}: Fill in the Blanks`;
           case 'SELECIONAR_PALAVRAS':
-            return `Practice ${typeIndex}: Select Words`;
+            return `${prefix}: Select Words`;
           case 'LISTA_PALAVRAS':
-            return `Practice ${typeIndex}: List Words`;
+            return `${prefix}: List Words`;
           case 'RELACIONAR_COLUNAS':
-            return `Practice ${typeIndex}: Match Columns`;
+            return `${prefix}: Match Columns`;
           case 'SUBSTITUIR_PALAVRAS':
-            return `Practice ${typeIndex}: Replace Words`;
+            return `${prefix}: Replace Words`;
           default:
-            return 'Practice: Unknown';
+            return `${prefix}: Unknown`;
         }
       case 'production':
         switch (item.data.tipoDesafio) {
             case 'AUDIO':
-                return `Production ${typeIndex}: Audio`;
+                return `${prefix}: Audio`;
             case 'TEXTO_LONGO':
-                return `Production ${typeIndex}: Long Text`;
+                return `${prefix}: Long Text`;
             case 'FOTO_E_TEXTO':
-                return `Production ${typeIndex}: Photo and Text`;
+                return `${prefix}: Photo and Text`;
             case 'UPLOAD_ARQUIVO':
-                return `Production ${typeIndex}: File Upload`;
+                return `${prefix}: File Upload`;
             case 'COMPLETAR_IMAGEM':
-                return `Production ${typeIndex}: Complete Image`;
+                return `${prefix}: Complete Image`;
             default:
-                return 'Production: Unknown';
+                return `${prefix}: Unknown`;
         }
       default:
         return 'Item desconhecido';

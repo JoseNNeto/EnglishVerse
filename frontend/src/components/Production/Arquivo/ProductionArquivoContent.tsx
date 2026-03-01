@@ -78,7 +78,7 @@ export default function ProductionArquivoContent({ data }: ProductionArquivoCont
     <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
       <Box sx={{ width: '90%' }}>
         <Box sx={{ color: '#e0e0e0' }}>
-          <Typography variant="h4" sx={{ mb: 3 }}>Etapa: Desafio de Produção - Arquivo</Typography>
+          <Typography variant="h4" sx={{ mb: 3 }}>Etapa: <i>Production Challenge - File Upload</i></Typography>
           <Paper sx={{ bgcolor: '#1a1a1a', p: 3, borderRadius: 3, mb: 3 }}>
             <Typography variant="h5" sx={{ mb: 1 }}>Seu Desafio</Typography>
             <Typography variant="body1" sx={{ color: '#b3b3b3' }}>
