@@ -1,7 +1,8 @@
 import { Box, Typography, Button, TextField } from '@mui/material';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useModule, ItemType } from '../../../contexts/ModuleContext';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ReactMarkdown from 'react-markdown';
 
 interface PracticeCompletarContentProps {
     data: {
@@ -42,6 +43,7 @@ export default function PracticeCompletarContent({ data }: PracticeCompletarCont
     const [checkStatus, setCheckStatus] = useState<'unchecked' | 'correct' | 'incorrect'>('unchecked');
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setAnswer('');
         setCheckStatus('unchecked');
     }, [data.id]);
@@ -83,10 +85,10 @@ export default function PracticeCompletarContent({ data }: PracticeCompletarCont
     <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%'}}>
       <Box sx={{ width: '100%' }}>
         <Box sx={{ color: '#e0e0e0' }}>
-          <Typography variant="h4">Etapa: Prática - Completar</Typography>
+          <Typography variant="h4">Etapa: <i>Practice - Fill in the blanks</i></Typography>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
             <Typography variant="body1" sx={{ color: '#b3b3b3' }}>
-              {data.instrucao}
+              <ReactMarkdown>{data.instrucao}</ReactMarkdown>
             </Typography>
           </Box>
 

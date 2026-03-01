@@ -1,7 +1,8 @@
 import { Box, Typography, Button, Grid, TextField } from '@mui/material';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useModule, ItemType } from '../../../contexts/ModuleContext';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ReactMarkdown from 'react-markdown';
 
 interface PracticeListaContentProps {
     data: {
@@ -99,10 +100,10 @@ export default function PracticeListaContent({ data }: PracticeListaContentProps
     <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
       <Box sx={{ width: '100%' }}>
         <Box sx={{ color: '#e0e0e0' }}>
-          <Typography variant="h4">Etapa: Prática - Lista de Palavras</Typography>
+          <Typography variant="h4">Etapa: <i>Practice - List Words</i></Typography>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', my: 3 }}>
             <Typography variant="body1" sx={{ color: '#b3b3b3' }}>
-              {data.instrucao}
+              <ReactMarkdown>{data.instrucao}</ReactMarkdown>
             </Typography>
           </Box>
 

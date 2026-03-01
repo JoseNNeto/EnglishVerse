@@ -1,8 +1,9 @@
 
 import { Box, Typography, Button, TextareaAutosize, Paper } from '@mui/material';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useModule, ItemType } from '../../../contexts/ModuleContext';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ReactMarkdown from 'react-markdown';
 
 interface ProductionTextoContentProps {
     data: {
@@ -49,11 +50,11 @@ export default function ProductionTextoContent({ data }: ProductionTextoContentP
     <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%'}}>
       <Box sx={{ width: '100%' }}>
         <Box sx={{ color: '#e0e0e0' }}>
-          <Typography variant="h4" sx={{ mb: 3 }}>Etapa: Desafio de Produção - Texto Longo</Typography>
+          <Typography variant="h4" sx={{ mb: 3 }}>Etapa: <i>Production Challenge - Long Text</i></Typography>
           <Paper sx={{ bgcolor: '#1a1a1a', p: 3, borderRadius: 3, mb: 3 }}>
             <Typography variant="h5" sx={{ mb: 1 }}>Seu Desafio</Typography>
             <Typography variant="body1" sx={{ color: '#b3b3b3' }}>
-              {data.instrucaoDesafio}
+              <ReactMarkdown>{data.instrucaoDesafio}</ReactMarkdown>
             </Typography>
           </Paper>
 

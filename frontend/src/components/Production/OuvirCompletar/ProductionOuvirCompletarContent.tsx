@@ -1,6 +1,7 @@
 
 import { Box, Typography, Button, Paper, LinearProgress, TextField } from '@mui/material';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import ReactMarkdown from 'react-markdown';
 interface ProductionOuvirCompletarContentProps {
     data: {
         id: number;
@@ -55,7 +56,7 @@ export default function ProductionOuvirCompletarContent({ data }: ProductionOuvi
               <LinearProgress variant="determinate" value={0} sx={{ height: 8, borderRadius: 4 }} /> {/* Placeholder */}
           </Box>
 
-          <Typography variant="h4" sx={{ mb: 3 }}>Etapa: Desafio de Produção - Ouvir e Completar</Typography>
+          <Typography variant="h4" sx={{ mb: 3 }}>Etapa: <i>Production Challenge - Audio</i></Typography>
 
           {data.midiaDesafioUrl && (
             <Paper sx={{ bgcolor: '#1a1a1a', p: 3, borderRadius: 3, mb: 3, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
@@ -93,7 +94,7 @@ export default function ProductionOuvirCompletarContent({ data }: ProductionOuvi
           <Paper sx={{ bgcolor: '#1a1a1a', p: 3, borderRadius: 3, mb: 3 }}>
             <Typography variant="h5" sx={{ mb: 1 }}>Seu Desafio</Typography>
             <Typography variant="body1" sx={{ color: '#b3b3b3' }}>
-              {data.instrucaoDesafio}
+              <ReactMarkdown>{data.instrucaoDesafio}</ReactMarkdown>
             </Typography>
           </Paper>
 

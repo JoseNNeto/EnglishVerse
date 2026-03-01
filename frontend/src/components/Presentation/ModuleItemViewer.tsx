@@ -41,7 +41,7 @@ export default function ModuleItemViewer() {
         case 'presentation':
             return <MidiaAndTranscption />;
         case 'practice':
-            const practiceData = activeItem.data;
+            { const practiceData = activeItem.data;
             switch (practiceData.tipoAtividade) {
                 case 'SELECIONAR_PALAVRAS':
                     return <PracticeSelecionarContent data={practiceData} />;
@@ -58,12 +58,12 @@ export default function ModuleItemViewer() {
                 default:
                     return (
                         <Box sx={{ p: 4, backgroundColor: '#1a1a1a', color: 'white', borderRadius: '14px', textAlign: 'center' }}>
-                            <Typography variant="h5">Tipo de prática desconhecido: {practiceData.tipoAtividade}</Typography>
+                            <Typography variant="h5">Unknown Practice: {practiceData.tipoAtividade}</Typography>
                         </Box>
                     );
-            }
+            } }
         case 'production':
-            const productionData = activeItem.data;
+            { const productionData = activeItem.data;
             switch (productionData.tipoDesafio) {
                 case 'TEXTO_LONGO':
                     return <ProductionTextoContent data={productionData} />;
@@ -80,14 +80,14 @@ export default function ModuleItemViewer() {
                 default:
                     return (
                         <Box sx={{ p: 4, backgroundColor: '#1a1a1a', color: 'white', borderRadius: '14px', textAlign: 'center' }}>
-                            <Typography variant="h5">Tipo de desafio desconhecido: {productionData.tipoDesafio}</Typography>
+                            <Typography variant="h5">Unknown Production: {productionData.tipoDesafio}</Typography>
                         </Box>
                     );
-            }
+            } }
         default:
             return (
                 <Box sx={{ p: 4, backgroundColor: '#1a1a1a', color: 'white', borderRadius: '14px', textAlign: 'center' }}>
-                    <Typography variant="h5">Tipo de item desconhecido.</Typography>
+                    <Typography variant="h5">Unknown Item Type.</Typography>
                 </Box>
             );
     }

@@ -1,10 +1,11 @@
 
 import { Box, Typography, Paper, Button, TextareaAutosize, styled } from '@mui/material';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
-import { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useModule, ItemType } from '../../../contexts/ModuleContext';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ReactMarkdown from 'react-markdown';
 
 const Dropzone = styled('div')<{isDragActive: boolean}>(({ theme, isDragActive }) => ({
     border: `2px dashed ${isDragActive ? theme.palette.primary.main : theme.palette.grey[700]}`,
@@ -84,12 +85,12 @@ export default function ProductionPostagemContent({ data }: ProductionPostagemCo
         <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
             <Box sx={{ width: '100%' }}>
                 <Box sx={{ color: '#e0e0e0' }}>
-                    <Typography variant="h4" sx={{ mb: 3 }}>Etapa: Desafio de Produção - Foto e Texto</Typography>
+                    <Typography variant="h4" sx={{ mb: 3 }}>Etapa: <i>Production Challenge - Photo and Text</i></Typography>
 
                     <Paper sx={{ bgcolor: '#1a1a1a', p: 3, borderRadius: 3, mb: 3 }}>
                         <Typography variant="h5" sx={{ mb: 1 }}>Seu Desafio</Typography>
                         <Typography variant="body1" sx={{ color: '#b3b3b3' }}>
-                            {data.instrucaoDesafio}
+                            <ReactMarkdown>{data.instrucaoDesafio}</ReactMarkdown>
                         </Typography>
                         {postagemData.link_externo && (
                             <Button variant="outlined" sx={{mt: 2}} href={postagemData.link_externo} target="_blank">
