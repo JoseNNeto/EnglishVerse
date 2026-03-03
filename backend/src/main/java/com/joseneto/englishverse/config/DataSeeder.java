@@ -158,6 +158,83 @@ public class DataSeeder implements CommandLineRunner {
                 }
             );
 
+        moduloRepository.findByTitulo("Articles (A, An, The)")
+            .ifPresentOrElse(
+                (mod) -> System.out.println(">>> Módulo 'Articles (A, An, The)' já existe. ID: " + mod.getId()),
+                () -> {
+                    System.out.println(">>> Cadastrando Módulo: Articles (A, An, The)...");
+                    Modulo modArticles = new Modulo();
+                    modArticles.setTopico(topicoIniciante);
+                    modArticles.setTitulo("Articles (A, An, The)");
+                    modArticles.setDescricao("Um, uma ou o específico? Aprenda a usar os artigos A, An e The pra não se confundir na hora de falar.");
+                    modArticles.setImagemCapaUrl("https://m.media-amazon.com/images/I/51wckS2zxwL._AC_UF894,1000_QL80_.jpg"); // Capa dos Beatles
+                    modArticles.setPublicado(true);
+                    modArticles = moduloRepository.save(modArticles);
+
+                    criarRecurso(modArticles, TipoRecurso.VIDEO, 
+                        "https://youtu.be/HhNH2V-K-9g?si=pIL6FA7Eheo8DEao", 
+                        "Dear Mr. Vernon, we accept **the** fact that we had to sacrifice **a** whole Saturday in detention for whatever it was we did wrong. But we think you’re crazy to make us write **an** essay telling you who we think we are. You see us as you want to see us – in **the** simplest terms, in **the** most convenient definitions. But what we found out is that each one of us is **a** brain, and **an** athlete, and **a** basketcase, **a** princess, and **a** criminal. Does that answer your question? Sincerely yours, **The** Breakfast Club",
+                        "# Definindo identidades: *'a, an & the'* \n\nOs **_articles_** são pequenas palavras que vêm antes dos substantivos para definir se estamos falando de algo específico ou geral. Em inglês, temos dois tipos:\n\n - **_Definite Article (the):_** O artigo definido ('o', 'a', 'os', 'as'). Usado para algo específico, único ou já conhecido.\n - **_Indefinite Articles (a / an):_** Os artigos indefinidos ('um', 'uma'). Usados para algo geral ou mencionado pela primeira vez.\n\nNesta cena icônica de 'O Clube dos Cinco' *(The Breakfast Club)*, os personagens usam esses artigos para explicar quem eles realmente são. Vamos analisar:\n\n### 1. O específico: *'The'* \nO **_'the'_** é usado quando sabemos exatamente do que estamos falando.\n\n*   *'We accept **the** fact...'* (Nós aceitamos **o** fato). Não é qualquer fato, é aquele fato específico de estarem na detenção.\n*   *'Sincerely yours, **The** Breakfast Club.'* Eles não são qualquer clube, eles são **O** Clube dos Cinco. O artigo dá um título e uma identidade única ao grupo.\n\n### 2. O geral: *'a'* vs *'an'* \nQuando eles se descrevem individualmente, eles usam artigos indefinidos, pois estão se colocando como exemplos de 'tipos' de alunos. A regra para escolher entre **_A_** e **_An_** depende do **som** da próxima palavra:\n\n*   **Use *'A'* antes de som de consoante:**\n    *   *'...**a** brain...'* (um cérebro/nerd)\n    *   *'...**a** basketcase...'* (um caso perdido)\n    *   *'...**a** princess...'* (uma princesa)\n    *   *'...**a** criminal.'* (um criminoso)\n\n*   **Use *'An'* antes de som de vogal:**\n    *   *'...and **an** athlete...'* (e um atleta). Como *'Athlete'* começa com som de 'A', usamos **_'An'_** para a fala fluir melhor.\n\n**Resumo da Ópera:**\nBrian (o narrador) usa **_'A'_** e **_'An'_** para listar os rótulos genéricos que a sociedade dá a eles, mas assina como _**'The'** Breakfast Club_ para mostrar que, juntos, eles formaram algo único e específico.\n\n 🎬 **_‘The Breakfast Club’_** (O Clube dos Cinco), lançado em 1985 e dirigido por John Hughes, é um filme clássico adolescente que explora as pressões sociais e os estereótipos enfrentados por estudantes do Ensino Médio durante uma detenção de sábado.", 1);
+
+                    // ==========================================
+                    // ETAPA 2: PRACTICE - Módulo Articles (A, An, The)
+                    // ==========================================
+
+                    // TIPO: SELECIONAR_PALAVRAS
+                    Map<String, Object> dadosPracHappy = new HashMap<>();
+                    
+                    // Link do vídeo oficial
+                    dadosPracHappy.put("video_url", "https://youtu.be/ZbZSe6N_BXs?si=dQ6BO4FgdKclnDxc"); 
+                    dadosPracHappy.put("instrucao_video", "Sinta a _vibe_! Ouça o trecho e clique em todos os artigos (_A_, _An_, _The_) que encontrar.");
+                    // A letra formatada com quebras de linha
+                    dadosPracHappy.put("texto_base", "Sunshine, she's here, you can take a break \n I'm a hot air balloon that could go to space\n With the air, like I don't care, baby, by the way \n Clap along if you feel like a room without a roof Clap along if you feel like happiness is the truth");
+                    dadosPracHappy.put("palavras_corretas", List.of("a", "the")); 
+                    
+                    criarPractice(modArticles, TipoAtividade.SELECIONAR_PALAVRAS, 
+                        "Identifique os artigos definidos e indefinidos na letra de _'Happy'_.", dadosPracHappy);
+                    
+                    // 3. Garfield (Adaptação) -> Preencher Lacuna (A vs An)
+                    // TIPO: PREENCHER_LACUNA
+                    Map<String, Object> dadosPracGarfield = new HashMap<>();
+                    dadosPracGarfield.put("imagem_url", "https://uploads.tudosaladeaula.com/2024/09/321-2.png"); 
+                    dadosPracGarfield.put("frase_com_lacuna", "Once upon a time there was a house with ___ ant.");
+                    dadosPracGarfield.put("resposta_correta", "an"); 
+                    
+                    criarPractice(modArticles, TipoAtividade.PREENCHER_LACUNA, 
+                        "Na tirinha original, Jon diz _'a dog'_ e _'a cat'_. Se mudássemos o animal para uma **formiga (_ant_)**, como ficaria o artigo?",dadosPracGarfield);
+                        
+                            
+                    // 1. The Godfather -> Preencher Lacuna (A vs An)
+                    // TIPO: PREENCHER_LACUNA
+                    Map<String, Object> dadosPracGodfather = new HashMap<>();
+                    // Link da cena exata no YouTube
+                    dadosPracGodfather.put("video_url", "https://youtu.be/D6me2-OurCw?si=FYD0X729HynqqlB7"); 
+                    dadosPracGodfather.put("frase_com_lacuna", "I'm gonna make him ___ offer he can't refuse.");
+                    dadosPracGodfather.put("resposta_correta", "an"); 
+                    
+                    criarPractice(modArticles, TipoAtividade.PREENCHER_LACUNA,
+                    "Don Corleone vai fazer uma proposta irrecusável. Preste atenção no artigo que ele usa antes da palavra _'offer'_. Assista à cena icônica e complete a fala com o artigo indefinido correto (_a_ ou _an_).",dadosPracGodfather);
+                    // ==========================================
+                    // ETAPA 3: PRODUCTION - Módulo Articles (A, An, The)
+                    // ==========================================
+
+                    // 1. Criador de Quadrinhos -> FOTO_E_TEXTO
+                    Map<String, Object> dadosProdComic = new HashMap<>();
+                    
+                    // O link da ferramenta externa
+                    dadosProdComic.put("link_externo", "https://www.storyboardthat.com/pt/criador-de-quadrinhos");
+                    
+                    // Formatos de imagem aceitos
+                    dadosProdComic.put("formatos_aceitos", List.of("png", "jpg", "jpeg"));
+                    
+                    criarProduction(modArticles, TipoDesafio.FOTO_E_TEXTO, 
+                        "Agora é sua vez de contar uma história! Crie uma tirinha curta (3 quadros) usando corretamente os artigos _'a'_, _'an'_ e _'the'_. Use o site sugerido para criar, salve a imagem e faça o _upload_ aqui. Em seguida, descreva brevemente a história no campo abaixo. ✨ **Curiosidade**: Walt Whitman (1819–1892) foi um influente poeta americano e o 'pai do verso livre'. Ele revolucionou a literatura ao trocar métricas rígidas por uma linguagem fluida e natural.", 
+                        null, dadosProdComic);
+
+                    System.out.println(">>> Módulo 'Articles (A, An, The)' criado com sucesso!");
+                }
+            );
+
         moduloRepository.findByTitulo("Present Simple (‘To Be’) - Am, Is, Are")
             .ifPresentOrElse(
                 (mod) -> System.out.println(">>> Módulo 'Present Simple (‘To Be’)' já existe. ID: " + mod.getId()),
@@ -279,83 +356,6 @@ public class DataSeeder implements CommandLineRunner {
                 }
             );
 
-        moduloRepository.findByTitulo("Articles (A, An, The)")
-            .ifPresentOrElse(
-                (mod) -> System.out.println(">>> Módulo 'Articles (A, An, The)' já existe. ID: " + mod.getId()),
-                () -> {
-                    System.out.println(">>> Cadastrando Módulo: Articles (A, An, The)...");
-                    Modulo modArticles = new Modulo();
-                    modArticles.setTopico(topicoIniciante);
-                    modArticles.setTitulo("Articles (A, An, The)");
-                    modArticles.setDescricao("Um, uma ou o específico? Aprenda a usar os artigos A, An e The pra não se confundir na hora de falar.");
-                    modArticles.setImagemCapaUrl("https://m.media-amazon.com/images/I/51wckS2zxwL._AC_UF894,1000_QL80_.jpg"); // Capa dos Beatles
-                    modArticles.setPublicado(true);
-                    modArticles = moduloRepository.save(modArticles);
-
-                    criarRecurso(modArticles, TipoRecurso.VIDEO, 
-                        "https://youtu.be/HhNH2V-K-9g?si=pIL6FA7Eheo8DEao", 
-                        "Dear Mr. Vernon, we accept **the** fact that we had to sacrifice **a** whole Saturday in detention for whatever it was we did wrong. But we think you’re crazy to make us write **an** essay telling you who we think we are. You see us as you want to see us – in **the** simplest terms, in **the** most convenient definitions. But what we found out is that each one of us is **a** brain, and **an** athlete, and **a** basketcase, **a** princess, and **a** criminal. Does that answer your question? Sincerely yours, **The** Breakfast Club",
-                        "# Definindo Identidades: *A, An & The* \n\nOs **Artigos** são pequenas palavras que vêm antes dos substantivos para definir se estamos falando de algo específico ou geral. Em inglês, temos dois tipos:\n\n1.  **_Definite Article (The):_** O artigo definido ('O', 'A', 'Os', 'As'). Usado para algo específico, único ou já conhecido.\n2.  **_Indefinite Articles (A / An):_** Os artigos indefinidos ('Um', 'Uma'). Usados para algo geral ou mencionado pela primeira vez.\n\nNesta cena icônica de *O Clube dos Cinco (The Breakfast Club)*, os personagens usam esses artigos para explicar quem eles realmente são. Vamos analisar:\n\n### 1. O Específico: *'The'* \nO **_'The'_** é usado quando sabemos exatamente do que estamos falando.\n\n*   *'We accept **the** fact...'* (Nós aceitamos **o** fato). Não é qualquer fato, é aquele fato específico de estarem na detenção.\n*   *'Sincerely yours, **The** Breakfast Club.'* Eles não são qualquer clube, eles são **O** Clube dos Cinco. O artigo dá um título e uma identidade única ao grupo.\n\n### 2. O Geral: *'A'* vs *'An'* \nQuando eles se descrevem individualmente, eles usam artigos indefinidos, pois estão se colocando como exemplos de 'tipos' de alunos. A regra para escolher entre **_A_** e **_An_** depende do **som** da próxima palavra:\n\n*   **Use *'A'* antes de som de consoante:**\n    *   *'...**a** brain...'* (um cérebro/nerd)\n    *   *'...**a** basketcase...'* (um caso perdido)\n    *   *'...**a** princess...'* (uma princesa)\n    *   *'...**a** criminal.'* (um criminoso)\n\n*   **Use *'An'* antes de som de vogal:**\n    *   *'...and **an** athlete...'* (e um atleta). Como *'Athlete'* começa com som de 'A', usamos **_'An'_** para a fala fluir melhor.\n\n**Resumo da Ópera:**\nBrian (o narrador) usa **_'A'_** e **_'An'_** para listar os rótulos genéricos que a sociedade dá a eles, mas assina como _**'The'** Breakfast Club_ para mostrar que, juntos, eles formaram algo único e específico.\n\n 🎬 **‘The Breakfast Club’** (O Clube dos Cinco), lançado em 1985 e dirigido por John Hughes, é um filme clássico adolescente que explora as pressões sociais e os estereótipos enfrentados por estudantes do ensino médio durante uma detenção de sábado.", 1);
-
-                    // ==========================================
-                    // ETAPA 2: PRACTICE - Módulo Articles (A, An, The)
-                    // ==========================================
-
-                    // 1. The Godfather -> Preencher Lacuna (A vs An)
-                    // TIPO: PREENCHER_LACUNA
-                    Map<String, Object> dadosPracGodfather = new HashMap<>();
-                    // Link da cena exata no YouTube
-                    dadosPracGodfather.put("video_url", "https://youtu.be/D6me2-OurCw?si=FYD0X729HynqqlB7"); 
-                    dadosPracGodfather.put("frase_com_lacuna", "I'm gonna make him ___ offer he can't refuse.");
-                    dadosPracGodfather.put("resposta_correta", "an"); 
-                    
-                    criarPractice(modArticles, TipoAtividade.PREENCHER_LACUNA,
-                    "Don Corleone vai fazer uma proposta irrecusável. Preste atenção no artigo que ele usa antes da palavra _'offer'_. Assista à cena icônica e complete a fala com o artigo indefinido correto (_a_ ou _an_).",dadosPracGodfather);
-
-                    // 3. Garfield (Adaptação) -> Preencher Lacuna (A vs An)
-                    // TIPO: PREENCHER_LACUNA
-                    Map<String, Object> dadosPracGarfield = new HashMap<>();
-                    dadosPracGarfield.put("imagem_url", "https://uploads.tudosaladeaula.com/2024/09/321-2.png"); 
-                    dadosPracGarfield.put("frase_com_lacuna", "Once upon a time there was a house with ___ ant.");
-                    dadosPracGarfield.put("resposta_correta", "an"); 
-                    
-                    criarPractice(modArticles, TipoAtividade.PREENCHER_LACUNA, 
-                        "Na tirinha original, Jon diz _'a dog'_ e _'a cat'_. Se mudássemos o animal para uma **formiga (_ant_)**, como ficaria o artigo?",dadosPracGarfield);
-
-                     // TIPO: SELECIONAR_PALAVRAS
-                    Map<String, Object> dadosPracHappy = new HashMap<>();
-                    
-                    // Link do vídeo oficial
-                    dadosPracHappy.put("video_url", "https://youtu.be/ZbZSe6N_BXs?si=dQ6BO4FgdKclnDxc"); 
-                    dadosPracHappy.put("instrucao_video", "Sinta a _vibe_! Ouça o trecho e clique em todos os artigos (_A_, _An_, _The_) que encontrar.");
-                    // A letra formatada com quebras de linha
-                    dadosPracHappy.put("texto_base", "Sunshine, she's here, you can take a break \n I'm a hot air balloon that could go to space\n With the air, like I don't care, baby, by the way \n Clap along if you feel like a room without a roof Clap along if you feel like happiness is the truth");
-                    dadosPracHappy.put("palavras_corretas", List.of("a", "the")); 
-                    
-                    criarPractice(modArticles, TipoAtividade.SELECIONAR_PALAVRAS, 
-                        "Identifique os artigos definidos e indefinidos na letra de _'Happy'_.", dadosPracHappy);
-
-                    // ==========================================
-                    // ETAPA 3: PRODUCTION - Módulo Articles (A, An, The)
-                    // ==========================================
-
-                    // 1. Criador de Quadrinhos -> FOTO_E_TEXTO
-                    Map<String, Object> dadosProdComic = new HashMap<>();
-                    
-                    // O link da ferramenta externa
-                    dadosProdComic.put("link_externo", "https://www.storyboardthat.com/pt/criador-de-quadrinhos");
-                    
-                    // Formatos de imagem aceitos
-                    dadosProdComic.put("formatos_aceitos", List.of("png", "jpg", "jpeg"));
-                    
-                    criarProduction(modArticles, TipoDesafio.FOTO_E_TEXTO, 
-                        "Agora é sua vez de contar uma história! Crie uma tirinha curta (3 quadros) usando corretamente os artigos _'A'_, _'An'_ e _'The'_. Use o site sugerido para criar, salve a imagem e faça o _upload_ aqui. Em seguida, descreva brevemente a história no campo abaixo. ✨ **Curiosidade**: Walt Whitman (1819–1892) foi um influente poeta americano e o 'pai do verso livre'. Ele revolucionou a literatura ao trocar métricas rígidas por uma linguagem fluida e natural.", 
-                        null, dadosProdComic);
-
-                    System.out.println(">>> Módulo 'Articles (A, An, The)' criado com sucesso!");
-                }
-            );
-
         moduloRepository.findByTitulo("Present Simple (‘to have’ & other verbs)")
             .ifPresentOrElse(
                 (mod) -> System.out.println(">>> Módulo 'Present Simple (‘to have’ & other verbs)' já existe. ID: " + mod.getId()),
@@ -438,60 +438,61 @@ public class DataSeeder implements CommandLineRunner {
                         criarRecurso(modFrequency, TipoRecurso.VIDEO, 
                         "https://youtu.be/Z2ZFTeRQ89w?si=gKuOXJAUQUNN0Ozi", 
                         "**Once in a while**, although she would smile,\nIt **usually** meant she was thinking of him.\nThough **sometimes** we talked, more **often** than not,\nI didn't really hear what she had to say.\n\n**Now and then**\nSince we're apart\nI wonder how to mend a broken heart\n\nI was **never** there, when she needed me,\nAnd **constantly** I was out drinking with friends.\nI was **always** the one who was out having fun,\nYet she **rarely** complained about being ignored\n\n**Now and then**\nSince we're apart\nI wonder how to mend a broken heart\n\n**Occasionally** she sits under our tree,\n**Often** to see if I come back to her.\nBy now she should know that I'm not coming home,\nIn fact now I **hardly ever** think about her\n\nBut **now and then**\nsince we're apart\nI wonder how to mend\nHer broken heart",
-                        "# *Adverbs of Frequency:* Com que frequência?\n\nOs **_Adverbs of Frequency_** (Advérbios de Frequência) respondem à pergunta: 'Com que frequência isso acontece?'. Eles indicam a rotina e a regularidade das ações, variando de 100% (sempre) a 0% (nunca).\n\nNesta música, o cantor narra os hábitos de um relacionamento que acabou, usando uma escala completa de frequência para mostrar seus erros e arrependimentos.\n\n### 1. Alta Frequência (100% - 80%)\nUsamos quando a ação é constante ou quase certa.\n\n* **_Always_** (Sempre - 100%): *'I was **always** the one who was out having fun'* (Eu era **sempre** aquele que estava se divertindo).\n* **_Constantly_** (Constantemente): *'And **constantly** I was out drinking with friends'* (E **constantemente** eu estava fora bebendo com os amigos).\n* **_Usually_** (Geralmente - 80%): *'It **usually** meant she was thinking of him'* (Isso **geralmente** significava que ela estava pensando nele).\n\n### 2. Média Frequência (70% - 30%)\nUsamos quando a ação acontece, mas não é uma regra fixa.\n\n* **_Often_** (Frequentemente - 70%): *'**Often** to see if I come back'* (**Frequentemente** para ver se eu volto).\n* **_Sometimes_** (Às vezes - 50%): *'Though **sometimes** we talked'* (Embora **às vezes** a gente conversasse).\n* **_Occasionally / Once in a while_** (Ocasionalmente / De vez em quando - 30%): *'**Occasionally** she sits under our tree'* (**Ocasionalmente** ela senta debaixo da nossa árvore).\n\n### 3. Baixa Frequência (20% - 0%)\nUsamos quando a ação é rara ou inexistente.\n\n* **_Rarely_** (Raramente - 10%): *'Yet she **rarely** complained'* (Mas ela **raramente** reclamava).\n* **_Hardly ever_** (Quase nunca - 5%): *'In fact now I **hardly ever** think about her'* (De fato, agora eu **quase nunca** penso nela).\n* **_Never_** (Nunca - 0%): *'I was **never** there when she needed me'* (Eu **nunca** estava lá quando ela precisava de mim).\n\n### 💡 Regra de Ouro da Posição:\nObserve na letra:\n1.  O advérbio geralmente vem **ANTES** do verbo principal: *She **rarely** complained*.\n2.  Mas ele vem **DEPOIS** do verbo To Be (am/is/was/were): *I **was never** there*.\n\n 🎤 **‘A Broken Heart’** é uma música linda e emocionante escrita para professores usarem em salas de aula de ESL (Inglês como Segunda Língua) para praticar advérbios de frequência.", 1);
+                        "# *Adverbs of Frequency:* com que frequência?\n\nOs **_Adverbs of Frequency_** (Advérbios de Frequência) respondem à pergunta: 'Com que frequência isso acontece?'. Eles indicam a rotina e a regularidade das ações, variando de 100% (sempre) a 0% (nunca).\n\nNesta música, o cantor narra os hábitos de um relacionamento que acabou, usando uma escala completa de frequência para mostrar seus erros e arrependimentos.\n\n### 1. Alta frequência (100% - 80%)\nUsamos quando a ação é constante ou quase certa.\n\n* **_Always_** (Sempre - 100%): *'I was **always** the one who was out having fun'* (Eu **sempre** fui aquele que saía para se divertir.).\n* **_Constantly_** (Constantemente): *'And **constantly** I was out drinking with friends'* (E **constantemente** eu estava fora bebendo com os amigos).\n* **_Usually_** (Geralmente - 80%): *'It **usually** meant she was thinking of him'* (Isso **geralmente** significava que ela estava pensando nele).\n\n### 2. Média frequência (70% - 30%)\nUsamos quando a ação acontece, mas não é uma regra fixa.\n\n* **_Often_** (Frequentemente - 70%): *'**Often** to see if I come back'* (**Frequentemente** para ver se eu volto).\n* **_Sometimes_** (Às vezes - 50%): *'Though **sometimes** we talked'* (Embora **às vezes** a gente conversasse).\n* **_Occasionally / Once in a while_** (Ocasionalmente / De vez em quando - 30%): *'**Occasionally** she sits under our tree'* (**Ocasionalmente** ela senta debaixo da nossa árvore).\n\n### 3. Baixa frequência (20% - 0%)\nUsamos quando a ação é rara ou inexistente.\n\n* **_Rarely_** (Raramente - 10%): *'Yet she **rarely** complained'* (Mas ela **raramente** reclamava).\n* **_Hardly ever_** (Quase nunca - 5%): *'In fact now I **hardly ever** think about her'* (De fato, agora eu **quase nunca** penso nela).\n* **_Never_** (Nunca - 0%): *'I was **never** there when she needed me'* (Eu **nunca** estava lá quando ela precisava de mim).\n\n### 💡 Regra de ouro da posição:\nObserve na letra:\n1.  O advérbio geralmente vem **ANTES** do verbo principal: *She **rarely** complained*.\n2.  Mas ele vem **DEPOIS** do verbo *To Be (am/is/was/were)*: *I **was never** there*.\n\n 🎤 **_‘A Broken Heart’_** é uma música linda e emocionante escrita para professores usarem em salas de aula de ESL (Inglês como Segunda Língua) para praticar advérbios de frequência.", 1);
 
-                        Map<String, Object> dadosPracForrest = new HashMap<>();
-                        dadosPracForrest.put("video_url", "https://youtu.be/vdtqSaJO-iM?si=GYJYb2zkfU5F4ZSz"); 
-                        dadosPracForrest.put("instrucao_video", "Ouça o conselho que Forrest nunca esqueceu. Com que frequência a mãe dele dizia isso?");
-                        dadosPracForrest.put("frase_com_lacuna", "My mama ___ said life was like a box of chocolates.");
-                        dadosPracForrest.put("resposta_correta", "always"); 
-                        criarPractice(modFrequency, TipoAtividade.PREENCHER_LACUNA, 
-                            "Assista à cena e complete a frase icônica com o advérbio de frequência correto.", dadosPracForrest);
-
+                        
                         Map<String, Object> dadosPracElvis = new HashMap<>();
                         dadosPracElvis.put("video_url", "https://youtu.be/ZotVMxuXBo0?si=sGhvxMVPkguh2aAK");
                         dadosPracElvis.put("numberOfInputs", 3);
                         dadosPracElvis.put("respostas_possiveis", List.of("Always", "Never", "Often"));
                         criarPractice(modFrequency, TipoAtividade.LISTA_PALAVRAS, 
                             "Ouça a canção e liste os 3 advérbios de frequência diferentes que Elvis usa para expressar seus sentimentos.", dadosPracElvis);
-
-                        // X. Gita (Raul Seixas - English Version) -> Substituir por Sinônimos
-                        // TIPO: SUBSTITUIR_PALAVRAS
-                        Map<String, Object> dadosPracRaul = new HashMap<>();
-                        dadosPracRaul.put("video_url", "https://youtu.be/QE5znOAKAP0?si=ym-UhrSKAqcD2zDA"); 
-                        dadosPracRaul.put("instrucao_video", "Analise a letra. Clique nos advérbios destacados e substitua-os por outro que tenha o MESMO SENTIDO (Sinônimo).");
-
-                        // Montando a letra com os "buracos" interativos (IDs w1, w2)
-                        dadosPracRaul.put("initialText", List.of(
-                            // Linha 1: "Sometimes you ask me a question"
-                            Map.of("type", "word", "content", "Sometimes", "id", "w1"),
-                            Map.of("type", "text", "content", " you ask me a question,\n"),
                             
-                            // Linha 2: "I hardly ever speak of love"
-                            Map.of("type", "text", "content", "I "),
-                            Map.of("type", "word", "content", "hardly ever", "id", "w2"),
-                            Map.of("type", "text", "content", " speak of love.")
-                        ));
-
-                        // As opções que aparecem no pop-up (Certa misturada com Erradas/Distratores)
-                        dadosPracRaul.put("substitutions", Map.of(
-                            // Sinônimo de Sometimes -> Occasionally
-                            // Erradas: Always (Sempre), Never (Nunca)
-                            "w1", List.of("Occasionally", "Always", "Never"), 
-
-                            // Sinônimo de Hardly ever -> Rarely
-                            // Erradas: Usually (Geralmente), Frequently (Frequentemente)
-                            "w2", List.of("Rarely", "Usually", "Frequently") 
-                        ));
-
-                        // O Gabarito
-                        dadosPracRaul.put("respostas_corretas", Map.of(
-                            "w1", "Occasionally",
-                            "w2", "Rarely"
-                        ));
-
-                        criarPractice(modFrequency, TipoAtividade.SUBSTITUIR_PALAVRAS, 
-                            "Expanda seu vocabulário encontrando os sinônimos dos advérbios de frequência na música.", dadosPracRaul);
+                            // X. Gita (Raul Seixas - English Version) -> Substituir por Sinônimos
+                            // TIPO: SUBSTITUIR_PALAVRAS
+                            Map<String, Object> dadosPracRaul = new HashMap<>();
+                            dadosPracRaul.put("video_url", "https://youtu.be/QE5znOAKAP0?si=ym-UhrSKAqcD2zDA"); 
+                            dadosPracRaul.put("instrucao_video", "Analise a letra. Clique nos advérbios destacados e substitua-os por outro que tenha o MESMO SENTIDO (Sinônimo).");
+                            
+                            // Montando a letra com os "buracos" interativos (IDs w1, w2)
+                            dadosPracRaul.put("initialText", List.of(
+                                // Linha 1: "Sometimes you ask me a question"
+                                Map.of("type", "word", "content", "Sometimes", "id", "w1"),
+                                Map.of("type", "text", "content", " you ask me a question,\n"),
+                                
+                                // Linha 2: "I hardly ever speak of love"
+                                Map.of("type", "text", "content", "I "),
+                                Map.of("type", "word", "content", "hardly ever", "id", "w2"),
+                                Map.of("type", "text", "content", " speak of love.")
+                            ));
+                            
+                            // As opções que aparecem no pop-up (Certa misturada com Erradas/Distratores)
+                            dadosPracRaul.put("substitutions", Map.of(
+                                // Sinônimo de Sometimes -> Occasionally
+                                // Erradas: Always (Sempre), Never (Nunca)
+                                "w1", List.of("Occasionally", "Always", "Never"), 
+                                
+                                // Sinônimo de Hardly ever -> Rarely
+                                // Erradas: Usually (Geralmente), Frequently (Frequentemente)
+                                "w2", List.of("Rarely", "Usually", "Frequently") 
+                            ));
+                            
+                            // O Gabarito
+                            dadosPracRaul.put("respostas_corretas", Map.of(
+                                "w1", "Occasionally",
+                                "w2", "Rarely"
+                            ));
+                            
+                            criarPractice(modFrequency, TipoAtividade.SUBSTITUIR_PALAVRAS, 
+                                "Expanda seu vocabulário encontrando os sinônimos dos advérbios de frequência na música.", dadosPracRaul);
+                                
+                        Map<String, Object> dadosPracForrest = new HashMap<>();
+                        dadosPracForrest.put("video_url", "https://youtu.be/vdtqSaJO-iM?si=GYJYb2zkfU5F4ZSz"); 
+                        dadosPracForrest.put("instrucao_video", "Ouça o conselho que Forrest nunca esqueceu. Com que frequência a mãe dele dizia isso?");
+                        dadosPracForrest.put("frase_com_lacuna", "My mama ___ said life was like a box of chocolates.");
+                        dadosPracForrest.put("resposta_correta", "always"); 
+                        criarPractice(modFrequency, TipoAtividade.PREENCHER_LACUNA, 
+                            "Assista à cena e complete a frase icônica com o *'adverb of frequency'* correto.", dadosPracForrest);
 
                         Map<String, Object> dadosProdFreeTime = new HashMap<>(); 
                         dadosProdFreeTime.put("formatos_aceitos", List.of("png", "jpg", "jpeg"));
