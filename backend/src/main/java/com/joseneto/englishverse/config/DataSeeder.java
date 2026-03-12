@@ -484,7 +484,7 @@ public class DataSeeder implements CommandLineRunner {
                             ));
                             
                             criarPractice(modFrequency, TipoAtividade.SUBSTITUIR_PALAVRAS, 
-                                "Expanda seu vocabulário encontrando os sinônimos dos advérbios de frequência na música.", dadosPracRaul);
+                                "Expanda seu vocabulário encontrando os sinônimos dos *adverbs of frequency* na música.", dadosPracRaul);
                                 
                         Map<String, Object> dadosPracForrest = new HashMap<>();
                         dadosPracForrest.put("video_url", "https://youtu.be/vdtqSaJO-iM?si=GYJYb2zkfU5F4ZSz"); 
