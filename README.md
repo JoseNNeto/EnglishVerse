@@ -24,6 +24,20 @@ Embora o protótipo atual seja funcional e valide a viabilidade técnica e pedag
 
 Em resumo, o EnglishVerse já entregou uma base tecnológica sólida e inovadora, e o foco agora deve ser a autonomia do professor e a automação do feedback ao aluno.
 
+## 3. Como Rodar o Projeto
+
+O sistema foi empacotado utilizando contêineres para facilitar a execução. Certifique-se de ter o **Docker** e o **Docker Compose** instalados na sua máquina.
+
+1. Clone este repositório para o seu ambiente local.
+2. Abra o terminal na pasta raiz do projeto.
+3. Execute o comando abaixo para construir as imagens e subir os contêineres em segundo plano: 
+
+   `docker-compose up -d --build`
+4. Aguarde a inicialização dos três serviços (Banco de Dados, Backend e Frontend).
+5. Acesse a aplicação no seu navegador através do endereço: `http://localhost:{port_da_aplicacao}`
+
+Para parar a execução e desligar os contêineres, utilize o comando:
+`docker-compose down`
 ---
 
 > Apenas avisando que fiz esse projeto enquanto pagava mais 5 cadeiras e trabalhava em horário integral de segunda a sexta. Resumindo, tem algumas gambiarras e codigos gerados por IA. Mas como ele foi bem planejado vai ser bronca safada de dar manutenção e adicionar novas features :p
