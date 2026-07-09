@@ -1,0 +1,37 @@
+export const appPalette = {
+  dark: {
+    background: '#1a1a1a',
+    surface: '#000000',
+    surfaceAlt: '#282828',
+    nav: '#1a1a1a',
+    navAccent: '#1b2a4a',
+    primary: '#75c3ff',
+    primaryStrong: '#007AFF',
+    secondary: '#A8C97F',
+    success: '#54732c',
+    error: '#8b2020',
+    text: '#ffffff',
+    textMuted: '#e0e0e0',
+    accent: '#bd527d',
+    info: '#1b2a4a',
+  },
+  light: {
+    background: '#1a1a1a',
+    surface: '#384b73',
+    surfaceAlt: '#384b73',
+    nav: '#1b2a4a',
+    navAccent: '#384b73',
+    primary: '#007aff',
+    primaryStrong: '#007aff',
+    primarySoft: '#75c3ff',
+    secondary: '#a8c97f',
+    success: '#54732c',
+    error: '#b82020',
+    text: '#1a1a1a',
+    textMuted: '#e0e0e0',
+    accent: '#bd527d',
+    info: '#456379',
+  },
+};
+
+export type AppPaletteMode = keyof typeof appPalette;
