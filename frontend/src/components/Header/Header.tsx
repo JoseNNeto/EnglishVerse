@@ -1,12 +1,21 @@
 import { useState, useEffect } from 'react';
-import { AppBar, Toolbar, InputBase, Avatar, Box, Menu, MenuItem, Dialog, DialogActions, DialogContent, DialogContentText, Button, DialogTitle } from '@mui/material';
+import {
+  AppBar, Toolbar, InputBase, Avatar, Box,
+  Menu, MenuItem, Dialog, DialogActions, DialogContent,
+  DialogContentText, Button, DialogTitle
+} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import LogoEnglishVerse from '../../assets/englishverse-sem-fundo.png';
+import { ThemeToggle } from '../ThemeToggle/ThemeToggle';
 import { useAuth } from '../../contexts/AuthContext';
+import { useThemeMode } from '../../contexts/ThemeContext';
+import { appPalette } from '../../theme/palette';
 import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 
 export default function Header() {
   const { isAuthenticated, user, logout } = useAuth();
+  const { mode } = useThemeMode();
+  const colors = appPalette[mode];
   const navigate = useNavigate();
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -17,17 +26,15 @@ export default function Header() {
 
   const isHomePage = location.pathname === '/';
 
-  // Debounced search effect
   useEffect(() => {
     const timer = setTimeout(() => {
       if (searchQuery.trim()) {
         setSearchParams({ q: searchQuery.trim() });
       } else {
-        // Remove 'q' from URL if search is empty
         searchParams.delete('q');
         setSearchParams(searchParams);
       }
-    }, 500); // 500ms debounce delay
+    }, 500);
 
     return () => {
       clearTimeout(timer);
@@ -46,7 +53,7 @@ export default function Header() {
     navigate('/user');
     handleMenuClose();
   };
-  
+
   const handleOpenDialog = () => {
     setOpenDialog(true);
     handleMenuClose();
@@ -63,32 +70,28 @@ export default function Header() {
 
   return (
     <>
-      <AppBar 
-        position="static" 
-        sx={{ 
-          backgroundColor: '#1a1a1a', 
-          borderBottom: '1px solid #282828',
+      <AppBar
+        position="static"
+        sx={{
+          backgroundColor: colors.nav,
+          borderBottom: `1px solid ${colors.navAccent}`,
           padding: '0px 0px'
         }}
       >
         <Toolbar sx={{ justifyContent: 'space-between', height: '69px' }}>
           <Box
             component="img"
-            sx={{
-              height: '50px',
-              width: '125px',
-              cursor: 'pointer'
-            }}
+            sx={{ height: '50px', width: '125px', cursor: 'pointer' }}
             alt="English Verse logo"
             src={LogoEnglishVerse}
             onClick={() => navigate('/')}
           />
 
           {isHomePage && (
-            <Box 
+            <Box
               sx={{
                 position: 'relative',
-                backgroundColor: '#282828',
+                backgroundColor: colors.navAccent,
                 borderRadius: '24px',
                 width: '600px',
                 height: '50px',
@@ -101,28 +104,32 @@ export default function Header() {
                 placeholder="Buscar por série, música ou tópico..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                sx={{
-                  color: 'white',
-                  width: '100%',
-                  paddingLeft: '48px'
-                }}
+                sx={{ color: 'white', width: '100%', paddingLeft: '48px' }}
               />
             </Box>
           )}
 
-          <Box sx={{ display: 'flex', alignItems: 'center', minWidth: isHomePage ? 'auto' : '600px', justifyContent: 'flex-end' }}>
+          <Box sx={{
+            display: 'flex',
+            alignItems: 'center',
+            minWidth: isHomePage ? 'auto' : '600px',
+            justifyContent: 'flex-end'
+          }}>
+            <ThemeToggle />
+
             {isAuthenticated && user && (
               <>
-                <Avatar sx={{ bgcolor: '#007aff', cursor: 'pointer', ml: 2 }} onClick={handleMenuOpen}>
+                <Avatar
+                  sx={{ bgcolor: colors.primaryStrong ?? colors.primary, cursor: 'pointer', ml: 2 }}
+                  onClick={handleMenuOpen}
+                >
                   {user.nome.charAt(0).toUpperCase()}
                 </Avatar>
                 <Menu
                   anchorEl={anchorEl}
                   open={Boolean(anchorEl)}
                   onClose={handleMenuClose}
-                  MenuListProps={{
-                    'aria-labelledby': 'basic-button',
-                  }}
+                  MenuListProps={{ 'aria-labelledby': 'basic-button' }}
                 >
                   <MenuItem onClick={handleGoToUser}>Minha Conta</MenuItem>
                   <MenuItem onClick={handleOpenDialog}>Sair</MenuItem>
@@ -147,9 +154,7 @@ export default function Header() {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog}>Cancelar</Button>
-          <Button onClick={handleLogout} autoFocus>
-            Confirmar
-          </Button>
+          <Button onClick={handleLogout} autoFocus>Confirmar</Button>
         </DialogActions>
       </Dialog>
     </>
