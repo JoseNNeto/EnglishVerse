@@ -57,7 +57,7 @@ export default function LoginContent() {
     return (
         <Box
             sx={{
-                bgcolor: '#1a1a1a',
+                bgcolor: '#1b2a4a',
                 borderRadius: '14px',
                 width: 400,
                 p: 5,
@@ -73,6 +73,9 @@ export default function LoginContent() {
                 alt="Englishverse Logo"
                 sx={{ width: 150, height: 'auto', mb: 3 }}
             />
+            <Typography variant="h5" sx={{ color: '#A8C97F', mb: 3, fontWeight: 700, textAlign: 'center' }}>
+                BEM-VINDO DE VOLTA!
+            </Typography>
 
             <Box component="form" onSubmit={handleLogin} sx={{ width: '100%' }}>
                 {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
@@ -101,7 +104,7 @@ export default function LoginContent() {
                             },
                         },
                         '& .MuiInputBase-input': {
-                            color: '#e0e0e0',
+                            color: '#b3b3b3',
                         },
                         '& input::placeholder': {
                             color: '#b3b3b3',
@@ -146,7 +149,7 @@ export default function LoginContent() {
                             },
                         },
                         '& .MuiInputBase-input': {
-                            color: '#e0e0e0',
+                            color: '#b3b3b3',
                         },
                         '& input::placeholder': {
                             color: '#b3b3b3',
@@ -166,7 +169,7 @@ export default function LoginContent() {
                     fullWidth
                     variant="contained"
                     disabled={loading}
-                    sx={{ bgcolor: '#007aff', color: 'white', py: 1.5, borderRadius: '14px', textTransform: 'uppercase', fontSize: '1rem', mb: 3 }}
+                    sx={{ bgcolor: '#007aff', color: '#e0e0e0', py: 1.5, borderRadius: '14px', textTransform: 'uppercase', fontSize: '1rem', mb: 3 }}
                 >
                     {loading ? <CircularProgress size={24} color="inherit" /> : 'Entrar'}
                 </Button>

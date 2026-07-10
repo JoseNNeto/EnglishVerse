@@ -70,14 +70,14 @@ export default function SignupContent() {
             '&:hover fieldset': { borderColor: 'transparent' },
             '&.Mui-focused fieldset': { borderColor: '#007aff' },
         },
-        '& .MuiInputBase-input': { color: '#e0e0e0' },
+        '& .MuiInputBase-input': { color: '#b3b3b3' },
         '& input::placeholder': { color: '#b3b3b3', opacity: 1 },
     };
 
     return (
         <Box
             sx={{
-                bgcolor: '#1a1a1a',
+                bgcolor: '#1b2a4a',
                 borderRadius: '14px',
                 width: 400,
                 p: 5,
@@ -93,8 +93,8 @@ export default function SignupContent() {
                 alt="Englishverse Logo"
                 sx={{ width: 150, height: 'auto', mb: 2 }}
             />
-            <Typography variant="h5" sx={{ color: '#e0e0e0', mb: 3 }}>
-                Crie sua conta
+            <Typography variant="h5" sx={{ color: '#75c3ff', mb: 3, fontWeight: 700, textAlign: 'center' }}>
+                CRIE SUA CONTA
             </Typography>
 
             <Box component="form" onSubmit={handleSignup} sx={{ width: '100%' }}>
@@ -150,7 +150,7 @@ export default function SignupContent() {
                     fullWidth
                     variant="contained"
                     disabled={loading}
-                    sx={{ bgcolor: '#007aff', color: 'white', py: 1.5, borderRadius: '14px', textTransform: 'uppercase', fontSize: '1rem', mb: 3 }}
+                    sx={{ bgcolor: '#007aff', color: '#e0e0e0', py: 1.5, borderRadius: '14px', textTransform: 'uppercase', fontSize: '1rem', mb: 3 }}
                 >
                     {loading ? <CircularProgress size={24} color="inherit" /> : 'Criar conta'}
                 </Button>
