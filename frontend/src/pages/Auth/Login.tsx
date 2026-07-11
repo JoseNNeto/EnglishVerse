@@ -4,7 +4,7 @@ import LoginContent from '../../components/Auth/Login/LoginContent';
 
 export default function Login() {
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', backgroundColor: '#121212' }}>
+    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', backgroundColor: '#000000' }}>
       <LoginContent />
     </Box>
   );

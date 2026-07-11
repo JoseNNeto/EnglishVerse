@@ -4,7 +4,7 @@ import SignupContent from '../../components/Auth/Signup/SignupContent';
 
 export default function Signup() {
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', backgroundColor: '#121212', py: 5 }}>
+    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', backgroundColor: '#000000', py: 5 }}>
       <SignupContent />
     </Box>
   );
