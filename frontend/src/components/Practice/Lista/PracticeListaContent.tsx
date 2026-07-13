@@ -89,9 +89,9 @@ export default function PracticeListaContent({ data }: PracticeListaContentProps
 
     const getTextFieldSx = (index: number) => {
         const status = inputStatus[index];
-        if (status === 'correct') return { borderColor: 'green !important' };
-        if (status === 'incorrect') return { borderColor: 'red !important' };
-        return { borderColor: '#007aff' };
+        if (status === 'correct') return { borderColor: '#a8c97f !important' };
+        if (status === 'incorrect') return { borderColor: '#8b2020 !important' };
+        return { borderColor: '#75c3ff' };
     };
 
     const embedUrl = getYouTubeEmbedUrl(listaPalavrasData.video_url);
@@ -130,7 +130,7 @@ export default function PracticeListaContent({ data }: PracticeListaContentProps
             </Box>
           )}
 
-          <Box sx={{ bgcolor: '#1a1a1a', p: 3, borderRadius: 3, mb: 3 }}>
+          <Box sx={{ bgcolor: (theme) => theme.palette.mode === 'light' ? '#1B2A4A' : '#282828', p: 3, borderRadius: 3, mb: 3 }}>
             <Grid container spacing={2} alignItems="center">
               {inputs.map((value, index) => (
                 <Grid size={{xs: 12}} key={index}>
@@ -149,11 +149,12 @@ export default function PracticeListaContent({ data }: PracticeListaContentProps
                         '& .MuiOutlinedInput-root': {
                           '& fieldset': getTextFieldSx(index),
                           borderRadius: '10px',
-                          backgroundColor: '#282828',
-                          color: '#e0e0e0',
+                          backgroundColor: (theme) => theme.palette.mode === 'light' ? '#456379' : '#000000',
+                          color: '#b3b3b3',
                           height: '52px',
                         },
                         '& .MuiInputBase-input': { p: '12px 16px' },
+                        '& .MuiInputBase-input::placeholder': { color: '#b3b3b3', opacity: 1 },
                       }}
                     />
                   </Box>
@@ -166,14 +167,14 @@ export default function PracticeListaContent({ data }: PracticeListaContentProps
             {checkStatus === 'unchecked' && (
                 <>
                     {/* <Button sx={{ color: '#b3b3b3', textTransform: 'none', borderRadius: 3, p: '10px 24px' }}>Pular Pergunta</Button> */}
-                    <Button variant="contained" onClick={handleCheckAnswer} sx={{ bgcolor: '#007aff', color: 'white', textTransform: 'none', borderRadius: 3, p: '10px 32px' }}>Verificar Resposta</Button>
+                    <Button variant="contained" onClick={handleCheckAnswer} sx={{ bgcolor: '#75c3ff', color: 'white', textTransform: 'none', borderRadius: 3, p: '10px 32px' }}>Verificar Resposta</Button>
                 </>
             )}
             {checkStatus === 'correct' && (
-                <Button variant="contained" onClick={handleNextItem} endIcon={<ArrowForwardIcon />} sx={{ bgcolor: 'green', color: 'white', textTransform: 'none', borderRadius: 3, p: '10px 32px' }}>Próximo</Button>
+                <Button variant="contained" onClick={handleNextItem} endIcon={<ArrowForwardIcon />} sx={{ bgcolor: '#a8c97f', color: 'white', textTransform: 'none', borderRadius: 3, p: '10px 32px' }}>Próximo</Button>
             )}
             {checkStatus === 'incorrect' && (
-                <Button variant="contained" onClick={handleTryAgain} sx={{ bgcolor: 'red', color: 'white', textTransform: 'none', borderRadius: 3, p: '10px 32px' }}>Tentar Novamente</Button>
+                <Button variant="contained" onClick={handleTryAgain} sx={{ bgcolor: '#8b2020', color: 'white', textTransform: 'none', borderRadius: 3, p: '10px 32px' }}>Tentar Novamente</Button>
             )}
           </Box>
         </Box>

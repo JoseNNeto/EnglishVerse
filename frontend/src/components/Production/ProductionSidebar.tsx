@@ -8,7 +8,7 @@ export default function ProductionSidebar() {
       sx={{
         width: 280,
         flexShrink: 0,
-        bgcolor: '#1a1a1a',
+        bgcolor: (theme) => theme.palette.mode === 'light' ? '#404E7C' : '#1b2a4a',
         p: 3,
         display: 'flex',
         flexDirection: 'column',
@@ -27,22 +27,22 @@ export default function ProductionSidebar() {
       </Typography>
       <List>
         <ListItem sx={{ pl: 0 }}>
-          <ListItemIcon sx={{color: '#007aff'}}>
+          <ListItemIcon sx={{color: (theme) => theme.palette.mode === 'light' ? '#ffffff' : '#007aff'}}>
             <CheckCircle />
           </ListItemIcon>
-          <ListItemText primary="Presentation" sx={{color: '#007aff'}}/>
+          <ListItemText primary="Presentation" sx={{color: (theme) => theme.palette.mode === 'light' ? '#ffffff' : '#007aff'}}/>
         </ListItem>
         <ListItem sx={{ pl: 0 }}>
-          <ListItemIcon sx={{color: '#007aff'}}>
+          <ListItemIcon sx={{color: (theme) => theme.palette.mode === 'light' ? '#ffffff' : '#007aff'}}>
             <CheckCircle />
           </ListItemIcon>
-          <ListItemText primary="Practice" sx={{color: '#007aff'}}/>
+          <ListItemText primary="Practice" sx={{color: (theme) => theme.palette.mode === 'light' ? '#ffffff' : '#007aff'}}/>
         </ListItem>
         <ListItem sx={{ pl: 0 }}>
-          <ListItemIcon sx={{color: '#007aff'}}>
+          <ListItemIcon sx={{color: (theme) => theme.palette.mode === 'light' ? '#ffffff' : '#007aff'}}>
             <EmojiObjects />
           </ListItemIcon>
-          <ListItemText primary="Production" sx={{color: '#007aff'}}/>
+          <ListItemText primary="Production" sx={{color: (theme) => theme.palette.mode === 'light' ? '#ffffff' : '#007aff'}}/>
         </ListItem>
       </List>
     </Box>

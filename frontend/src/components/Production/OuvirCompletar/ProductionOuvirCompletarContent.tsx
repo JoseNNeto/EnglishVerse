@@ -53,13 +53,13 @@ export default function ProductionOuvirCompletarContent({ data }: ProductionOuvi
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                   <Typography sx={{ flexGrow: 1, color: '#b3b3b3' }}>Progresso: 0%</Typography> {/* Placeholder */}
               </Box>
-              <LinearProgress variant="determinate" value={0} sx={{ height: 8, borderRadius: 4 }} /> {/* Placeholder */}
+              <LinearProgress variant="determinate" value={0} sx={{ height: 8, borderRadius: 4, backgroundColor: '#282828', '& .MuiLinearProgress-bar': { backgroundColor: '#a8c97f' } }} /> {/* Placeholder */}
           </Box>
 
           <Typography variant="h4" sx={{ mb: 3 }}>Etapa: <i>Production Challenge - Audio</i></Typography>
 
           {data.midiaDesafioUrl && (
-            <Paper sx={{ bgcolor: '#1a1a1a', p: 3, borderRadius: 3, mb: 3, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
+            <Paper sx={{ bgcolor: (theme) => theme.palette.mode === 'light' ? '#1B2A4A' : '#282828', p: 3, borderRadius: 3, mb: 3, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
               <Typography variant="h6">Áudio/Vídeo do Desafio</Typography>
               <Typography variant="body2" sx={{color: '#b3b3b3'}}>Ouça com atenção para completar as falas.</Typography>
               
@@ -91,7 +91,7 @@ export default function ProductionOuvirCompletarContent({ data }: ProductionOuvi
             </Paper>
           )}
 
-          <Paper sx={{ bgcolor: '#1a1a1a', p: 3, borderRadius: 3, mb: 3 }}>
+          <Paper sx={{ bgcolor: '#bd527d', p: 3, borderRadius: 3, mb: 3 }}>
             <Typography variant="h5" sx={{ mb: 1 }}>Seu Desafio</Typography>
             <Typography variant="body1" sx={{ color: '#b3b3b3' }}>
               <ReactMarkdown>{data.instrucaoDesafio}</ReactMarkdown>
@@ -99,7 +99,7 @@ export default function ProductionOuvirCompletarContent({ data }: ProductionOuvi
           </Paper>
 
           {ouvirCompletarData.imageUrl && (
-            <Paper sx={{ bgcolor: '#1a1a1a', p: 3, borderRadius: 3, mb: 3, position: 'relative' }}>
+            <Paper sx={{ bgcolor: (theme) => theme.palette.mode === 'light' ? '#1B2A4A' : '#282828', p: 3, borderRadius: 3, mb: 3, position: 'relative' }}>
               <Box
                   component="img"
                   src={ouvirCompletarData.imageUrl}
@@ -123,8 +123,9 @@ export default function ProductionOuvirCompletarContent({ data }: ProductionOuvi
                         top: pos.top, 
                         left: pos.left, 
                         width: pos.width, 
-                        bgcolor: 'rgba(0,0,0,0.3)', 
-                        '& .MuiOutlinedInput-root': {'& fieldset': {borderColor: '#b3b3b3'}, borderRadius: '10px'},
+                        bgcolor: (theme) => theme.palette.mode === 'light' ? '#456379' : '#000000',
+                        '& .MuiOutlinedInput-root': {'& fieldset': {borderColor: '#b3b3b3'}, borderRadius: '10px', color: '#b3b3b3'},
+                        '& .MuiInputBase-input::placeholder': { color: '#b3b3b3', opacity: 1 },
                         transform: 'translate(-50%, -50%)' // Center based on top/left
                     }}
                 />
@@ -134,7 +135,7 @@ export default function ProductionOuvirCompletarContent({ data }: ProductionOuvi
           
           <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
             <Typography variant="body2" sx={{ color: '#b3b3b3' }}>Balões preenchidos: {answers.filter((ans: string) => ans && ans.length > 0).length} / {answers.length}</Typography>
-            <Typography variant="body2" sx={{ color: '#007aff' }}>0%</Typography> {/* Placeholder */}
+            <Typography variant="body2" sx={{ color: '#75c3ff' }}>0%</Typography> {/* Placeholder */}
           </Box>
 
           <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>

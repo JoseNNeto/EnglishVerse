@@ -1,5 +1,5 @@
 
-import { Box, Typography, Paper, Button, TextareaAutosize, styled } from '@mui/material';
+import { Box, Typography, Paper, Button, TextareaAutosize, styled, useTheme } from '@mui/material';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import { useState, useEffect, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
@@ -13,7 +13,7 @@ const Dropzone = styled('div')<{isDragActive: boolean}>(({ theme, isDragActive }
     padding: theme.spacing(4),
     textAlign: 'center',
     cursor: 'pointer',
-    backgroundColor: '#1a1a1a',
+    backgroundColor: theme.palette.mode === 'light' ? '#1B2A4A' : '#282828',
     transition: 'border-color 0.2s ease-in-out',
     '&:hover': {
         borderColor: theme.palette.primary.main,
@@ -37,6 +37,7 @@ interface PostagemData {
 }
 
 export default function ProductionPostagemContent({ data }: ProductionPostagemContentProps) {
+    const theme = useTheme();
     const { markItemAsCompleted, handleNextItem } = useModule();
     const postagemData = data.dadosDesafio as PostagemData;
 
@@ -87,7 +88,7 @@ export default function ProductionPostagemContent({ data }: ProductionPostagemCo
                 <Box sx={{ color: '#e0e0e0' }}>
                     <Typography variant="h4" sx={{ mb: 3 }}>Etapa: <i>Production Challenge - Photo and Text</i></Typography>
 
-                    <Paper sx={{ bgcolor: '#1a1a1a', p: 3, borderRadius: 3, mb: 3 }}>
+                    <Paper sx={{ bgcolor: '#bd527d', p: 3, borderRadius: 3, mb: 3 }}>
                         <Typography variant="h5" sx={{ mb: 1 }}>Seu Desafio</Typography>
                         <Typography variant="body1" sx={{ color: '#b3b3b3' }}>
                             <ReactMarkdown>{data.instrucaoDesafio}</ReactMarkdown>
@@ -105,9 +106,9 @@ export default function ProductionPostagemContent({ data }: ProductionPostagemCo
                             <input {...getInputProps()} />
                             <UploadFileIcon sx={{ fontSize: 64, color: '#b3b3b3' }} />
                             {file ? (
-                                <Typography variant="h6" sx={{ color: 'lightgreen', mt: 2 }}>{file.name}</Typography>
+                                <Typography variant="h6" sx={{ color: '#a8c97f', mt: 2 }}>{file.name}</Typography>
                             ) : isDragActive ? (
-                                <Typography variant="h6" sx={{ color: '#007aff', mt: 2 }}>Solte a imagem aqui!</Typography>
+                                <Typography variant="h6" sx={{ color: '#75c3ff', mt: 2 }}>Solte a imagem aqui!</Typography>
                             ) : (
                                 <>
                                     <Typography variant="h6" sx={{ color: '#e0e0e0', mt: 2 }}>Arraste e solte sua imagem aqui</Typography>
@@ -131,9 +132,9 @@ export default function ProductionPostagemContent({ data }: ProductionPostagemCo
                             onChange={(e) => setText(e.target.value)}
                             style={{
                                 width: '100%',
-                                backgroundColor: '#1a1a1a',
-                                color: '#e0e0e0',
-                                border: `2px solid ${checkStatus === 'incorrect' && wordCount < minWords ? 'red' : '#282828'}`,
+                                backgroundColor: theme.palette.mode === 'light' ? '#456379' : '#000000',
+                                color: '#b3b3b3',
+                                border: `2px solid ${checkStatus === 'incorrect' && wordCount < minWords ? '#8b2020' : '#282828'}`,
                                 borderRadius: '14px',
                                 padding: '16px',
                                 fontFamily: 'inherit',
@@ -142,14 +143,14 @@ export default function ProductionPostagemContent({ data }: ProductionPostagemCo
                         />
                         <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 1, px: 1 }}>
                             <Typography variant="caption" sx={{ color: '#b3b3b3' }}>Mínimo de {minWords} palavras</Typography>
-                            <Typography variant="caption" sx={{ color: wordCount >= minWords ? 'lightgreen' : '#b3b3b3' }}>{wordCount}/{minWords} palavras</Typography>
+                            <Typography variant="caption" sx={{ color: wordCount >= minWords ? '#a8c97f' : '#b3b3b3' }}>{wordCount}/{minWords} palavras</Typography>
                         </Box>
                     </Box>
 
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3, gap: 2 }}>
                         {checkStatus === 'unchecked' && <Button variant="contained" size="large" onClick={handleCheckAnswer} disabled={!isSubmittable} sx={{ textTransform: 'none', borderRadius: 3 }}>Enviar Desafio</Button>}
-                        {checkStatus === 'correct' && <Button variant="contained" onClick={handleNextItem} endIcon={<ArrowForwardIcon />} sx={{ bgcolor: 'green', color: 'white', textTransform: 'none' }}>Próximo</Button>}
-                        {checkStatus === 'incorrect' && <Button variant="contained" onClick={handleTryAgain} sx={{ bgcolor: 'red', color: 'white', textTransform: 'none' }}>Tentar Novamente</Button>}
+                        {checkStatus === 'correct' && <Button variant="contained" onClick={handleNextItem} endIcon={<ArrowForwardIcon />} sx={{ bgcolor: '#a8c97f', color: 'white', textTransform: 'none' }}>Próximo</Button>}
+                        {checkStatus === 'incorrect' && <Button variant="contained" onClick={handleTryAgain} sx={{ bgcolor: '#8b2020', color: 'white', textTransform: 'none' }}>Tentar Novamente</Button>}
                     </Box>
 
                 </Box>

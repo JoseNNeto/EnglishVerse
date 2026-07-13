@@ -128,7 +128,7 @@ export default function PracticeSubstituirContent({ data }: PracticeSubstituirCo
                 </Box>
             )}
 
-            <Paper sx={{ bgcolor: '#1a1a1a', p: 4, borderRadius: 3, mb: 3 }}>
+            <Paper sx={{ bgcolor: (theme) => theme.palette.mode === 'light' ? '#1B2A4A' : '#282828', p: 4, borderRadius: 3, mb: 3 }}>
                 <Typography variant="body1" component="div">
                     {textParts.map((part, index) => {
                         if (part.type === 'word' && part.id) {
@@ -139,7 +139,7 @@ export default function PracticeSubstituirContent({ data }: PracticeSubstituirCo
                                     onClick={(e) => handleClick(e, part.id!)} 
                                     sx={{
                                         textTransform: 'none', 
-                                        color: isIncorrect ? 'red' : '#007aff', 
+                                        color: isIncorrect ? '#8b2020' : '#75c3ff',
                                         p:0, 
                                         minWidth: 'auto', 
                                         display: 'inline', 
@@ -163,14 +163,14 @@ export default function PracticeSubstituirContent({ data }: PracticeSubstituirCo
                 </Menu>
                  <Box sx={{ borderTop: 1, borderColor: '#282828', mt: 3, pt: 2, display: 'flex', justifyContent: 'space-between' }}>
                     <Typography variant="caption" sx={{ color: '#b3b3b3' }}>Palavras substituídas: {replacedCount} / {totalReplaceable}</Typography>
-                    <Typography variant="caption" sx={{ color: '#007aff' }}>{ totalReplaceable > 0 ? Math.round((replacedCount / totalReplaceable) * 100) : 0 }%</Typography>
+                    <Typography variant="caption" sx={{ color: '#75c3ff' }}>{ totalReplaceable > 0 ? Math.round((replacedCount / totalReplaceable) * 100) : 0 }%</Typography>
                 </Box>
             </Paper>
 
             <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3, gap: 2 }}>
                 {checkStatus === 'unchecked' && <Button variant="contained" size="large" onClick={handleCheckAnswer} sx={{ textTransform: 'none', borderRadius: 3 }}>Verificar</Button>}
-                {checkStatus === 'correct' && <Button variant="contained" onClick={handleNextItem} endIcon={<ArrowForwardIcon />} sx={{ bgcolor: 'green', color: 'white', textTransform: 'none' }}>Próximo</Button>}
-                {checkStatus === 'incorrect' && <Button variant="contained" onClick={handleTryAgain} sx={{ bgcolor: 'red', color: 'white', textTransform: 'none' }}>Tentar Novamente</Button>}
+                {checkStatus === 'correct' && <Button variant="contained" onClick={handleNextItem} endIcon={<ArrowForwardIcon />} sx={{ bgcolor: '#a8c97f', color: 'white', textTransform: 'none' }}>Próximo</Button>}
+                {checkStatus === 'incorrect' && <Button variant="contained" onClick={handleTryAgain} sx={{ bgcolor: '#8b2020', color: 'white', textTransform: 'none' }}>Tentar Novamente</Button>}
             </Box>
         </Box>
     );

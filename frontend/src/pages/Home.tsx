@@ -15,7 +15,7 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 const ModuleCard = ({ module }: { module: Modulo }) => (
     <Grid size={{ xs:12, sm:6, md:2.4 }}>
       <Card sx={{ 
-        backgroundColor: '#000000',
+        backgroundColor: (theme) => theme.palette.mode === 'light' ? '#404E7C' : '#000000',
         color: '#e0e0e0',
         boxShadow: '0 4px 8px rgba(0,0,0,0.3)', 
         borderRadius: '14px',

@@ -105,7 +105,7 @@ export default function MidiaAndTranscption() {
 
     if (activeItem.type !== 'presentation') {
         return (
-            <Box sx={{ p: 4, backgroundColor: '#282828', color: '#e0e0e0', borderRadius: '14px', textAlign: 'center' }}>
+            <Box sx={{ p: 4, backgroundColor: (theme) => theme.palette.mode === 'light' ? '#1B2A4A' : '#282828', color: '#e0e0e0', borderRadius: '14px', textAlign: 'center' }}>
                 <Typography variant="h5">Conteúdo de '{activeItem.type}'</Typography>
                 <Typography>A integração para este tipo de conteúdo será feita a seguir.</Typography>
             </Box>
@@ -161,7 +161,7 @@ export default function MidiaAndTranscption() {
                                 <Paper
                                   sx={{
                                     p: 3,
-                                    backgroundColor: '#282828',
+                                    backgroundColor: (theme) => theme.palette.mode === 'light' ? '#1B2A4A' : '#282828',
                                     color: '#e0e0e0',
                                     borderRadius: '14px',
                                     '& strong, & a, & mark': { color: '#75c3ff' },

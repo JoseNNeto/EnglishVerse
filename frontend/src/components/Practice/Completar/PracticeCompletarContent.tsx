@@ -73,12 +73,12 @@ export default function PracticeCompletarContent({ data }: PracticeCompletarCont
 
     const getTextFieldSx = () => {
         if (checkStatus === 'correct') {
-            return { borderColor: 'green !important' };
+            return { borderColor: '#a8c97f !important' };
         }
         if (checkStatus === 'incorrect') {
-            return { borderColor: 'red !important' };
+            return { borderColor: '#8b2020 !important' };
         }
-        return { borderColor: '#007aff' };
+        return { borderColor: '#75c3ff' };
     };
 
   return (
@@ -126,7 +126,7 @@ export default function PracticeCompletarContent({ data }: PracticeCompletarCont
             )}
           </Box>
 
-          <Box sx={{ bgcolor: '#1a1a1a', p: 3, borderRadius: 3, mb: 3 }}>
+          <Box sx={{ bgcolor: (theme) => theme.palette.mode === 'light' ? '#1B2A4A' : '#282828', p: 3, borderRadius: 3, mb: 3 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap' }}>
                 <Typography variant="h6" sx={{ color: '#e0e0e0', whiteSpace: 'pre-wrap' }}>
                     {part1}
@@ -141,8 +141,8 @@ export default function PracticeCompletarContent({ data }: PracticeCompletarCont
                     '& .MuiOutlinedInput-root': {
                         '& fieldset': getTextFieldSx(),
                         borderRadius: '10px',
-                        backgroundColor: '#282828',
-                        color: '#e0e0e0',
+                        backgroundColor: (theme) => theme.palette.mode === 'light' ? '#456379' : '#000000',
+                        color: '#b3b3b3',
                         height: '44px',
                     },
                     '& .MuiInputBase-input': {
@@ -164,18 +164,18 @@ export default function PracticeCompletarContent({ data }: PracticeCompletarCont
                     {/* <Button sx={{ color: '#b3b3b3', textTransform: 'none', borderRadius: 3, p: '10px 24px' }}>
                         Pular Pergunta
                     </Button> */}
-                    <Button variant="contained" onClick={handleCheckAnswer} sx={{ bgcolor: '#007aff', color: 'white', textTransform: 'none', borderRadius: 3, p: '10px 32px' }}>
+                    <Button variant="contained" onClick={handleCheckAnswer} sx={{ bgcolor: '#75c3ff', color: 'white', textTransform: 'none', borderRadius: 3, p: '10px 32px' }}>
                         Verificar Resposta
                     </Button>
                 </>
             )}
             {checkStatus === 'correct' && (
-                <Button variant="contained" onClick={handleNextItem} endIcon={<ArrowForwardIcon />} sx={{ bgcolor: 'green', color: 'white', textTransform: 'none', borderRadius: 3, p: '10px 32px' }}>
+                <Button variant="contained" onClick={handleNextItem} endIcon={<ArrowForwardIcon />} sx={{ bgcolor: '#a8c97f', color: 'white', textTransform: 'none', borderRadius: 3, p: '10px 32px' }}>
                     Próximo
                 </Button>
             )}
             {checkStatus === 'incorrect' && (
-                <Button variant="contained" onClick={handleTryAgain} sx={{ bgcolor: 'red', color: 'white', textTransform: 'none', borderRadius: 3, p: '10px 32px' }}>
+                <Button variant="contained" onClick={handleTryAgain} sx={{ bgcolor: '#8b2020', color: 'white', textTransform: 'none', borderRadius: 3, p: '10px 32px' }}>
                     Tentar Novamente
                 </Button>
             )}

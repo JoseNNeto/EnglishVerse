@@ -328,7 +328,7 @@ export default function Descrition() {
           <Box
             key={`${index}-${block.slice(0, 24)}`}
             sx={{
-              backgroundColor: '#282828',
+              backgroundColor: (theme) => theme.palette.mode === 'light' ? '#1B2A4A' : '#282828',
               borderRadius: '14px',
               p: 3,
               color: '#e0e0e0',

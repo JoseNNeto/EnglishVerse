@@ -22,20 +22,20 @@ export default function Seguranca() {
       <Typography variant="h6" sx={{ color: '#e0e0e0', mb: 2 }}>
         Segurança e Privacidade
       </Typography>
-      <Box sx={{ backgroundColor: '#1a1a1a', borderRadius: '14px', p: 3 }}>
+      <Box sx={{ backgroundColor: (theme) => theme.palette.mode === 'light' ? '#456379' : '#1b2a4a', borderRadius: '14px', p: 3 }}>
         <Box component="form" sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           <TextField
             label="Senha Atual"
             type={showCurrentPassword ? 'text' : 'password'}
             variant="filled"
             InputLabelProps={{
-                style: { color: '#e0e0e0' },
+                style: { color: '#b3b3b3' },
             }}
             sx={{
                 '& .MuiFilledInput-root': {
                     backgroundColor: '#282828',
                     borderRadius: '14px',
-                    color: 'white',
+                    color: '#b3b3b3',
                     '&:before, &:after': {
                         borderBottom: 'none'
                     }
@@ -49,7 +49,7 @@ export default function Seguranca() {
                       onClick={handleClickShowCurrentPassword}
                       onMouseDown={handleMouseDownPassword}
                       edge="end"
-                      sx={{color: 'white'}}
+                      sx={{color: '#b3b3b3'}}
                     >
                       {showCurrentPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
@@ -62,13 +62,13 @@ export default function Seguranca() {
             type={showNewPassword ? 'text' : 'password'}
             variant="filled"
             InputLabelProps={{
-                style: { color: '#e0e0e0' },
+                style: { color: '#b3b3b3' },
             }}
             sx={{
                 '& .MuiFilledInput-root': {
                     backgroundColor: '#282828',
                     borderRadius: '14px',
-                    color: 'white',
+                    color: '#b3b3b3',
                     '&:before, &:after': {
                         borderBottom: 'none'
                     }
@@ -82,7 +82,7 @@ export default function Seguranca() {
                       onClick={handleClickShowNewPassword}
                       onMouseDown={handleMouseDownPassword}
                       edge="end"
-                      sx={{color: 'white'}}
+                      sx={{color: '#b3b3b3'}}
                     >
                       {showNewPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
@@ -95,13 +95,13 @@ export default function Seguranca() {
             type={showConfirmPassword ? 'text' : 'password'}
             variant="filled"
             InputLabelProps={{
-                style: { color: '#e0e0e0' },
+                style: { color: '#b3b3b3' },
             }}
             sx={{
                 '& .MuiFilledInput-root': {
                     backgroundColor: '#282828',
                     borderRadius: '14px',
-                    color: 'white',
+                    color: '#b3b3b3',
                     '&:before, &:after': {
                         borderBottom: 'none'
                     }
@@ -115,7 +115,7 @@ export default function Seguranca() {
                       onClick={handleClickShowConfirmPassword}
                       onMouseDown={handleMouseDownPassword}
                       edge="end"
-                      sx={{color: 'white'}}
+                      sx={{color: '#b3b3b3'}}
                     >
                       {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
@@ -126,8 +126,9 @@ export default function Seguranca() {
           <Button
             variant="contained"
             sx={{
-              backgroundColor: '#007aff',
-              '&:hover': { backgroundColor: '#0056b3' },
+              backgroundColor: (theme) => theme.palette.mode === 'light' ? '#75c3ff' : '#007aff',
+              color: '#e0e0e0',
+              '&:hover': { backgroundColor: (theme) => theme.palette.mode === 'light' ? '#75c3ff' : '#007aff' },
               borderRadius: '14px',
               alignSelf: 'flex-end',
               mt: 2
