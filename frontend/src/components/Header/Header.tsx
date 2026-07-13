@@ -73,7 +73,8 @@ export default function Header() {
       <AppBar
         position="static"
         sx={{
-          backgroundColor: colors.nav,
+          backgroundColor: '#1b2a4a',
+          backgroundImage: 'none',
           borderBottom: `1px solid ${colors.navAccent}`,
           padding: '0px 0px'
         }}
@@ -99,12 +100,20 @@ export default function Header() {
                 alignItems: 'center'
               }}
             >
-              <SearchIcon sx={{ position: 'absolute', left: '16px', color: 'white' }} />
+              <SearchIcon sx={{ position: 'absolute', left: '16px', color: '#b3b3b3' }} />
               <InputBase
                 placeholder="Buscar por série, música ou tópico..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                sx={{ color: 'white', width: '100%', paddingLeft: '48px' }}
+                sx={{
+                  color: '#e0e0e0',
+                  width: '100%',
+                  paddingLeft: '48px',
+                  '& input::placeholder': {
+                    color: '#b3b3b3',
+                    opacity: 1,
+                  },
+                }}
               />
             </Box>
           )}

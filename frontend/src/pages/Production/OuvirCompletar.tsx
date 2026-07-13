@@ -39,7 +39,7 @@ export default function ProductionOuvirCompletar() {
   }, [id]);
 
   return (
-    <Box sx={{ display: 'flex', backgroundColor: '#121212', minHeight: '100vh' }}>
+    <Box sx={{ display: 'flex', backgroundColor: '#000000', minHeight: '100vh' }}>
       <ProductionSidebar />
       <Box sx={{ flexGrow: 1, p: 3, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         {loading ? (

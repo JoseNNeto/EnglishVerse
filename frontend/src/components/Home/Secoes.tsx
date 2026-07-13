@@ -74,14 +74,16 @@ const TopicCard = ({ topic, isEmAndamento }: { topic: Modulo, isEmAndamento: boo
   return (
     <Grid size={{ xs: 12, sm: 6, md: 2.4 }}>
       <Card sx={{
-        backgroundColor: '#1a1a1a',
-        color: 'white',
+        backgroundColor: '#000000',
+        color: '#e0e0e0',
         boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
         borderRadius: '14px',
+        border: '1px solid #1b2a4a',
         transition: 'transform 0.3s, box-shadow 0.3s',
         height: '350px',
         display: 'flex',
         flexDirection: 'column',
+        overflow: 'hidden',
         '&:hover': {
           transform: 'scale(1.05)',
           boxShadow: '0 8px 16px rgba(0,0,0,0.5)',
@@ -89,14 +91,15 @@ const TopicCard = ({ topic, isEmAndamento }: { topic: Modulo, isEmAndamento: boo
       }}>
         <CardActionArea onClick={handleCardClick} sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
           <Box sx={{
-            height: '270px',
+            height: '250px',
             width: '100%',
             position: 'relative',
-            borderRadius: '14px 14px 0 0',
             overflow: 'hidden',
+            backgroundColor: '#111111',
             backgroundImage: `url(${topic.imagemCapaUrl || 'https://via.placeholder.com/400x270'})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'top',
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -124,11 +127,11 @@ const TopicCard = ({ topic, isEmAndamento }: { topic: Modulo, isEmAndamento: boo
                 justifyContent: 'center',
               }}
             >
-              <PlayArrowIcon sx={{ color: 'white', fontSize: 60, backgroundColor: '#007aff', borderRadius: '50%', padding: '8px' }} />
+              <PlayArrowIcon sx={{ color: '#000000', fontSize: 60, backgroundColor: '#a8c97f', borderRadius: '50%', padding: '8px' }} />
             </Box>
           </Box>
-          <CardContent sx={{ p: '16px', flexGrow: 1, overflowY: 'auto', height: '80px' }}>
-            <Typography variant="body1">{topic.titulo}</Typography>
+          <CardContent sx={{ p: '14px 16px 16px', flexGrow: 1, overflowY: 'auto', height: '100px' }}>
+            <Typography variant="body1" sx={{ color: '#e0e0e0' }}>{topic.titulo}</Typography>
           </CardContent>
         </CardActionArea>
       </Card>
@@ -177,7 +180,7 @@ export default function Secoes() {
   }, [user]);
 
   if (loading) {
-    return <Typography sx={{ color: 'white', textAlign: 'center', my: 4 }}>Carregando seções...</Typography>;
+    return <Typography sx={{ color: '#e0e0e0', textAlign: 'center', my: 4 }}>Carregando seções...</Typography>;
   }
 
   const modulosEmAndamentoIds = new Set(progressos.filter(p => p.modulo).map(p => p.modulo.id));
@@ -186,7 +189,7 @@ export default function Secoes() {
     <Box sx={{ my: 4, mx: 6 }}>
       {sections.map(section => (
         <Box key={section.title} sx={{ mb: 4 }}>
-          <Typography variant="h5" component="h2" sx={{ color: 'white', mb: 2, fontWeight: 'bold' }}>
+          <Typography variant="h5" component="h2" sx={{ color: '#e0e0e0', mb: 2, fontWeight: 'bold' }}>
             {section.title}
           </Typography>
           <Grid container spacing={2}>

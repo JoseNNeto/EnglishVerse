@@ -80,7 +80,7 @@ export default function ContinuarAprendendo() {
 
   return (
     <Box sx={{ my: 4, mx: 6 }}>
-      <Typography variant="h5" component="h2" sx={{ color: 'white', mb: 2, fontWeight: 'bold' }}>
+      <Typography variant="h5" component="h2" sx={{ color: '#e0e0e0', mb: 2, fontWeight: 'bold' }}>
         Continuar Aprendendo
       </Typography>
       <Box sx={{ display: 'flex', overflowX: 'auto', gap: 2, pb: 2 }}>
@@ -92,18 +92,26 @@ export default function ContinuarAprendendo() {
           return (
             <Card key={item.id} sx={{
               display: 'flex',
-              backgroundColor: '#1a1a1a',
-              color: 'white',
+              backgroundColor: '#bd527d',
+              color: '#e0e0e0',
               borderRadius: '14px',
+              border: '1px solid #1b2a4a',
               minWidth: 320,
               maxWidth: 320,
               height: 160,
               flexShrink: 0,
+              overflow: 'hidden',
             }}>
               <CardActionArea onClick={() => handleCardClick(item.moduloId)} sx={{ display: 'flex', height: '100%' }}>
                 <CardMedia
                   component="img"
-                  sx={{ width: 160, height: '100%', objectFit: 'cover' }}
+                  sx={{
+                    width: 160,
+                    height: '100%',
+                    objectFit: 'cover',
+                    backgroundColor: '#111111',
+                    borderRight: '1px solid #1b2a4a',
+                  }}
                   image={item.moduloImagemCapaUrl || 'https://via.placeholder.com/160'}
                   alt={item.moduloTitulo}
                 />
@@ -118,7 +126,7 @@ export default function ContinuarAprendendo() {
                         borderRadius: 5,
                         backgroundColor: '#282828',
                         '& .MuiLinearProgress-bar': {
-                          backgroundColor: '#007aff'
+                          backgroundColor: '#a8c97f'
                         }
                       }} />
                       <Typography variant="body2" sx={{ color: '#b3b3b3', mt: 1 }}>

@@ -47,7 +47,7 @@ export default function PracticeCompletar() {
   }, [id]);
 
   return (
-    <Box sx={{ display: 'flex', backgroundColor: '#121212', minHeight: '100vh', flexGrow: 1, p: 3, flexDirection: 'column', gap: 3 }}>
+    <Box sx={{ display: 'flex', backgroundColor: '#000000', minHeight: '100vh', flexGrow: 1, p: 3, flexDirection: 'column', gap: 3 }}>
         {loading && (
           <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <CircularProgress />

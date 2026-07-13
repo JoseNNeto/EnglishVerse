@@ -6,7 +6,7 @@ import MinhaConta from '../components/User/MinhaConta';
 
 export default function User() {
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, pb: 4, mt: 2 }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, pb: 4, mt: 2, backgroundColor: '#000000', minHeight: '100vh' }}>
       <MinhaConta />
       {/* <Seguranca /> */}
       {/* <Sair /> */}

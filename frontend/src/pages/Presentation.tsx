@@ -44,14 +44,14 @@ function PresentationContent() {
   }
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', minHeight: '100vh' }}>
       <SideBar />
       <Box sx={{ flexGrow: 1, p: 3, display: 'flex', flexDirection: 'column', gap: 3 }}>
         <Box sx={{ mb: 2 }}>
           <Typography variant="body2" sx={{ color: '#b3b3b3', mb: 1 }}>
             Progresso: {progressValue.toFixed(0)}%
           </Typography>
-          <LinearProgress variant="determinate" value={progressValue} sx={{ height: 8, borderRadius: 5, backgroundColor: '#333', '& .MuiLinearProgress-bar': { backgroundColor: '#007aff' } }} />
+          <LinearProgress variant="determinate" value={progressValue} sx={{ height: 8, borderRadius: 5, backgroundColor: '#282828', '& .MuiLinearProgress-bar': { backgroundColor: '#a8c97f' } }} />
         </Box>
         <ModuleItemViewer />
         <Descrition />
@@ -62,8 +62,8 @@ function PresentationContent() {
                 onClick={handleConcluirModulo}
                 endIcon={<CheckCircleIcon />}
                 sx={{
-                    backgroundColor: 'green',
-                    '&:hover': { backgroundColor: 'darkgreen' },
+                    backgroundColor: '#a8c97f',
+                    '&:hover': { backgroundColor: '#a8c97f' },
                     color: 'white',
                     fontWeight: 'bold',
                 }}
@@ -77,8 +77,8 @@ function PresentationContent() {
                   disabled={isLastItem}
                   endIcon={<ArrowForwardIcon />}
                   sx={{
-                      backgroundColor: '#007aff',
-                      '&:hover': { backgroundColor: '#005bb5' },
+                      backgroundColor: '#75c3ff',
+                      '&:hover': { backgroundColor: '#75c3ff' },
                       color: 'white',
                       fontWeight: 'bold',
                   }}

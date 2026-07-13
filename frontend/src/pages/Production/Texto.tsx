@@ -47,7 +47,7 @@ export default function ProductionTexto() {
   }, [id]);
 
   return (
-    <Box sx={{ display: 'flex', backgroundColor: '#121212', minHeight: '100vh' }}>
+    <Box sx={{ display: 'flex', backgroundColor: '#000000', minHeight: '100vh' }}>
       <Box sx={{ flexGrow: 1, p: 3, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         {loading && (
           <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
