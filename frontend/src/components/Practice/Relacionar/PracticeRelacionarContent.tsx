@@ -51,7 +51,7 @@ function DraggableQuote({ id, text }: { id: UniqueIdentifier, text: string }) {
         opacity: isDragging ? 0.5 : 1,
     };
     return (
-        <Paper ref={setNodeRef} style={style} {...attributes} {...listeners} sx={{ p: 2, display: 'flex', alignItems: 'center', gap: 1, bgcolor: '#282828' }}>
+        <Paper ref={setNodeRef} style={style} {...attributes} {...listeners} sx={{ p: 2, display: 'flex', alignItems: 'center', gap: 1, bgcolor: '#bd527d' }}>
             <DragIndicatorIcon sx={{ color: '#b3b3b3' }} />
             <Typography sx={{ color: '#e0e0e0' }}>{text}</Typography>
         </Paper>
@@ -60,15 +60,21 @@ function DraggableQuote({ id, text }: { id: UniqueIdentifier, text: string }) {
 
 function DroppableCharacter({ char, quote, onRemoveQuote, status }: { char: Character, quote?: { id: UniqueIdentifier, text: string }, onRemoveQuote: Function, status: 'correct' | 'incorrect' | 'default' }) {
     const { setNodeRef, isOver } = useDroppable({ id: char.id });
-    const borderColor = status === 'correct' ? 'green' : status === 'incorrect' ? 'red' : '#b3b3b3';
+    const borderColor = status === 'correct' ? '#a8c97f' : status === 'incorrect' ? '#8b2020' : '#b3b3b3';
     return (
-        <Paper ref={setNodeRef} sx={{ p: 2, mb: 2, bgcolor: isOver ? '#333' : '#1a1a1a', border: `1px solid ${borderColor}`, transition: 'background-color 0.2s, border-color 0.2s' }}>
-            <Typography sx={{ color: '#007aff', mb: 1, fontStyle: 'italic' }}>{char.name}</Typography>
+        <Paper ref={setNodeRef} sx={{ p: 2, mb: 2, bgcolor: (theme) => isOver ? (theme.palette.mode === 'light' ? '#404E7C' : '#282828') : (theme.palette.mode === 'light' ? '#1B2A4A' : '#282828'), border: `1px solid ${borderColor}`, transition: 'background-color 0.2s, border-color 0.2s' }}>
+            <Typography sx={{ color: '#75c3ff', mb: 1, fontStyle: 'italic' }}>{char.name}</Typography>
             <Box 
                 sx={{ border: `2px dashed ${borderColor}`, borderRadius: 2, p: 2, minHeight: 60, textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                 onClick={() => quote && onRemoveQuote(quote.id, char.id)}
             >
-                {quote ? <Typography sx={{ color: '#e0e0e0', cursor: 'pointer' }}>{quote.text}</Typography> : <Typography sx={{ color: '#b3b3b3' }}>Solte o rótulo aqui</Typography>}
+                {quote ? (
+                    <Box sx={{ width: '100%', bgcolor: '#bd527d', borderRadius: 2, p: 1.5, cursor: 'pointer' }}>
+                        <Typography sx={{ color: '#e0e0e0' }}>{quote.text}</Typography>
+                    </Box>
+                ) : (
+                    <Typography sx={{ color: '#b3b3b3' }}>Solte o rótulo aqui</Typography>
+                )}
             </Box>
         </Paper>
     );
@@ -79,7 +85,7 @@ function DroppableColumn({ id, title, items }: { id: UniqueIdentifier, title: st
     return (
         <Box>
             <Typography variant="h6" sx={{mb: 2}}>{title}</Typography>
-            <Paper ref={setNodeRef} sx={{ p: 2, bgcolor: isOver ? '#333' : '#1a1a1a', minHeight: 200, borderRadius: 2, transition: 'background-color 0.2s ease-in-out' }}>
+            <Paper ref={setNodeRef} sx={{ p: 2, bgcolor: (theme) => isOver ? (theme.palette.mode === 'light' ? '#404E7C' : '#282828') : (theme.palette.mode === 'light' ? '#1B2A4A' : '#282828'), minHeight: 200, borderRadius: 2, transition: 'background-color 0.2s ease-in-out' }}>
                 <SortableContext items={items.map(i => i.id)} strategy={verticalListSortingStrategy}>
                     <Box sx={{display: 'flex', flexDirection: 'column', gap: 2, fontStyle: 'italic', color: '#b3b3b3'}}>
                         {items.map(item => <DraggableQuote key={item.id} id={item.id} text={item.text} />)}
@@ -225,8 +231,8 @@ export default function PracticeRelacionarContent({ data }: PracticeRelacionarCo
 
                 <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3, gap: 2 }}>
                     {checkStatus === 'unchecked' && <Button variant="contained" size="large" onClick={handleCheckAnswer} sx={{ textTransform: 'none', borderRadius: 3 }}>Verificar</Button>}
-                    {checkStatus === 'correct' && <Button variant="contained" onClick={handleNextItem} endIcon={<ArrowForwardIcon />} sx={{ bgcolor: 'green', color: 'white', textTransform: 'none' }}>Próximo</Button>}
-                    {checkStatus === 'incorrect' && <Button variant="contained" onClick={handleTryAgain} sx={{ bgcolor: 'red', color: 'white', textTransform: 'none' }}>Tentar Novamente</Button>}
+                    {checkStatus === 'correct' && <Button variant="contained" onClick={handleNextItem} endIcon={<ArrowForwardIcon />} sx={{ bgcolor: '#a8c97f', color: 'white', textTransform: 'none' }}>Próximo</Button>}
+                    {checkStatus === 'incorrect' && <Button variant="contained" onClick={handleTryAgain} sx={{ bgcolor: '#8b2020', color: 'white', textTransform: 'none' }}>Tentar Novamente</Button>}
                 </Box>
             </Box>
             <DragOverlay>

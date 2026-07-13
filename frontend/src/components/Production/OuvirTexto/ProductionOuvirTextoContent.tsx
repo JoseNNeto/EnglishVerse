@@ -1,5 +1,5 @@
 
-import { Box, Typography, Paper, Button, TextareaAutosize } from '@mui/material';
+import { Box, Typography, Paper, Button, TextareaAutosize, useTheme } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { useModule, ItemType } from '../../../contexts/ModuleContext';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -33,6 +33,7 @@ const getYouTubeEmbedUrl = (url: string) => {
 };
 
 export default function ProductionOuvirTextoContent({ data }: ProductionOuvirTextoContentProps) {
+    const theme = useTheme();
     const { markItemAsCompleted, handleNextItem } = useModule();
     const ouvirTextoData = data.dadosDesafio as OuvirTextoData;
     
@@ -68,7 +69,7 @@ export default function ProductionOuvirTextoContent({ data }: ProductionOuvirTex
                 <Box sx={{ color: '#e0e0e0' }}>
                     <Typography variant="h4" sx={{ mb: 3}}>Etapa: <i>Production Challenge - Audio</i></Typography>
                     
-                    <Paper sx={{ bgcolor: '#1a1a1a', p: 3, borderRadius: 3, mb: 3 }}>
+                    <Paper sx={{ bgcolor: '#bd527d', p: 3, borderRadius: 3, mb: 3 }}>
                         <Typography variant="h5" sx={{ mb: 1 }}>Seu Desafio</Typography>
                         <Typography variant="body1" sx={{ color: '#b3b3b3' }}>
                             <ReactMarkdown>{data.instrucaoDesafio}</ReactMarkdown>
@@ -83,7 +84,7 @@ export default function ProductionOuvirTextoContent({ data }: ProductionOuvirTex
                         </Box>
                     )}
 
-                    <Paper sx={{ bgcolor: '#1a1a1a', p: 4, borderRadius: 3, mb: 3 }}>
+                    <Paper sx={{ bgcolor: (theme) => theme.palette.mode === 'light' ? '#1B2A4A' : '#282828', p: 4, borderRadius: 3, mb: 3 }}>
                         {ouvirTextoData.textParts && ouvirTextoData.textParts.map((part, index) => {
                             if (typeof part === 'string') {
                                 return <Typography key={index} variant="body1" sx={{mb: 2}}>{part}</Typography>;
@@ -98,7 +99,7 @@ export default function ProductionOuvirTextoContent({ data }: ProductionOuvirTex
                                         value={answers[blankIndex]}
                                         onChange={(e) => handleAnswerChange(blankIndex, e.target.value)}
                                         disabled={checkStatus === 'correct'}
-                                        style={{ width: '100%', backgroundColor: '#121212', color: '#e0e0e0', border: '2px solid #282828', borderRadius: '14px', padding: '16px', fontFamily: 'inherit', fontSize: '16px' }}
+                                        style={{ width: '100%', backgroundColor: theme.palette.mode === 'light' ? '#456379' : '#000000', color: '#b3b3b3', border: '2px solid #282828', borderRadius: '14px', padding: '16px', fontFamily: 'inherit', fontSize: '16px' }}
                                     />
                                 </Box>
                             );
@@ -107,7 +108,7 @@ export default function ProductionOuvirTextoContent({ data }: ProductionOuvirTex
 
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3, gap: 2 }}>
                         {checkStatus === 'unchecked' && <Button variant="contained" size="large" onClick={handleCheckAnswer} disabled={!allFieldsFilled} sx={{ textTransform: 'none', borderRadius: 3 }}>Enviar Desafio</Button>}
-                        {checkStatus === 'correct' && <Button variant="contained" onClick={handleNextItem} endIcon={<ArrowForwardIcon />} sx={{ bgcolor: 'green', color: 'white', textTransform: 'none' }}>Próximo</Button>}
+                        {checkStatus === 'correct' && <Button variant="contained" onClick={handleNextItem} endIcon={<ArrowForwardIcon />} sx={{ bgcolor: '#a8c97f', color: 'white', textTransform: 'none' }}>Próximo</Button>}
                     </Box>
                 </Box>
             </Box>

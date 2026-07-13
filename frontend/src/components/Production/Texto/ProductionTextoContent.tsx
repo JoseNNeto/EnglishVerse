@@ -1,5 +1,5 @@
 
-import { Box, Typography, Button, TextareaAutosize, Paper } from '@mui/material';
+import { Box, Typography, Button, TextareaAutosize, Paper, useTheme } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { useModule, ItemType } from '../../../contexts/ModuleContext';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -17,6 +17,7 @@ interface ProductionTextoContentProps {
 }
 
 export default function ProductionTextoContent({ data }: ProductionTextoContentProps) {
+    const theme = useTheme();
     const { markItemAsCompleted, handleNextItem } = useModule();
     const [text, setText] = useState('');
     const [checkStatus, setCheckStatus] = useState<'unchecked' | 'correct'>('unchecked');
@@ -51,7 +52,7 @@ export default function ProductionTextoContent({ data }: ProductionTextoContentP
       <Box sx={{ width: '100%' }}>
         <Box sx={{ color: '#e0e0e0' }}>
           <Typography variant="h4" sx={{ mb: 3 }}>Etapa: <i>Production Challenge - Long Text</i></Typography>
-          <Paper sx={{ bgcolor: '#1a1a1a', p: 3, borderRadius: 3, mb: 3 }}>
+          <Paper sx={{ bgcolor: '#bd527d', p: 3, borderRadius: 3, mb: 3 }}>
             <Typography variant="h5" sx={{ mb: 1 }}>Seu Desafio</Typography>
             <Typography variant="body1" sx={{ color: '#b3b3b3' }}>
               <ReactMarkdown>{data.instrucaoDesafio}</ReactMarkdown>
@@ -92,8 +93,8 @@ export default function ProductionTextoContent({ data }: ProductionTextoContentP
               onChange={(e) => setText(e.target.value)}
               style={{
                 width: '100%',
-                backgroundColor: '#1a1a1a',
-                color: '#e0e0e0',
+                backgroundColor: theme.palette.mode === 'light' ? '#456379' : '#000000',
+                color: '#b3b3b3',
                 border: '2px solid #282828',
                 borderRadius: '14px',
                 padding: '16px',
@@ -113,7 +114,7 @@ export default function ProductionTextoContent({ data }: ProductionTextoContentP
                 </Button>
             )}
             {checkStatus === 'correct' && (
-                 <Button variant="contained" onClick={handleNextItem} endIcon={<ArrowForwardIcon />} sx={{ bgcolor: 'green', color: 'white', textTransform: 'none' }}>
+                 <Button variant="contained" onClick={handleNextItem} endIcon={<ArrowForwardIcon />} sx={{ bgcolor: '#a8c97f', color: 'white', textTransform: 'none' }}>
                     Próximo
                 </Button>
             )}

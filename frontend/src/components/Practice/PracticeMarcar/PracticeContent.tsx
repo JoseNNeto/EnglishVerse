@@ -52,16 +52,16 @@ export default function PracticeMarcarContent({ data }: PracticeMarcarContentPro
         const isCorrect = option === marcarData.resposta_correta;
 
         if (checkStatus === 'correct' && isSelected) {
-            return { borderColor: 'green', backgroundColor: 'rgba(0, 255, 0, 0.2)' };
+            return { borderColor: '#a8c97f', backgroundColor: 'rgba(0, 255, 0, 0.2)' };
         }
         if (checkStatus === 'incorrect' && isSelected) {
-            return { borderColor: 'red', backgroundColor: 'rgba(255, 0, 0, 0.2)' };
+            return { borderColor: '#8b2020', backgroundColor: 'rgba(255, 0, 0, 0.2)' };
         }
         if (checkStatus !== 'unchecked' && isCorrect) {
-            return { borderColor: 'green', backgroundColor: 'rgba(0, 255, 0, 0.2)' };
+            return { borderColor: '#a8c97f', backgroundColor: 'rgba(0, 255, 0, 0.2)' };
         }
         if (isSelected) {
-            return { borderColor: '#007aff', backgroundColor: 'rgba(0,122,255,0.2)' };
+            return { borderColor: '#75c3ff', backgroundColor: 'rgba(0,122,255,0.2)' };
         }
         return { borderColor: '#282828', backgroundColor: 'rgba(40,40,40,0.4)' };
     };
@@ -70,7 +70,7 @@ export default function PracticeMarcarContent({ data }: PracticeMarcarContentPro
     <Box sx={{ color: '#e0e0e0' }}>
       <Typography variant="h4">Etapa: <i>Practice - Multiple Choice</i></Typography>
 
-      <Box sx={{ bgcolor: '#1a1a1a', p: 4, borderRadius: 3, my: 3, textAlign: 'center' }}>
+      <Box sx={{ bgcolor: (theme) => theme.palette.mode === 'light' ? '#1B2A4A' : '#282828', p: 4, borderRadius: 3, my: 3, textAlign: 'center' }}>
         <Typography variant="h5"><ReactMarkdown>{marcarData.pergunta || data.instrucao}</ReactMarkdown></Typography>
       </Box>
 
@@ -104,18 +104,18 @@ export default function PracticeMarcarContent({ data }: PracticeMarcarContentPro
                 {/* <Button sx={{ color: '#b3b3b3', textTransform: 'none', borderRadius: 3, p: '10px 24px' }}>
                     Pular Pergunta
                 </Button> */}
-                <Button variant="contained" onClick={handleCheckAnswer} disabled={!selectedOption} sx={{ bgcolor: '#007aff', color: 'white', textTransform: 'none', borderRadius: 3, p: '10px 32px' }}>
+                <Button variant="contained" onClick={handleCheckAnswer} disabled={!selectedOption} sx={{ bgcolor: '#75c3ff', color: 'white', textTransform: 'none', borderRadius: 3, p: '10px 32px' }}>
                     Verificar Resposta
                 </Button>
             </>
         )}
         {checkStatus === 'correct' && (
-            <Button variant="contained" onClick={handleNextItem} endIcon={<ArrowForwardIcon />} sx={{ bgcolor: 'green', color: 'white', textTransform: 'none', borderRadius: 3, p: '10px 32px' }}>
+            <Button variant="contained" onClick={handleNextItem} endIcon={<ArrowForwardIcon />} sx={{ bgcolor: '#a8c97f', color: 'white', textTransform: 'none', borderRadius: 3, p: '10px 32px' }}>
                 Próximo
             </Button>
         )}
         {checkStatus === 'incorrect' && (
-            <Button variant="contained" onClick={handleTryAgain} sx={{ bgcolor: 'red', color: 'white', textTransform: 'none', borderRadius: 3, p: '10px 32px' }}>
+            <Button variant="contained" onClick={handleTryAgain} sx={{ bgcolor: '#8b2020', color: 'white', textTransform: 'none', borderRadius: 3, p: '10px 32px' }}>
                 Tentar Novamente
             </Button>
         )}

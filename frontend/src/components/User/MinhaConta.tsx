@@ -66,9 +66,9 @@ export default function MinhaConta() {
         <Typography variant="h6" sx={{ color: '#e0e0e0', mb: 2 }}>
           Minha Conta
         </Typography>
-        <Box sx={{ backgroundColor: '#1a1a1a', borderRadius: '14px', p: 3, mb: 3 }}>
+        <Box sx={{ backgroundColor: (theme) => theme.palette.mode === 'light' ? '#456379' : '#1b2a4a', borderRadius: '14px', p: 3, mb: 3 }}>
           <Box sx={{ display: 'flex', justifyContent: 'center', mb: 3 }}>
-            <Avatar sx={{ width: 100, height: 100, fontSize: '3rem', bgcolor: '#007aff' }}>
+            <Avatar sx={{ width: 100, height: 100, fontSize: '3rem', bgcolor: (theme) => theme.palette.mode === 'light' ? '#75c3ff' : '#007aff', color: '#e0e0e0' }}>
               {user.nome.charAt(0).toUpperCase()}
             </Avatar>
           </Box>
@@ -78,19 +78,30 @@ export default function MinhaConta() {
               value={nome}
               onChange={(e) => setNome(e.target.value)}
               variant="filled"
-              InputLabelProps={{ style: { color: '#e0e0e0' } }}
-              sx={{ '& .MuiFilledInput-root': { backgroundColor: '#282828', borderRadius: '14px', color: 'white', '&:before, &:after': { borderBottom: 'none' } } }}
+              InputLabelProps={{ style: { color: '#b3b3b3' } }}
+              sx={{ '& .MuiFilledInput-root': { backgroundColor: '#282828', borderRadius: '14px', color: '#e0e0e0', '&:before, &:after': { borderBottom: 'none' } } }}
             />
             <TextField
               label="E-mail"
               value={user.sub}
               variant="filled"
               disabled
-              InputLabelProps={{ style: { color: '#e0e0e0' } }}
-              sx={{ '& .MuiFilledInput-root': { backgroundColor: '#282828', borderRadius: '14px', color: '#b3b3b3', opacity: 0.6, '&:before, &:after': { borderBottom: 'none' } } }}
+              InputLabelProps={{ style: { color: '#b3b3b3' } }}
+              sx={{
+                '& .MuiFilledInput-root': {
+                  backgroundColor: (theme) => theme.palette.mode === 'light' ? '#5f7f95' : '#282828',
+                  borderRadius: '14px',
+                  color: '#e0e0e0',
+                  opacity: 1,
+                  '&:before, &:after': { borderBottom: 'none' },
+                },
+                '& .MuiFilledInput-input.Mui-disabled': {
+                  WebkitTextFillColor: '#e0e0e0',
+                },
+              }}
               helperText="O e-mail não pode ser alterado por questões de segurança"
             />
-            <Button type="submit" variant="contained" sx={{ backgroundColor: '#007aff', '&:hover': { backgroundColor: '#0056b3' }, borderRadius: '14px', alignSelf: 'flex-end', mt: 2 }}>
+            <Button type="submit" variant="contained" sx={{ backgroundColor: (theme) => theme.palette.mode === 'light' ? '#75c3ff' : '#007aff', color: '#e0e0e0', '&:hover': { backgroundColor: (theme) => theme.palette.mode === 'light' ? '#75c3ff' : '#007aff' }, borderRadius: '14px', alignSelf: 'flex-end', mt: 2 }}>
               Salvar Alterações
             </Button>
           </Box>
@@ -99,7 +110,7 @@ export default function MinhaConta() {
         <Typography variant="h6" sx={{ color: '#e0e0e0', mb: 2 }}>
           Alterar Senha
         </Typography>
-        <Box sx={{ backgroundColor: '#1a1a1a', borderRadius: '14px', p: 3 }}>
+        <Box sx={{ backgroundColor: (theme) => theme.palette.mode === 'light' ? '#456379' : '#1b2a4a', borderRadius: '14px', p: 3 }}>
           <Box component="form" onSubmit={handleSenhaSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             <TextField
               label="Senha Atual"
@@ -107,8 +118,8 @@ export default function MinhaConta() {
               value={senhaAntiga}
               onChange={(e) => setSenhaAntiga(e.target.value)}
               variant="filled"
-              InputLabelProps={{ style: { color: '#e0e0e0' } }}
-              sx={{ '& .MuiFilledInput-root': { backgroundColor: '#282828', borderRadius: '14px', color: 'white', '&:before, &:after': { borderBottom: 'none' } } }}
+              InputLabelProps={{ style: { color: '#b3b3b3' } }}
+              sx={{ '& .MuiFilledInput-root': { backgroundColor: '#282828', borderRadius: '14px', color: '#b3b3b3', '&:before, &:after': { borderBottom: 'none' } } }}
             />
             <TextField
               label="Nova Senha"
@@ -116,8 +127,8 @@ export default function MinhaConta() {
               value={senhaNova}
               onChange={(e) => setSenhaNova(e.target.value)}
               variant="filled"
-              InputLabelProps={{ style: { color: '#e0e0e0' } }}
-              sx={{ '& .MuiFilledInput-root': { backgroundColor: '#282828', borderRadius: '14px', color: 'white', '&:before, &:after': { borderBottom: 'none' } } }}
+              InputLabelProps={{ style: { color: '#b3b3b3' } }}
+              sx={{ '& .MuiFilledInput-root': { backgroundColor: '#282828', borderRadius: '14px', color: '#b3b3b3', '&:before, &:after': { borderBottom: 'none' } } }}
             />
             <TextField
               label="Confirmar Nova Senha"
@@ -125,10 +136,10 @@ export default function MinhaConta() {
               value={confirmarSenha}
               onChange={(e) => setConfirmarSenha(e.target.value)}
               variant="filled"
-              InputLabelProps={{ style: { color: '#e0e0e0' } }}
-              sx={{ '& .MuiFilledInput-root': { backgroundColor: '#282828', borderRadius: '14px', color: 'white', '&:before, &:after': { borderBottom: 'none' } } }}
+              InputLabelProps={{ style: { color: '#b3b3b3' } }}
+              sx={{ '& .MuiFilledInput-root': { backgroundColor: '#282828', borderRadius: '14px', color: '#b3b3b3', '&:before, &:after': { borderBottom: 'none' } } }}
             />
-            <Button type="submit" variant="contained" sx={{ backgroundColor: '#007aff', '&:hover': { backgroundColor: '#0056b3' }, borderRadius: '14px', alignSelf: 'flex-end', mt: 2 }}>
+            <Button type="submit" variant="contained" sx={{ backgroundColor: (theme) => theme.palette.mode === 'light' ? '#75c3ff' : '#007aff', color: '#e0e0e0', '&:hover': { backgroundColor: (theme) => theme.palette.mode === 'light' ? '#75c3ff' : '#007aff' }, borderRadius: '14px', alignSelf: 'flex-end', mt: 2 }}>
               Alterar Senha
             </Button>
           </Box>

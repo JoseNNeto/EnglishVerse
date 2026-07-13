@@ -44,7 +44,7 @@ function PresentationContent() {
   }
 
   return (
-    <Box sx={{ display: 'flex', minHeight: '100vh' }}>
+    <Box sx={{ display: 'flex', minHeight: '100vh', backgroundColor: (theme) => theme.palette.mode === 'light' ? '#456379' : '#000000' }}>
       <SideBar />
       <Box sx={{ flexGrow: 1, p: 3, display: 'flex', flexDirection: 'column', gap: 3 }}>
         <Box sx={{ mb: 2 }}>

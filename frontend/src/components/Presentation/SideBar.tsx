@@ -3,10 +3,12 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import EditIcon from '@mui/icons-material/Edit';
 import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
+import { useTheme } from '@mui/material/styles';
 import { useModule, ItemType } from '../../contexts/ModuleContext';
 import { Link } from 'react-router-dom';
 
 export default function SideBar() {
+  const theme = useTheme();
   const { loading, modulo, allItems, activeItem, completedItems, handleSelectItem } = useModule();
 
   
@@ -76,7 +78,7 @@ export default function SideBar() {
   return (
     <Box sx={{ 
         width: '320px', 
-        backgroundColor: '#1b2a4a',
+        backgroundColor: (theme) => theme.palette.mode === 'light' ? '#404E7C' : '#1b2a4a',
         p: 3, 
         minHeight: '100vh',
         display: 'flex',
@@ -104,7 +106,7 @@ export default function SideBar() {
                     completedItem.itemType === item.type.toUpperCase() as ItemType
             );
 
-            const color = isActive || isCompleted ? '#007aff' : '#b3b3b3';
+            const color = isActive || isCompleted ? (theme.palette.mode === 'light' ? '#ffffff' : '#007aff') : '#b3b3b3';
 
             return (
               <ListItem 
@@ -112,7 +114,7 @@ export default function SideBar() {
                 sx={{ 
                     pl: 0, 
                     cursor: 'pointer', 
-                    '&:hover': { backgroundColor: '#282828' }, 
+                    '&:hover': { backgroundColor: theme.palette.mode === 'light' ? '#1B2A4A' : '#282828' },
                     borderRadius: '8px',
                     backgroundColor: isActive ? 'rgba(255, 255, 255, 0.08)' : 'transparent',
                 }} 

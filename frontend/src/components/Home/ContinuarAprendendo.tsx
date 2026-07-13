@@ -109,7 +109,7 @@ export default function ContinuarAprendendo() {
                     width: 160,
                     height: '100%',
                     objectFit: 'cover',
-                    backgroundColor: '#111111',
+                    backgroundColor: (theme) => theme.palette.mode === 'light' ? '#456379' : '#111111',
                     borderRight: '1px solid #1b2a4a',
                   }}
                   image={item.moduloImagemCapaUrl || 'https://via.placeholder.com/160'}

@@ -1,4 +1,4 @@
-import { Box, Typography, Button, Paper, Chip } from '@mui/material';
+import { Box, Typography, Button, Paper, Chip, useTheme } from '@mui/material';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import { useState, useMemo, useEffect } from 'react';
 import { useModule, ItemType } from '../../../contexts/ModuleContext';
@@ -38,6 +38,7 @@ const getYouTubeEmbedUrl = (url: string) => {
 };
 
 export default function PracticeSelecionarContent({ data }: PracticeSelecionarContentProps) {
+    const theme = useTheme();
     const { markItemAsCompleted, handleNextItem } = useModule();
     const [selectedWords, setSelectedWords] = useState<string[]>([]);
     const [checkStatus, setCheckStatus] = useState<'unchecked' | 'correct' | 'incorrect'>('unchecked');
@@ -95,14 +96,14 @@ export default function PracticeSelecionarContent({ data }: PracticeSelecionarCo
         const isSelected = selectedWords.includes(wordId);
 
         if (checkStatus === 'unchecked') {
-            return { backgroundColor: isSelected ? '#007aff' : '#282828', color: 'white' };
+            return { backgroundColor: isSelected ? '#75c3ff' : theme.palette.mode === 'light' ? '#1B2A4A' : '#282828', color: 'white' };
         }
 
         const isCorrect = correctWordTypes.has(word.toLowerCase());
         if (isSelected) {
-            return { backgroundColor: isCorrect ? 'green' : 'red', color: 'white' };
+            return { backgroundColor: isCorrect ? '#a8c97f' : '#8b2020', color: 'white' };
         }
-        return { backgroundColor: '#282828', color: 'white' };
+        return { backgroundColor: theme.palette.mode === 'light' ? '#1B2A4A' : '#282828', color: 'white' };
     };
 
   return (
@@ -142,7 +143,7 @@ export default function PracticeSelecionarContent({ data }: PracticeSelecionarCo
               )}
             </Box>
 
-            <Paper sx={{ flex: 2, bgcolor: '#1a1a1a', p: 2, borderRadius: 3 }}>
+            <Paper sx={{ flex: 2, bgcolor: (theme) => theme.palette.mode === 'light' ? '#1B2A4A' : '#282828', p: 2, borderRadius: 3 }}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
                   <MusicNoteIcon sx={{ color: '#e0e0e0' }} />
                   <Typography variant="h6" sx={{ color: '#e0e0e0' }}>Letra</Typography>
@@ -171,7 +172,7 @@ export default function PracticeSelecionarContent({ data }: PracticeSelecionarCo
               </Box>
               <Box sx={{ borderTop: 1, borderColor: '#282828', mt: 2, pt: 2 }}>
                   <Typography variant="body2" sx={{ color: '#b3b3b3' }}>
-                      Palavras selecionadas: <span style={{ color: '#007aff' }}>{selectedWords.length}</span>
+                      Palavras selecionadas: <span style={{ color: '#75c3ff' }}>{selectedWords.length}</span>
                   </Typography>
               </Box>
             </Paper>
@@ -183,18 +184,18 @@ export default function PracticeSelecionarContent({ data }: PracticeSelecionarCo
                     {/* <Button sx={{ color: '#b3b3b3', textTransform: 'none', borderRadius: 3, p: '10px 24px' }}>
                         Pular Pergunta
                     </Button> */}
-                    <Button variant="contained" onClick={handleCheckAnswer} sx={{ bgcolor: '#007aff', color: 'white', textTransform: 'none', borderRadius: 3, p: '10px 32px' }}>
+                    <Button variant="contained" onClick={handleCheckAnswer} sx={{ bgcolor: '#75c3ff', color: 'white', textTransform: 'none', borderRadius: 3, p: '10px 32px' }}>
                         Verificar Resposta
                     </Button>
                 </>
             )}
             {checkStatus === 'correct' && (
-                <Button variant="contained" onClick={handleNextItem} endIcon={<ArrowForwardIcon />} sx={{ bgcolor: 'green', color: 'white', textTransform: 'none', borderRadius: 3, p: '10px 32px' }}>
+                <Button variant="contained" onClick={handleNextItem} endIcon={<ArrowForwardIcon />} sx={{ bgcolor: '#a8c97f', color: 'white', textTransform: 'none', borderRadius: 3, p: '10px 32px' }}>
                     Próximo
                 </Button>
             )}
             {checkStatus === 'incorrect' && (
-                <Button variant="contained" onClick={handleTryAgain} sx={{ bgcolor: 'red', color: 'white', textTransform: 'none', borderRadius: 3, p: '10px 32px' }}>
+                <Button variant="contained" onClick={handleTryAgain} sx={{ bgcolor: '#8b2020', color: 'white', textTransform: 'none', borderRadius: 3, p: '10px 32px' }}>
                     Tentar Novamente
                 </Button>
             )}

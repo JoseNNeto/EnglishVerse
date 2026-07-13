@@ -73,7 +73,7 @@ export default function Header() {
       <AppBar
         position="static"
         sx={{
-          backgroundColor: '#1b2a4a',
+          backgroundColor: colors.nav,
           backgroundImage: 'none',
           borderBottom: `1px solid ${colors.navAccent}`,
           padding: '0px 0px'
@@ -106,7 +106,7 @@ export default function Header() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 sx={{
-                  color: '#e0e0e0',
+                  color: colors.text,
                   width: '100%',
                   paddingLeft: '48px',
                   '& input::placeholder': {
