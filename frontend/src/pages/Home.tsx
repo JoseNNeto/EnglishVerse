@@ -15,8 +15,8 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 const ModuleCard = ({ module }: { module: Modulo }) => (
     <Grid size={{ xs:12, sm:6, md:2.4 }}>
       <Card sx={{ 
-        backgroundColor: '#1a1a1a', 
-        color: 'white', 
+        backgroundColor: '#000000',
+        color: '#e0e0e0',
         boxShadow: '0 4px 8px rgba(0,0,0,0.3)', 
         borderRadius: '14px',
         transition: 'transform 0.3s, box-shadow 0.3s',
@@ -62,7 +62,7 @@ const ModuleCard = ({ module }: { module: Modulo }) => (
                 justifyContent: 'center',
               }}
             >
-              <PlayArrowIcon sx={{ color: 'white', fontSize: 60, backgroundColor: '#007aff', borderRadius: '50%', padding: '8px' }} />
+              <PlayArrowIcon sx={{ color: '#000000', fontSize: 60, backgroundColor: '#a8c97f', borderRadius: '50%', padding: '8px' }} />
             </Box>
           </Box>
           <CardContent sx={{ p: '16px', flexGrow: 1, overflowY: 'auto', height: '80px' }}>
@@ -105,7 +105,7 @@ function Home() {
   if (query) {
     return (
         <Box sx={{ my: 4, mx: 6 }}>
-            <Typography variant="h5" component="h2" sx={{ color: 'white', mb: 2, fontWeight: 'bold' }}>
+            <Typography variant="h5" component="h2" sx={{ color: '#e0e0e0', mb: 2, fontWeight: 'bold' }}>
                 Resultados da busca por: "{query}"
             </Typography>
             {loading ? (
@@ -119,7 +119,7 @@ function Home() {
                             ))}
                         </Grid>
                     ) : (
-                        <Typography sx={{color: 'white', textAlign: 'center', mt: 4}}>
+                        <Typography sx={{color: '#e0e0e0', textAlign: 'center', mt: 4}}>
                             Nenhum módulo encontrado.
                         </Typography>
                     )}

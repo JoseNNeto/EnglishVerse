@@ -100,12 +100,12 @@ export default function MidiaAndTranscption() {
     }
 
     if (!activeItem) {
-        return <Typography sx={{color: 'white'}}>Nenhum item selecionado.</Typography>
+        return <Typography sx={{color: '#e0e0e0'}}>Nenhum item selecionado.</Typography>
     }
 
     if (activeItem.type !== 'presentation') {
         return (
-            <Box sx={{ p: 4, backgroundColor: '#1a1a1a', color: 'white', borderRadius: '14px', textAlign: 'center' }}>
+            <Box sx={{ p: 4, backgroundColor: '#282828', color: '#e0e0e0', borderRadius: '14px', textAlign: 'center' }}>
                 <Typography variant="h5">Conteúdo de '{activeItem.type}'</Typography>
                 <Typography>A integração para este tipo de conteúdo será feita a seguir.</Typography>
             </Box>
@@ -134,14 +134,22 @@ export default function MidiaAndTranscption() {
                 <Box sx={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', maxHeight: mediaHeight,  }}>
                     <Box sx={{ borderBottom: 1, borderColor: 'divider', flexShrink: 0 }}>
                         <Tabs value={value} onChange={handleChange} aria-label="lyrics and transcription tabs">
-                            <Tab label="Letra" sx={{color: value === 0 ? '#007aff' : '#b3b3b3', textTransform: 'none', fontSize: '16px'}}/>
-                            {/* <Tab label="Transcrição" sx={{color: value === 1 ? '#007aff' : '#b3b3b3', textTransform: 'none', fontSize: '16px'}}/> */}
+                            <Tab label="Letra" sx={{color: value === 0 ? '#75c3ff' : '#b3b3b3', textTransform: 'none', fontSize: '16px'}}/>
+                            {/* <Tab label="Transcrição" sx={{color: value === 1 ? '#75c3ff' : '#b3b3b3', textTransform: 'none', fontSize: '16px'}}/> */}
                         </Tabs>
                     </Box>
                     <Box sx={{ overflowY: 'auto', maxHeight:"40vh" }}>
                         <TabPanel value={value} index={0}>
                             {presentationData.letra ? (
-                                <Paper sx={{px: 2, py: 0.5, backgroundColor: 'transparent', color: 'white' }}>
+                                <Paper
+                                  sx={{
+                                    px: 2,
+                                    py: 0.5,
+                                    backgroundColor: 'transparent',
+                                    color: '#e0e0e0',
+                                    '& strong, & a, & mark': { color: '#75c3ff' },
+                                  }}
+                                >
                                     <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>{presentationData.letra}</ReactMarkdown>
                                 </Paper>
                             ) : (
@@ -150,7 +158,15 @@ export default function MidiaAndTranscption() {
                         </TabPanel>
                         <TabPanel value={value} index={1}>
                             {presentationData.transcricao ? (
-                                <Paper sx={{p: 3, backgroundColor: '#1a1a1a', color: 'white', borderRadius: '14px' }}>
+                                <Paper
+                                  sx={{
+                                    p: 3,
+                                    backgroundColor: '#282828',
+                                    color: '#e0e0e0',
+                                    borderRadius: '14px',
+                                    '& strong, & a, & mark': { color: '#75c3ff' },
+                                  }}
+                                >
                                     <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>{presentationData.transcricao}</ReactMarkdown>
                                 </Paper>
                             ) : (

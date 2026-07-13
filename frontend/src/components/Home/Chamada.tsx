@@ -39,7 +39,7 @@ export default function Chamada() {
         height: '400px',
         borderRadius: '14px',
         overflow: 'hidden',
-        color: 'white',
+        color: '#e0e0e0',
         display: 'flex',
         alignItems: 'center',
         backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.8), rgba(0,0,0,0.6) 50%, rgba(0,0,0,0)), url(${ultimoModulo ? ultimoModulo.imagemCapaUrl : ImageCall})`,
@@ -51,7 +51,7 @@ export default function Chamada() {
       <Box>
         <Typography
           sx={{
-            backgroundColor: '#007aff',
+            backgroundColor: '#54732c',
             display: 'inline-block',
             padding: '4px 12px',
             borderRadius: '8px',
@@ -75,8 +75,9 @@ export default function Chamada() {
             component={Link}
             to={`/presentation/${ultimoModulo.id}`}
             sx={{
-              backgroundColor: '#007aff',
-              '&:hover': { backgroundColor: '#0056b3' },
+              backgroundColor: '#a8c97f',
+              '&:hover': { backgroundColor: '#a8c97f' },
+              color: '#e0e0e0',
               borderRadius: '14px',
               padding: '10px 32px',
               fontWeight: 'bold',

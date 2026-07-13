@@ -76,13 +76,13 @@ export default function SideBar() {
   return (
     <Box sx={{ 
         width: '320px', 
-        backgroundColor: '#1a1a1a', 
+        backgroundColor: '#1b2a4a',
         p: 3, 
-        height: '100%',
+        minHeight: '100vh',
         display: 'flex',
         flexDirection: 'column',
         gap: 4,
-        borderRight: '1px solid #282828'
+        borderRight: '1px solid #000000'
     }}>
       <Button component={Link} to="/" startIcon={<ArrowBackIcon />} sx={{ color: '#e0e0e0', textTransform: 'none', alignSelf: 'flex-start' }}>
         Voltar
@@ -104,7 +104,7 @@ export default function SideBar() {
                     completedItem.itemType === item.type.toUpperCase() as ItemType
             );
 
-            const color = isActive ? '#007aff' : (isCompleted ? '#4CAF50' : '#b3b3b3'); // Green for completed, blue for active, grey for others
+            const color = isActive || isCompleted ? '#007aff' : '#b3b3b3';
 
             return (
               <ListItem 
@@ -114,7 +114,7 @@ export default function SideBar() {
                     cursor: 'pointer', 
                     '&:hover': { backgroundColor: '#282828' }, 
                     borderRadius: '8px',
-                    backgroundColor: isActive ? 'rgba(0, 122, 255, 0.1)' : 'transparent', // Light blue background for active item
+                    backgroundColor: isActive ? 'rgba(255, 255, 255, 0.08)' : 'transparent',
                 }} 
                 onClick={() => handleSelectItem(item)}
               >

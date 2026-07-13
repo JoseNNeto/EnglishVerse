@@ -46,7 +46,7 @@ export default function ProductionPostagem() {
   }, [id]);
 
   return (
-    <Box sx={{ display: 'flex', backgroundColor: '#121212', minHeight: '100vh', p: 3, justifyContent: 'center', alignItems: 'center' }}>
+    <Box sx={{ display: 'flex', backgroundColor: '#000000', minHeight: '100vh', p: 3, justifyContent: 'center', alignItems: 'center' }}>
         {loading && (
           <CircularProgress />
         )}

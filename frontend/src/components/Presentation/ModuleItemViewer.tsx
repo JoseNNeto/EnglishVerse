@@ -30,7 +30,7 @@ export default function ModuleItemViewer() {
 
     if (!activeItem) {
         return (
-            <Box sx={{ p: 4, backgroundColor: '#1a1a1a', color: 'white', borderRadius: '14px', textAlign: 'center' }}>
+            <Box sx={{ p: 4, backgroundColor: '#282828', color: '#e0e0e0', borderRadius: '14px', textAlign: 'center' }}>
                 <Typography variant="h5">Nenhum conteúdo selecionado.</Typography>
                 <Typography>Selecione um item na barra lateral para começar.</Typography>
             </Box>
@@ -57,7 +57,7 @@ export default function ModuleItemViewer() {
                     return <PracticeSubstituirContent data={practiceData} />;
                 default:
                     return (
-                        <Box sx={{ p: 4, backgroundColor: '#1a1a1a', color: 'white', borderRadius: '14px', textAlign: 'center' }}>
+                        <Box sx={{ p: 4, backgroundColor: '#282828', color: '#e0e0e0', borderRadius: '14px', textAlign: 'center' }}>
                             <Typography variant="h5">Unknown Practice: {practiceData.tipoAtividade}</Typography>
                         </Box>
                     );
@@ -79,14 +79,14 @@ export default function ModuleItemViewer() {
                     return <ProductionArquivoContent data={productionData} />;
                 default:
                     return (
-                        <Box sx={{ p: 4, backgroundColor: '#1a1a1a', color: 'white', borderRadius: '14px', textAlign: 'center' }}>
+                        <Box sx={{ p: 4, backgroundColor: '#282828', color: '#e0e0e0', borderRadius: '14px', textAlign: 'center' }}>
                             <Typography variant="h5">Unknown Production: {productionData.tipoDesafio}</Typography>
                         </Box>
                     );
             } }
         default:
             return (
-                <Box sx={{ p: 4, backgroundColor: '#1a1a1a', color: 'white', borderRadius: '14px', textAlign: 'center' }}>
+                <Box sx={{ p: 4, backgroundColor: '#282828', color: '#e0e0e0', borderRadius: '14px', textAlign: 'center' }}>
                     <Typography variant="h5">Unknown Item Type.</Typography>
                 </Box>
             );
