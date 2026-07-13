@@ -89,14 +89,14 @@ export default function MinhaConta() {
               InputLabelProps={{ style: { color: '#b3b3b3' } }}
               sx={{
                 '& .MuiFilledInput-root': {
-                  backgroundColor: (theme) => theme.palette.mode === 'light' ? '#5f7f95' : '#282828',
+                  backgroundColor: (theme) => theme.palette.mode === 'light' ? '#5f7f95' : '#202020',
                   borderRadius: '14px',
-                  color: '#e0e0e0',
+                  color: '#b3b3b3',
                   opacity: 1,
                   '&:before, &:after': { borderBottom: 'none' },
                 },
                 '& .MuiFilledInput-input.Mui-disabled': {
-                  WebkitTextFillColor: '#e0e0e0',
+                  WebkitTextFillColor: '#b3b3b3',
                 },
               }}
               helperText="O e-mail não pode ser alterado por questões de segurança"
