@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../services/api';
 import { useAuth } from '../../contexts/AuthContext';
+import { useGamification } from '../../contexts/GamificationContext';
+import type { ModuleJourney } from '../../types/gamification';
 
 // Interfaces based on backend models
 interface Modulo {
@@ -22,16 +24,6 @@ interface Section {
   topics: Modulo[];
 }
 
-interface Progresso {
-    id: number;
-    alunoId: number;
-    modulo: Modulo;
-    status: string;
-    dataInicio: string;
-    dataConclusao: string | null;
-    percentual: number;
-}
-
 interface UltimoAcessoDTO {
   itemType: string;
   itemId: number;
@@ -39,12 +31,12 @@ interface UltimoAcessoDTO {
 }
 
 
-const TopicCard = ({ topic, isEmAndamento }: { topic: Modulo, isEmAndamento: boolean }) => {
+const TopicCard = ({ topic, journey }: { topic: Modulo, journey?: ModuleJourney }) => {
   const navigate = useNavigate();
   const { user } = useAuth();
 
   const handleCardClick = async () => {
-    if (user && isEmAndamento) {
+    if (user && journey?.status === 'EM_ANDAMENTO') {
       try {
         const response = await api.get<UltimoAcessoDTO>(`/progresso/modulo/${topic.id}/ultimo-acesso`);
         if (response.status === 200 && response.data) {
@@ -89,9 +81,13 @@ const TopicCard = ({ topic, isEmAndamento }: { topic: Modulo, isEmAndamento: boo
           boxShadow: '0 8px 16px rgba(0,0,0,0.5)',
         }
       }}>
-        <CardActionArea onClick={handleCardClick} sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+        <CardActionArea
+          onClick={handleCardClick}
+          sx={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}
+        >
           <Box sx={{
             height: '250px',
+            flexShrink: 0,
             width: '100%',
             position: 'relative',
             overflow: 'hidden',
@@ -111,8 +107,11 @@ const TopicCard = ({ topic, isEmAndamento }: { topic: Modulo, isEmAndamento: boo
               opacity: 1,
             },
           }}>
-             {isEmAndamento && (
-              <Chip label="Em Andamento" color="primary" sx={{ position: 'absolute', top: 8, right: 8, zIndex: 1 }} />
+             {journey?.status === 'EM_ANDAMENTO' && (
+              <Chip label="Em andamento" color="primary" sx={{ position: 'absolute', top: 8, right: 8, zIndex: 1 }} />
+            )}
+             {journey?.status === 'CONCLUIDO' && (
+              <Chip label="Concluído" color="success" sx={{ position: 'absolute', top: 8, right: 8, zIndex: 1 }} />
             )}
             <Box className="overlay"
               sx={{
@@ -130,8 +129,38 @@ const TopicCard = ({ topic, isEmAndamento }: { topic: Modulo, isEmAndamento: boo
               <PlayArrowIcon sx={{ color: '#000000', fontSize: 60, backgroundColor: '#a8c97f', borderRadius: '50%', padding: '8px' }} />
             </Box>
           </Box>
-          <CardContent sx={{ p: '14px 16px 16px', flexGrow: 1, overflowY: 'auto', height: '100px' }}>
-            <Typography variant="body1" sx={{ color: '#e0e0e0' }}>{topic.titulo}</Typography>
+          <CardContent sx={{
+            p: '14px 16px 16px',
+            width: '100%',
+            height: '100px',
+            minHeight: '100px',
+            boxSizing: 'border-box',
+            display: 'flex',
+            flexDirection: 'column',
+            overflow: 'hidden',
+          }}>
+            <Typography
+              variant="body1"
+              sx={{
+                color: '#e0e0e0',
+                lineHeight: 1.3,
+                minHeight: '42px',
+                display: '-webkit-box',
+                WebkitBoxOrient: 'vertical',
+                WebkitLineClamp: 2,
+                overflow: 'hidden',
+              }}
+            >
+              {topic.titulo}
+            </Typography>
+            {journey && (
+              <Typography
+                variant="caption"
+                sx={{ color: '#b3b3b3', display: 'block', mt: 'auto', lineHeight: 1.2 }}
+              >
+                {journey.completedItems} de {journey.totalItems} etapas · até {journey.maximumXp} XP
+              </Typography>
+            )}
           </CardContent>
         </CardActionArea>
       </Card>
@@ -143,17 +172,11 @@ export default function Secoes() {
   const [sections, setSections] = useState<Section[]>([]);
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
-  const [progressos, setProgressos] = useState<Progresso[]>([]);
+  const { journey } = useGamification();
 
   useEffect(() => {
     const fetchSectionsAndProgress = async () => {
       try {
-        // Fetch progressos em andamento se o usuário estiver logado
-        if (user) {
-          const progressoResponse = await api.get<Progresso[]>(`/progresso/em-andamento/${user.id}`);
-          setProgressos(progressoResponse.data);
-        }
-
         const topicosResponse = await api.get<Topico[]>('/topicos');
         const topicos = Array.isArray(topicosResponse.data) ? topicosResponse.data : [];
 
@@ -183,8 +206,6 @@ export default function Secoes() {
     return <Typography sx={{ color: '#e0e0e0', textAlign: 'center', my: 4 }}>Carregando seções...</Typography>;
   }
 
-  const modulosEmAndamentoIds = new Set(progressos.filter(p => p.modulo).map(p => p.modulo.id));
-
   return (
     <Box sx={{ my: 4, mx: 6 }}>
       {sections.map(section => (
@@ -197,7 +218,7 @@ export default function Secoes() {
               <TopicCard
                 key={topic.id}
                 topic={topic}
-                isEmAndamento={modulosEmAndamentoIds.has(topic.id)}
+                journey={journey?.modules.find(item => item.moduleId === topic.id)}
               />
             ))}
           </Grid>

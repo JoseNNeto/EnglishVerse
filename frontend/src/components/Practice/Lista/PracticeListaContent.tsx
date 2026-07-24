@@ -1,6 +1,6 @@
 import { Box, Typography, Button, Grid, TextField } from '@mui/material';
 import { useState, useEffect } from 'react';
-import { useModule, ItemType } from '../../../contexts/ModuleContext';
+import { useModule } from '../../../contexts/ModuleContext';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ReactMarkdown from 'react-markdown';
 
@@ -37,7 +37,7 @@ const getYouTubeEmbedUrl = (url: string) => {
 };
 
 export default function PracticeListaContent({ data }: PracticeListaContentProps) {
-    const { markItemAsCompleted, handleNextItem } = useModule();
+    const { recordPracticeCompletion, handleNextItem } = useModule();
     const listaPalavrasData = data.dadosAtividade as ListaPalavrasData;
 
     const [inputs, setInputs] = useState<string[]>(Array(listaPalavrasData.numberOfInputs || 0).fill(''));
@@ -75,7 +75,7 @@ export default function PracticeListaContent({ data }: PracticeListaContentProps
 
         if (isCorrect) {
             setCheckStatus('correct');
-            await markItemAsCompleted(data.id, ItemType.PRACTICE);
+            await recordPracticeCompletion(data.id, { respostas: inputs.map(input => input.trim()) });
         } else {
             setCheckStatus('incorrect');
         }

@@ -1,6 +1,6 @@
 import { Box, Typography, Button, TextField } from '@mui/material';
 import { useState, useEffect } from 'react';
-import { useModule, ItemType } from '../../../contexts/ModuleContext';
+import { useModule } from '../../../contexts/ModuleContext';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ReactMarkdown from 'react-markdown';
 
@@ -38,7 +38,7 @@ const getYouTubeEmbedUrl = (url: string) => {
 };
 
 export default function PracticeCompletarContent({ data }: PracticeCompletarContentProps) {
-    const { markItemAsCompleted, handleNextItem } = useModule();
+    const { recordPracticeCompletion, handleNextItem } = useModule();
     const [answer, setAnswer] = useState('');
     const [checkStatus, setCheckStatus] = useState<'unchecked' | 'correct' | 'incorrect'>('unchecked');
 
@@ -60,7 +60,7 @@ export default function PracticeCompletarContent({ data }: PracticeCompletarCont
     const handleCheckAnswer = async () => {
         if (answer.trim().toLowerCase() === completarData.resposta_correta.toLowerCase()) {
             setCheckStatus('correct');
-            await markItemAsCompleted(data.id, ItemType.PRACTICE);
+            await recordPracticeCompletion(data.id, { resposta: answer.trim() });
         } else {
             setCheckStatus('incorrect');
         }

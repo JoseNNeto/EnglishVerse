@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.joseneto.englishverse.model.ProductionSubmissao;
+import com.joseneto.englishverse.model.Usuario;
 import com.joseneto.englishverse.service.ProductionSubmissaoService;
 
 @RestController
@@ -24,9 +26,11 @@ public class ProductionSubmissaoController {
 
     // Aluno envia a resposta
     @PostMapping
-    public ResponseEntity<ProductionSubmissao> enviar(@RequestBody ProductionSubmissao submissao) {
+    public ResponseEntity<ProductionSubmissao> enviar(
+            @AuthenticationPrincipal Usuario usuario,
+            @RequestBody ProductionSubmissao submissao) {
         try {
-            ProductionSubmissao nova = service.enviarSubmissao(submissao);
+            ProductionSubmissao nova = service.enviarSubmissao(usuario.getId(), submissao);
             return ResponseEntity.status(HttpStatus.CREATED).body(nova);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();

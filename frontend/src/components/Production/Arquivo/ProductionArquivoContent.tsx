@@ -3,7 +3,7 @@ import { Box, Typography, Button, TextareaAutosize, styled, Paper, useTheme } fr
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import { useState, useEffect, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { useModule, ItemType } from '../../../contexts/ModuleContext';
+import { useModule } from '../../../contexts/ModuleContext';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ReactMarkdown from 'react-markdown';
 
@@ -37,7 +37,7 @@ interface ArquivoData {
 
 export default function ProductionArquivoContent({ data }: ProductionArquivoContentProps) {
     const theme = useTheme();
-    const { markItemAsCompleted, handleNextItem } = useModule();
+    const { submitProduction, handleNextItem } = useModule();
     const arquivoData = data.dadosDesafio as ArquivoData;
 
     const [comment, setComment] = useState('');
@@ -68,7 +68,7 @@ export default function ProductionArquivoContent({ data }: ProductionArquivoCont
             return;
         }
         setCheckStatus('correct');
-        await markItemAsCompleted(data.id, ItemType.PRODUCTION);
+        await submitProduction(data.id, { nomeArquivoOriginal: file.name }, file);
     };
 
     const handleTryAgain = () => {

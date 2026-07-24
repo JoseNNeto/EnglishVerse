@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.joseneto.englishverse.dtos.ProgressoEmAndamentoResponseDTO; // Added import
 import com.joseneto.englishverse.dtos.ProgressoItemRequestDTO;
 import com.joseneto.englishverse.dtos.ProgressoItemResponseDTO;
+import com.joseneto.englishverse.dtos.ProgressItemCompletionDTO;
 import com.joseneto.englishverse.dtos.UltimoAcessoDTO;
+import com.joseneto.englishverse.dtos.ModuleCompletionDTO;
 import com.joseneto.englishverse.model.Progresso;
 import com.joseneto.englishverse.model.ProgressoItem;
 import com.joseneto.englishverse.model.Usuario;
@@ -43,9 +45,12 @@ public class ProgressoController {
 
     // PUT /api/progresso/concluir?alunoId=1&moduloId=10
     @PutMapping("/concluir")
-    public ResponseEntity<Progresso> concluir(@RequestParam Long alunoId, @RequestParam Long moduloId) {
+    public ResponseEntity<ModuleCompletionDTO> concluir(
+            @AuthenticationPrincipal Usuario usuario,
+            @RequestParam Long moduloId,
+            @RequestParam(required = false) Long alunoId) {
         try {
-            return ResponseEntity.ok(progressoService.concluirModulo(alunoId, moduloId));
+            return ResponseEntity.ok(progressoService.concluirModulo(usuario, moduloId));
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
@@ -60,16 +65,17 @@ public class ProgressoController {
 
     // POST /api/progresso/item
     @PostMapping("/item")
-    public ResponseEntity<ProgressoItemResponseDTO> marcarItemComoConcluido(
+    public ResponseEntity<ProgressItemCompletionDTO> marcarItemComoConcluido(
             @AuthenticationPrincipal Usuario usuario,
             @RequestBody ProgressoItemRequestDTO dto) {
         try {
-            ProgressoItem progressoItem = progressoItemService.marcarComoConcluido(
+            ProgressItemCompletionDTO result = progressoItemService.marcarComoConcluido(
                     usuario.getId(),
                     dto.moduloId(),
                     dto.itemId(),
-                    dto.itemType());
-            return ResponseEntity.status(HttpStatus.CREATED).body(new ProgressoItemResponseDTO(progressoItem));
+                    dto.itemType(),
+                    dto.replayRequested());
+            return ResponseEntity.status(result.newlyCompleted() ? HttpStatus.CREATED : HttpStatus.OK).body(result);
         } catch (RuntimeException e) {
             // Em um sistema real, você retornaria uma mensagem de erro mais detalhada
             return ResponseEntity.badRequest().body(null);

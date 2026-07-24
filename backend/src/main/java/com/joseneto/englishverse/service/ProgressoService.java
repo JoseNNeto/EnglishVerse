@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.joseneto.englishverse.dtos.ProgressoEmAndamentoResponseDTO;
+import com.joseneto.englishverse.dtos.ModuleCompletionDTO;
+import com.joseneto.englishverse.dtos.ModuleXpBreakdownDTO;
+import com.joseneto.englishverse.dtos.GamificationRewardDTO;
 import com.joseneto.englishverse.dtos.UltimoAcessoDTO;
 import com.joseneto.englishverse.model.Modulo;
 import com.joseneto.englishverse.model.Progresso;
@@ -40,6 +43,8 @@ public class ProgressoService {
     private ProductionChallengeRepository productionChallengeRepository;
     @Autowired
     private ProgressoItemRepository progressoItemRepository;
+    @Autowired
+    private GamificationService gamificationService;
 
 
     // Quando o aluno clica em "Começar Módulo"
@@ -65,14 +70,47 @@ public class ProgressoService {
     }
 
     // Quando o aluno termina tudo (chamado no final da etapa Production)
-    public Progresso concluirModulo(Long alunoId, Long moduloId) {
-        Progresso progresso = progressoRepository.findByAlunoIdAndModuloId(alunoId, moduloId)
+    public ModuleCompletionDTO concluirModulo(Usuario aluno, Long moduloId) {
+        Progresso progresso = progressoRepository.findByAlunoIdAndModuloId(aluno.getId(), moduloId)
                 .orElseThrow(() -> new RuntimeException("Oxe, o aluno nem começou esse módulo ainda!"));
+
+        long totalRecursos = recursoApresentacaoRepository.countByModuloId(moduloId);
+        long totalPraticas = practiceAtividadeRepository.countByModuloId(moduloId);
+        long totalProducoes = productionChallengeRepository.countByModuloId(moduloId);
+        long totalItens = totalRecursos + totalPraticas + totalProducoes;
+        long itensConcluidos = progressoItemRepository.countByAlunoIdAndModuloId(aluno.getId(), moduloId);
+        if (totalItens == 0 || itensConcluidos < totalItens) {
+            throw new RuntimeException("Conclua todos os itens PPP antes de finalizar o módulo.");
+        }
+
+        ModuleXpBreakdownDTO breakdown = criarBreakdown(
+            totalRecursos, totalPraticas, totalProducoes, totalPraticas > 0, true);
+        if (progresso.getStatus() == StatusProgresso.CONCLUIDO) {
+            return new ModuleCompletionDTO(
+                moduloId, progresso.getModulo().getTitulo(), progresso.getStatus(),
+                progresso.getDataConclusao(), false, breakdown, GamificationRewardDTO.empty());
+        }
 
         progresso.setStatus(StatusProgresso.CONCLUIDO);
         progresso.setDataConclusao(LocalDateTime.now());
+        Progresso salvo = progressoRepository.save(progresso);
+        GamificationAwardResult reward = gamificationService.processModuleCompletion(aluno, salvo.getModulo());
+        return new ModuleCompletionDTO(
+            moduloId, salvo.getModulo().getTitulo(), salvo.getStatus(), salvo.getDataConclusao(),
+            true, breakdown, reward.toDto());
+    }
 
-        return progressoRepository.save(progresso);
+    private ModuleXpBreakdownDTO criarBreakdown(
+            long presentations, long practices, long productions,
+            boolean practiceStageComplete, boolean moduleComplete) {
+        int presentationXp = Math.toIntExact(presentations * GamificationService.PRESENTATION_XP);
+        int practiceXp = Math.toIntExact(practices * GamificationService.PRACTICE_XP);
+        int productionXp = Math.toIntExact(productions * GamificationService.PRODUCTION_XP);
+        int practiceBonus = practiceStageComplete ? GamificationService.PRACTICE_STAGE_XP : 0;
+        int moduleBonus = moduleComplete ? GamificationService.MODULE_XP : 0;
+        return new ModuleXpBreakdownDTO(
+            presentationXp, practiceXp, productionXp, practiceBonus, moduleBonus,
+            presentationXp + practiceXp + productionXp + practiceBonus + moduleBonus);
     }
 
     public List<ProgressoEmAndamentoResponseDTO> listarEmAndamento(Long alunoId) {

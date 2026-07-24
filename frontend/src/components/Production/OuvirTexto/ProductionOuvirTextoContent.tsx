@@ -1,7 +1,7 @@
 
 import { Box, Typography, Paper, Button, TextareaAutosize, useTheme } from '@mui/material';
 import { useState, useEffect } from 'react';
-import { useModule, ItemType } from '../../../contexts/ModuleContext';
+import { useModule } from '../../../contexts/ModuleContext';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ReactMarkdown from 'react-markdown';
 
@@ -34,7 +34,7 @@ const getYouTubeEmbedUrl = (url: string) => {
 
 export default function ProductionOuvirTextoContent({ data }: ProductionOuvirTextoContentProps) {
     const theme = useTheme();
-    const { markItemAsCompleted, handleNextItem } = useModule();
+    const { submitProduction, handleNextItem } = useModule();
     const ouvirTextoData = data.dadosDesafio as OuvirTextoData;
     
     const numberOfBlanks = ouvirTextoData.textParts?.filter(p => typeof p === 'object').length || 0;
@@ -58,7 +58,7 @@ export default function ProductionOuvirTextoContent({ data }: ProductionOuvirTex
     const handleCheckAnswer = async () => {
         if (!allFieldsFilled) return;
         setCheckStatus('correct');
-        await markItemAsCompleted(data.id, ItemType.PRODUCTION);
+        await submitProduction(data.id, { respostas: answers });
     };
 
     const embedUrl = getYouTubeEmbedUrl(data.midiaDesafioUrl || '');

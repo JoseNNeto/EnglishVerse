@@ -9,10 +9,14 @@ import { Box, Typography, Grid, CircularProgress } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { Card, CardActionArea, CardContent } from '@mui/material';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import { useGamification } from '../contexts/GamificationContext';
 
 
 // A simple card component for displaying a module, similar to the one in Secoes.tsx
-const ModuleCard = ({ module }: { module: Modulo }) => (
+const ModuleCard = ({ module }: { module: Modulo }) => {
+  const { journey } = useGamification();
+  const moduleJourney = journey?.modules.find(item => item.moduleId === module.id);
+  return (
     <Grid size={{ xs:12, sm:6, md:2.4 }}>
       <Card sx={{ 
         backgroundColor: (theme) => theme.palette.mode === 'light' ? '#404E7C' : '#000000',
@@ -67,11 +71,13 @@ const ModuleCard = ({ module }: { module: Modulo }) => (
           </Box>
           <CardContent sx={{ p: '16px', flexGrow: 1, overflowY: 'auto', height: '80px' }}>
             <Typography variant="body1">{module.titulo}</Typography>
+            {moduleJourney && <Typography variant="caption" color="text.secondary">{moduleJourney.completedItems}/{moduleJourney.totalItems} etapas · até {moduleJourney.maximumXp} XP</Typography>}
           </CardContent>
         </CardActionArea>
       </Card>
     </Grid>
   );
+};
 
 function Home() {
   const [searchParams] = useSearchParams();

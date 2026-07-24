@@ -7,6 +7,7 @@ import org.hibernate.annotations.Type;
 import org.hibernate.type.SqlTypes;
 
 import com.joseneto.englishverse.model.enums.TipoDesafio;
+import com.joseneto.englishverse.model.enums.MediaCategory;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -39,6 +40,10 @@ public class ProductionChallenge {
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo_desafio", nullable = false)
     private TipoDesafio tipoDesafio;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "media_category")
+    private MediaCategory mediaCategory;
 
     @Column(name = "instrucao_desafio", columnDefinition = "TEXT", nullable = false)
     private String instrucaoDesafio;

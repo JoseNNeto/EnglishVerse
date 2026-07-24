@@ -1,6 +1,9 @@
 import { createContext, useState, useEffect, useContext, type ReactNode, useCallback } from 'react';
 import api from '../services/api';
 import { useAuth } from './AuthContext'; // Import useAuth
+import { useGamification } from './GamificationContext';
+import type { ProgressItemCompletionResponse } from '../types/gamification';
+import type { MediaCategory } from '../components/MediaClassification/MediaClassification';
 
 // --- Interfaces based on backend models ---
 
@@ -20,6 +23,7 @@ interface RecursoApresentacao {
     letra?: string;
     transcricao?: string;
     ordem: number;
+    mediaCategory?: MediaCategory | null;
 }
 
 // Corresponds to PracticeAtividade.java
@@ -29,6 +33,7 @@ interface PracticeAtividade {
     tipoAtividade: 'MULTIPLA_ESCOLHA' | 'PREENCHER_LACUNA' | 'SELECIONAR_PALAVRAS' | 'LISTA_PALAVRAS' | 'RELACIONAR_COLUNAS' | 'SUBSTITUIR_PALAVRAS'; // Enum: TipoAtividade
     instrucao: string;
     dadosAtividade: Record<string, any>; // JSONB as a generic object
+    mediaCategory?: MediaCategory | null;
 }
 
 // Corresponds to ProductionChallenge.java
@@ -39,6 +44,7 @@ interface ProductionChallenge {
     instrucaoDesafio: string;
     midiaDesafioUrl?: string;
     dadosDesafio: Record<string, any>; // JSONB as a generic object
+    mediaCategory?: MediaCategory | null;
 }
 
 // Unified type for sidebar items
@@ -89,6 +95,8 @@ interface ModuleContextType {
     handleSelectItem: (item: ModuleItem) => void;
     handleNextItem: () => void;
     markItemAsCompleted: (itemId: number, itemType: ItemType) => Promise<void>;
+    recordPracticeCompletion: (itemId: number, resposta: Record<string, unknown>) => Promise<void>;
+    submitProduction: (itemId: number, resposta: Record<string, unknown>, file?: File | null) => Promise<void>;
     moduloId: string | undefined;
 }
 
@@ -112,6 +120,7 @@ export const ModuleProvider = ({ children, moduloId }: ModuleProviderProps) => {
     const [completedItems, setCompletedItems] = useState<ProgressoItemResponseDTO[]>([]);
 
     const { user } = useAuth(); // Consume useAuth
+    const { applyReward } = useGamification();
 
     // const debounceTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -120,23 +129,62 @@ export const ModuleProvider = ({ children, moduloId }: ModuleProviderProps) => {
         if (!moduloId) return;
 
         try {
-            const response = await api.post<ProgressoItemResponseDTO>('/progresso/item', {
+            const replay = completedItems.some(item =>
+                item.itemId === itemId && item.itemType === type
+            );
+            const response = await api.post<ProgressItemCompletionResponse>('/progresso/item', {
                 moduloId: Number(moduloId),
                 itemId: itemId,
                 itemType: type,
+                replay,
             });
 
             // Use functional update to add the new item only if it's not already present
             setCompletedItems((prev) => {
-                const isAlreadyPresent = prev.some(item => item.id === response.data.id);
-                return isAlreadyPresent ? prev : [...prev, response.data];
+                const completed = response.data.progressItem;
+                const isAlreadyPresent = prev.some(item => item.id === completed.id);
+                return isAlreadyPresent ? prev : [...prev, completed];
             });
+            applyReward(response.data.reward);
 
         } catch (error) {
             // Check for 400 Bad Request which might indicate a duplicate, or other errors
             console.error('Failed to mark item as completed:', error);
         }
-    }, [moduloId]); // Now stable as long as moduloId is stable.
+    }, [moduloId, completedItems, applyReward]);
+
+    const recordPracticeCompletion = useCallback(async (
+        itemId: number,
+        resposta: Record<string, unknown>
+    ) => {
+        await api.post('/practice-respostas', {
+            atividade: { id: itemId },
+            resposta,
+            estaCorreta: true,
+        });
+        await markItemAsCompleted(itemId, ItemType.PRACTICE);
+    }, [markItemAsCompleted]);
+
+    const submitProduction = useCallback(async (
+        itemId: number,
+        resposta: Record<string, unknown>,
+        file?: File | null
+    ) => {
+        let persistedResponse = resposta;
+        if (file) {
+            const formData = new FormData();
+            formData.append('file', file);
+            const upload = await api.post<{ fileName: string; fileDownloadUri: string; size: string }>(
+                '/files/upload', formData, { headers: { 'Content-Type': 'multipart/form-data' } }
+            );
+            persistedResponse = { ...resposta, arquivo: upload.data };
+        }
+        await api.post('/submissoes', {
+            challenge: { id: itemId },
+            resposta: persistedResponse,
+        });
+        await markItemAsCompleted(itemId, ItemType.PRODUCTION);
+    }, [markItemAsCompleted]);
 
     // --- Navigation Functions ---
     const handleSelectItem = useCallback((item: ModuleItem) => {
@@ -262,6 +310,8 @@ export const ModuleProvider = ({ children, moduloId }: ModuleProviderProps) => {
         handleSelectItem,
         handleNextItem,
         markItemAsCompleted,
+        recordPracticeCompletion,
+        submitProduction,
         moduloId
     };
 

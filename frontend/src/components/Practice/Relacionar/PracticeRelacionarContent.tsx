@@ -6,7 +6,7 @@ import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-
 import { CSS } from '@dnd-kit/utilities';
 import { useState, useMemo, useEffect } from 'react';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
-import { useModule, ItemType } from '../../../contexts/ModuleContext';
+import { useModule } from '../../../contexts/ModuleContext';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ReactMarkdown from 'react-markdown';
 
@@ -97,7 +97,7 @@ function DroppableColumn({ id, title, items }: { id: UniqueIdentifier, title: st
 }
 
 export default function PracticeRelacionarContent({ data }: PracticeRelacionarContentProps) {
-    const { markItemAsCompleted, handleNextItem } = useModule();
+    const { recordPracticeCompletion, handleNextItem } = useModule();
     const relacionarData = data.dadosAtividade as RelacionarData;
 
     const initialContainers = useMemo(() => ({
@@ -184,7 +184,12 @@ export default function PracticeRelacionarContent({ data }: PracticeRelacionarCo
         setCheckStatus(allCorrect ? 'correct' : 'incorrect');
 
         if (allCorrect) {
-            await markItemAsCompleted(data.id, ItemType.PRACTICE);
+            const relacoes = Object.fromEntries(
+                Object.entries(containers)
+                    .filter(([containerId]) => containerId !== 'unassigned')
+                    .flatMap(([containerId, items]) => items.map(item => [String(item.id), containerId]))
+            );
+            await recordPracticeCompletion(data.id, { relacoes });
         }
     };
     

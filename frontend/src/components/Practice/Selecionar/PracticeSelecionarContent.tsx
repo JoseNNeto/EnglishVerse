@@ -1,7 +1,7 @@
 import { Box, Typography, Button, Paper, Chip, useTheme } from '@mui/material';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import { useState, useMemo, useEffect } from 'react';
-import { useModule, ItemType } from '../../../contexts/ModuleContext';
+import { useModule } from '../../../contexts/ModuleContext';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ReactMarkdown from 'react-markdown';
 
@@ -39,7 +39,7 @@ const getYouTubeEmbedUrl = (url: string) => {
 
 export default function PracticeSelecionarContent({ data }: PracticeSelecionarContentProps) {
     const theme = useTheme();
-    const { markItemAsCompleted, handleNextItem } = useModule();
+    const { recordPracticeCompletion, handleNextItem } = useModule();
     const [selectedWords, setSelectedWords] = useState<string[]>([]);
     const [checkStatus, setCheckStatus] = useState<'unchecked' | 'correct' | 'incorrect'>('unchecked');
 
@@ -80,7 +80,9 @@ export default function PracticeSelecionarContent({ data }: PracticeSelecionarCo
         const selectedIds = new Set(selectedWords);
         if (selectedIds.size === correctInstanceIds.size && [...selectedIds].every(id => correctInstanceIds.has(id))) {
             setCheckStatus('correct');
-            await markItemAsCompleted(data.id, ItemType.PRACTICE);
+            await recordPracticeCompletion(data.id, {
+                palavrasSelecionadas: selectedWords.map(identifier => identifier.replace(/-\d+$/, ''))
+            });
         } else {
             setCheckStatus('incorrect');
         }

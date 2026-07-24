@@ -6,6 +6,7 @@ import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
 import { useTheme } from '@mui/material/styles';
 import { useModule, ItemType } from '../../contexts/ModuleContext';
 import { Link } from 'react-router-dom';
+import { getMediaClassification, MediaCategoryBadge } from '../MediaClassification/MediaClassification';
 
 export default function SideBar() {
   const theme = useTheme();
@@ -126,6 +127,11 @@ export default function SideBar() {
                 <ListItemText 
                   primaryTypographyProps={{ sx: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontStyle: 'italic' } }}
                   primary={getItemText(item)} 
+                  secondary={
+                    <Box sx={{ mt: 0.75 }} title={getMediaClassification(item.data.mediaCategory).shortDescription}>
+                      <MediaCategoryBadge category={item.data.mediaCategory} />
+                    </Box>
+                  }
                   sx={{color}}
                 />
               </ListItem>

@@ -9,8 +9,12 @@ import com.joseneto.englishverse.model.Modulo;
 
 public interface ModuloRepository extends JpaRepository<Modulo, Long> {
     List<Modulo> findByTopicoId(Long topicoId);
+
+    List<Modulo> findByTopicoIdAndPublicadoTrue(Long topicoId);
     
     List<Modulo> findByPublicadoTrue();
+
+    long countByTopicoIdAndPublicadoTrue(Long topicoId);
 
     Optional<Modulo> findByTitulo(String titulo);
 

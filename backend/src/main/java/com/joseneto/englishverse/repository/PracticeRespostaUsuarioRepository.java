@@ -10,7 +10,11 @@ import com.joseneto.englishverse.model.PracticeRespostaUsuario;
 @Repository
 public interface PracticeRespostaUsuarioRepository extends JpaRepository<PracticeRespostaUsuario, Long> {
     List<PracticeRespostaUsuario> findByAlunoId(Long alunoId);
+    List<PracticeRespostaUsuario> findByAlunoIdOrderByDataRespostaAscIdAsc(Long alunoId);
 
     // Busca as respostas de um aluno para uma atividade específica (pra saber se ele já acertou antes)
     List<PracticeRespostaUsuario> findByAlunoIdAndAtividadeId(Long alunoId, Long atividadeId);
+
+    boolean existsByAlunoIdAndAtividadeIdAndEstaCorretaTrue(Long alunoId, Long atividadeId);
+    long countByAlunoIdAndAtividadeIdAndEstaCorretaTrue(Long alunoId, Long atividadeId);
 }

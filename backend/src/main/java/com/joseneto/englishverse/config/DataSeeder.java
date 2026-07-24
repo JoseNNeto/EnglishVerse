@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 
 import com.joseneto.englishverse.model.Modulo;
 import com.joseneto.englishverse.model.PracticeAtividade;
@@ -24,6 +25,7 @@ import com.joseneto.englishverse.repository.RecursoApresentacaoRepository;
 import com.joseneto.englishverse.repository.TopicoRepository;
 
 @Configuration
+@Order(1)
 public class DataSeeder implements CommandLineRunner {
 
     @Autowired
