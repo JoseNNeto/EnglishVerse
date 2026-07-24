@@ -21,16 +21,11 @@ public class ProductionSubmissaoService {
     @Autowired
     private UsuarioRepository usuarioRepository;
     
-    // Se quiser integrar com o progresso:
-    @Autowired
-    private ProgressoService progressoService;
-
-    public ProductionSubmissao enviarSubmissao(ProductionSubmissao submissao) {
-        // 1. Validar Aluno
-        if (submissao.getAluno() == null || submissao.getAluno().getId() == null) {
-            throw new RuntimeException("Quem é o aluno, boy?");
+    public ProductionSubmissao enviarSubmissao(Long usuarioId, ProductionSubmissao submissao) {
+        if (submissao.getResposta() == null || submissao.getResposta().isEmpty()) {
+            throw new RuntimeException("A Production precisa de uma resposta válida.");
         }
-        Usuario aluno = usuarioRepository.findById(submissao.getAluno().getId())
+        Usuario aluno = usuarioRepository.findById(usuarioId)
                 .orElseThrow(() -> new RuntimeException("Aluno não encontrado!"));
 
         // 2. Validar Desafio
@@ -40,14 +35,12 @@ public class ProductionSubmissaoService {
         ProductionChallenge challenge = challengeRepository.findById(submissao.getChallenge().getId())
                 .orElseThrow(() -> new RuntimeException("Desafio não encontrado!"));
 
-        // 3. Salvar a submissão
-        ProductionSubmissao salva = submissaoRepository.save(submissao);
-        
-        // 4. (Opcional/Smart) Atualizar o progresso para CONCLUIDO
-        // Como Production é a última etapa, enviou = acabou a aula.
-        progressoService.concluirModulo(aluno.getId(), challenge.getModulo().getId());
-
-        return salva;
+        // Keep every submission as an attempt. The gamification layer rewards
+        // only the first replay, while later attempts remain available as
+        // learning history without granting more XP.
+        submissao.setAluno(aluno);
+        submissao.setChallenge(challenge);
+        return submissaoRepository.save(submissao);
     }
 
     // Método pro Professor usar
