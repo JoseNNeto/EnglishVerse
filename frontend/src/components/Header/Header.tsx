@@ -11,6 +11,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useThemeMode } from '../../contexts/ThemeContext';
 import { appPalette } from '../../theme/palette';
 import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
+import JourneyHeaderChip from '../Gamification/JourneyHeaderChip';
 
 export default function Header() {
   const { isAuthenticated, user, logout } = useAuth();
@@ -121,15 +122,17 @@ export default function Header() {
           <Box sx={{
             display: 'flex',
             alignItems: 'center',
-            minWidth: isHomePage ? 'auto' : '600px',
+            gap: 2,
+            minWidth: isHomePage ? 'auto' : { md: '420px' },
             justifyContent: 'flex-end'
           }}>
+            {isAuthenticated && <JourneyHeaderChip />}
             <ThemeToggle />
 
             {isAuthenticated && user && (
               <>
                 <Avatar
-                  sx={{ bgcolor: colors.primaryStrong ?? colors.primary, cursor: 'pointer', ml: 2 }}
+                  sx={{ bgcolor: colors.primaryStrong ?? colors.primary, cursor: 'pointer' }}
                   onClick={handleMenuOpen}
                 >
                   {user.nome.charAt(0).toUpperCase()}

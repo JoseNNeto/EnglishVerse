@@ -14,6 +14,10 @@ export const appPalette = {
     textMuted: '#b3b3b3',
     accent: '#bd527d',
     info: '#1b2a4a',
+    xp: '#f0d726',
+    xpSoft: 'rgba(240, 215, 38, 0.16)',
+    border: '#3b4f72',
+    surfaceRaised: '#202f50',
   },
   light: {
     background: '#404E7C',
@@ -31,6 +35,10 @@ export const appPalette = {
     textMuted: '#b3b3b3',
     accent: '#bd527d',
     info: '#456379',
+    xp: '#f0d726',
+    xpSoft: 'rgba(240, 215, 38, 0.18)',
+    border: '#75c3ff',
+    surfaceRaised: '#51618f',
   },
 };
 
