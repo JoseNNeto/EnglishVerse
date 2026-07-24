@@ -2,6 +2,7 @@ import { createTheme, ThemeProvider, CssBaseline } from '@mui/material';
 import AppRoutes from './routes';
 import { ThemeContextProvider, useThemeMode } from './contexts/ThemeContext';
 import { appPalette } from './theme/palette';
+import { GamificationProvider } from './contexts/GamificationContext';
 
 const darkTheme = createTheme({
   palette: {
@@ -86,7 +87,9 @@ function ThemedApp() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <AppRoutes />
+      <GamificationProvider>
+        <AppRoutes />
+      </GamificationProvider>
     </ThemeProvider>
   );
 }

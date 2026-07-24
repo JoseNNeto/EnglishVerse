@@ -1,7 +1,7 @@
 
 import { Box, Typography, Button, TextareaAutosize, Paper, useTheme } from '@mui/material';
 import { useState, useEffect } from 'react';
-import { useModule, ItemType } from '../../../contexts/ModuleContext';
+import { useModule } from '../../../contexts/ModuleContext';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ReactMarkdown from 'react-markdown';
 
@@ -18,7 +18,7 @@ interface ProductionTextoContentProps {
 
 export default function ProductionTextoContent({ data }: ProductionTextoContentProps) {
     const theme = useTheme();
-    const { markItemAsCompleted, handleNextItem } = useModule();
+    const { submitProduction, handleNextItem } = useModule();
     const [text, setText] = useState('');
     const [checkStatus, setCheckStatus] = useState<'unchecked' | 'correct'>('unchecked');
 
@@ -44,7 +44,7 @@ export default function ProductionTextoContent({ data }: ProductionTextoContentP
     const handleCheckAnswer = async () => {
         if (!isSubmittable) return;
         setCheckStatus('correct');
-        await markItemAsCompleted(data.id, ItemType.PRODUCTION);
+        await submitProduction(data.id, { texto: text.trim() });
     };
 
   return (

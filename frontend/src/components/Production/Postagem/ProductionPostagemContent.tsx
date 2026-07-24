@@ -3,7 +3,7 @@ import { Box, Typography, Paper, Button, TextareaAutosize, styled, useTheme } fr
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import { useState, useEffect, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { useModule, ItemType } from '../../../contexts/ModuleContext';
+import { useModule } from '../../../contexts/ModuleContext';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ReactMarkdown from 'react-markdown';
 
@@ -38,7 +38,7 @@ interface PostagemData {
 
 export default function ProductionPostagemContent({ data }: ProductionPostagemContentProps) {
     const theme = useTheme();
-    const { markItemAsCompleted, handleNextItem } = useModule();
+    const { submitProduction, handleNextItem } = useModule();
     const postagemData = data.dadosDesafio as PostagemData;
 
     const [text, setText] = useState('');
@@ -74,8 +74,7 @@ export default function ProductionPostagemContent({ data }: ProductionPostagemCo
             return;
         }
         setCheckStatus('correct');
-        await markItemAsCompleted(data.id, ItemType.PRODUCTION);
-        // In a real app, you would upload the file and text here.
+        await submitProduction(data.id, { texto: text.trim(), nomeArquivoOriginal: file!.name }, file);
     };
 
     const handleTryAgain = () => {

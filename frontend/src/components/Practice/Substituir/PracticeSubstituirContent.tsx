@@ -1,6 +1,6 @@
 import { Box, Typography, Paper, Button, Menu, MenuItem } from '@mui/material';
 import React, { useState, useMemo, useEffect } from 'react';
-import { useModule, ItemType } from '../../../contexts/ModuleContext';
+import { useModule } from '../../../contexts/ModuleContext';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ReactMarkdown from 'react-markdown';
 
@@ -34,7 +34,7 @@ const getYouTubeEmbedUrl = (url: string) => {
 };
 
 export default function PracticeSubstituirContent({ data }: PracticeSubstituirContentProps) {
-    const { markItemAsCompleted, handleNextItem } = useModule();
+    const { recordPracticeCompletion, handleNextItem } = useModule();
     const substituirData = data.dadosAtividade as SubstituirData;
 
     const initialText = useMemo(() => substituirData.initialText || [], [substituirData.initialText]);
@@ -101,7 +101,10 @@ export default function PracticeSubstituirContent({ data }: PracticeSubstituirCo
 
         if (allAnswersCorrect) {
             setCheckStatus('correct');
-            await markItemAsCompleted(data.id, ItemType.PRACTICE);
+            const substituicoes = Object.fromEntries(
+                textParts.filter(part => part.type === 'word' && part.id).map(part => [part.id!, part.content])
+            );
+            await recordPracticeCompletion(data.id, { substituicoes });
         } else {
             setCheckStatus('incorrect');
         }

@@ -1,6 +1,6 @@
 import { Box, Typography, Button, Grid } from '@mui/material';
 import { useState, useEffect } from 'react';
-import { useModule, ItemType } from '../../../contexts/ModuleContext';
+import { useModule } from '../../../contexts/ModuleContext';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ReactMarkdown from 'react-markdown';
 
@@ -21,7 +21,7 @@ interface MarcarData {
 }
 
 export default function PracticeMarcarContent({ data }: PracticeMarcarContentProps) {
-    const { markItemAsCompleted, handleNextItem } = useModule();
+    const { recordPracticeCompletion, handleNextItem } = useModule();
     const [selectedOption, setSelectedOption] = useState<string | null>(null);
     const [checkStatus, setCheckStatus] = useState<'unchecked' | 'correct' | 'incorrect'>('unchecked');
 
@@ -36,7 +36,7 @@ export default function PracticeMarcarContent({ data }: PracticeMarcarContentPro
         if (!selectedOption) return;
         if (selectedOption === marcarData.resposta_correta) {
             setCheckStatus('correct');
-            await markItemAsCompleted(data.id, ItemType.PRACTICE);
+            await recordPracticeCompletion(data.id, { selecionada: selectedOption });
         } else {
             setCheckStatus('incorrect');
         }
