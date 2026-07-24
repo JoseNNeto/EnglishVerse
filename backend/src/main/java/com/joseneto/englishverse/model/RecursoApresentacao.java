@@ -1,6 +1,7 @@
 package com.joseneto.englishverse.model;
 
 import com.joseneto.englishverse.model.enums.TipoRecurso;
+import com.joseneto.englishverse.model.enums.MediaCategory;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -34,6 +35,10 @@ public class RecursoApresentacao {
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo_recurso", nullable = false)
     private TipoRecurso tipoRecurso;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "media_category")
+    private MediaCategory mediaCategory;
 
     @Column(name = "url_recurso", nullable = false)
     private String urlRecurso; // Link do YouTube, S3, etc.

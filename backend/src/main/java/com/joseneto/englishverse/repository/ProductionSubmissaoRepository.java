@@ -1,6 +1,7 @@
 package com.joseneto.englishverse.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -16,4 +17,7 @@ public interface ProductionSubmissaoRepository extends JpaRepository<ProductionS
     
     // Busca se o aluno já respondeu esse desafio específico
     boolean existsByAlunoIdAndChallengeId(Long alunoId, Long challengeId);
+    long countByAlunoIdAndChallengeId(Long alunoId, Long challengeId);
+
+    Optional<ProductionSubmissao> findFirstByAlunoIdAndChallengeIdOrderByDataSubmissaoDesc(Long alunoId, Long challengeId);
 }

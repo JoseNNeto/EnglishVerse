@@ -18,4 +18,8 @@ public interface ProgressoRepository extends JpaRepository<Progresso, Long> {
 
     // Busca todo o histórico do aluno
     List<Progresso> findByAlunoId(Long alunoId);
+
+    long countByAlunoIdAndStatus(Long alunoId, StatusProgresso status);
+
+    long countByAlunoIdAndModuloTopicoIdAndStatus(Long alunoId, Long topicoId, StatusProgresso status);
 }

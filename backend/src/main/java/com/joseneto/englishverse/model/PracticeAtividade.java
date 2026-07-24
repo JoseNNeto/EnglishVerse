@@ -6,6 +6,7 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import com.joseneto.englishverse.model.enums.TipoAtividade;
+import com.joseneto.englishverse.model.enums.MediaCategory;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -39,6 +40,10 @@ public class PracticeAtividade {
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo_atividade", nullable = false)
     private TipoAtividade tipoAtividade;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "media_category")
+    private MediaCategory mediaCategory;
 
     @Column(columnDefinition = "TEXT")
     private String instrucao; // Ex: "Marque a opção correta"

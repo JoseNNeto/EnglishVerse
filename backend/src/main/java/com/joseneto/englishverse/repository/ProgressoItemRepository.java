@@ -9,7 +9,9 @@ import com.joseneto.englishverse.model.enums.ItemType;
 
 
 public interface ProgressoItemRepository extends JpaRepository<ProgressoItem, Long> {
+    List<ProgressoItem> findByAlunoId(Long alunoId);
     List<ProgressoItem> findByAlunoIdAndModuloId(Long alunoId, Long moduloId);
     Optional<ProgressoItem> findByAlunoIdAndModuloIdAndItemIdAndItemType(Long alunoId, Long moduloId, Long itemId, ItemType itemType);
     long countByAlunoIdAndModuloId(Long alunoId, Long moduloId);
+    long countByAlunoIdAndModuloIdAndItemType(Long alunoId, Long moduloId, ItemType itemType);
 }
