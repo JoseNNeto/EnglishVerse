@@ -33,6 +33,7 @@ const translateRewardDescription = (description?: string, fallback = 'Atividade 
     .replace(/^Presentation completed/, 'Presentation concluída')
     .replace(/^Practice completed/, 'Practice concluída')
     .replace(/^Production submitted/, 'Production enviada')
+    .replace(/^Production approved by teacher/, 'Production aprovada pelo professor')
     .replace(/^Practice stage completed/, 'Etapa de Practice concluída')
     .replace(/^Completed Orbit/, 'Módulo concluído')
     .replace(/^Constellation Conquered/, 'Tópico concluído')
@@ -42,7 +43,7 @@ const translateRewardDescription = (description?: string, fallback = 'Atividade 
 };
 
 export function GamificationProvider({ children }: { children: ReactNode }) {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const { mode } = useThemeMode();
   const colors = appPalette[mode];
   const [journey, setJourney] = useState<GamificationJourney | null>(null);
@@ -52,7 +53,7 @@ export function GamificationProvider({ children }: { children: ReactNode }) {
   const [xpNoticeOpen, setXpNoticeOpen] = useState(false);
 
   const refreshJourney = useCallback(async () => {
-    if (!isAuthenticated) {
+    if (!isAuthenticated || user?.perfil !== 'DISCENTE') {
       setJourney(null);
       return;
     }
@@ -65,13 +66,14 @@ export function GamificationProvider({ children }: { children: ReactNode }) {
     } finally {
       setLoading(false);
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, user?.perfil]);
 
   useEffect(() => {
     void refreshJourney();
   }, [refreshJourney]);
 
   const applyReward = useCallback((reward: GamificationReward, fallbackLabel = 'Missão concluída') => {
+    if (user?.perfil !== 'DISCENTE') return;
     if (reward.xpGained > 0) {
       const mainEvent = reward.events.find(event => event.sourceType !== 'DAILY_BONUS');
       setXpNotice({
@@ -82,7 +84,7 @@ export function GamificationProvider({ children }: { children: ReactNode }) {
       setXpNoticeOpen(true);
       void refreshJourney();
     }
-  }, [refreshJourney]);
+  }, [refreshJourney, user?.perfil]);
 
   const openStarCapsule = useCallback(async (capsuleId: number, selectedRewardType?: RewardType) => {
     const response = await api.post<StarCapsuleOpenResponse>(
@@ -190,7 +192,7 @@ export function GamificationProvider({ children }: { children: ReactNode }) {
                 +{xpNotice?.xpGained ?? 0} XP
               </Typography>
               <Typography variant="body2" sx={{ mt: 0.75, color: colors.text, fontWeight: 700 }}>
-                {xpNotice?.description}
+                {xpNotice?.description}!
               </Typography>
             </Box>
           </Stack>
