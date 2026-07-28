@@ -2,11 +2,14 @@ import { createContext, useState, useEffect, useContext, type ReactNode } from '
 import { jwtDecode } from 'jwt-decode';
 import api from '../services/api';
 
+export type UserProfile = 'DISCENTE' | 'DOCENTE';
+
 interface User {
     id: number;
     nome: string;
     sub: string; // Subject, which is the email
     exp: number; // Expiration time as a Unix timestamp
+    perfil: UserProfile;
 }
 
 // Define the shape of the context data
@@ -39,6 +42,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         if (storedToken) {
             try {
                 const decodedUser = jwtDecode<User>(storedToken);
+                decodedUser.perfil = decodedUser.perfil
+                    ?? (decodedUser.sub?.endsWith('@belojardim.ifpe.edu.br') ? 'DOCENTE' : 'DISCENTE');
                 const currentTime = Date.now() / 1000; // current time in seconds
 
                 if (decodedUser.exp && decodedUser.exp < currentTime) {
@@ -64,6 +69,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     const login = (newToken: string) => {
         try {
             const decodedUser = jwtDecode<User>(newToken);
+            decodedUser.perfil = decodedUser.perfil
+                ?? (decodedUser.sub?.endsWith('@belojardim.ifpe.edu.br') ? 'DOCENTE' : 'DISCENTE');
             localStorage.setItem('authToken', newToken);
             setUser(decodedUser);
             setToken(newToken);

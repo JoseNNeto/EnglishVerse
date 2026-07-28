@@ -1,12 +1,15 @@
 
-import { Box, Typography, TextField, Button, Link, IconButton, CircularProgress, Alert } from '@mui/material';
+import { Box, Typography, TextField, Button, Link, IconButton, CircularProgress, Alert, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
+import CoPresentOutlinedIcon from '@mui/icons-material/CoPresentOutlined';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LogoEnglishVerse from '../../../assets/englishverse-sem-fundo.png';
 import api from '../../../services/api';
-import { useAuth } from '../../../contexts/AuthContext';
+import { useAuth, type UserProfile } from '../../../contexts/AuthContext';
+import axios from 'axios';
 
 export default function SignupContent() {
     const [showPassword, setShowPassword] = useState(false);
@@ -17,6 +20,7 @@ export default function SignupContent() {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const [profile, setProfile] = useState<UserProfile>('DISCENTE');
 
     const navigate = useNavigate();
     const { login } = useAuth();
@@ -39,15 +43,16 @@ export default function SignupContent() {
                 nome: nome,
                 email: email,
                 senha: password,
+                perfil: profile,
             });
             
             const { token } = response.data;
             login(token); // Log the user in with the new token
             
-            navigate('/'); // Redirect to home page
+            navigate(profile === 'DOCENTE' ? '/teacher-studio' : '/');
 
-        } catch (err: any) {
-            if (err.response && err.response.data && err.response.data.message) {
+        } catch (err: unknown) {
+            if (axios.isAxiosError(err) && err.response?.data?.message) {
                 setError(err.response.data.message);
             } else {
                 setError('Não foi possível realizar o cadastro. Verifique os dados e tente novamente.');
@@ -99,11 +104,26 @@ export default function SignupContent() {
 
             <Box component="form" onSubmit={handleSignup} sx={{ width: '100%' }}>
                 {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+                <ToggleButtonGroup
+                    exclusive
+                    fullWidth
+                    value={profile}
+                    onChange={(_, value) => value && setProfile(value)}
+                    sx={{ mb: 2, '& .MuiToggleButton-root': { gap: 1, color: '#b3b3b3', textTransform: 'none' } }}
+                >
+                    <ToggleButton value="DISCENTE"><SchoolOutlinedIcon /> Discente</ToggleButton>
+                    <ToggleButton value="DOCENTE"><CoPresentOutlinedIcon /> Docente</ToggleButton>
+                </ToggleButtonGroup>
                 <Typography variant="body1" sx={{ color: '#e0e0e0', mb: 1 }}>Nome completo</Typography>
                 <TextField fullWidth placeholder="Seu nome completo" variant="outlined" sx={{ ...inputStyles, mb: 2 }} value={nome} onChange={(e) => setNome(e.target.value)} required />
 
                 <Typography variant="body1" sx={{ color: '#e0e0e0', mb: 1 }}>E-mail</Typography>
-                <TextField fullWidth placeholder="seuemail@ifpe.edu.br" variant="outlined" sx={{ ...inputStyles, mb: 2 }} type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                <TextField fullWidth
+                    placeholder={profile === 'DOCENTE'
+                        ? 'nome.sobrenome@belojardim.ifpe.edu.br'
+                        : 'seuemail@discente.ifpe.edu.br'}
+                    variant="outlined" sx={{ ...inputStyles, mb: 2 }} type="email"
+                    value={email} onChange={(e) => setEmail(e.target.value)} required />
                 
                 {/* O campo de data de nascimento foi removido da lógica pois não existe no DTO do backend */}
 
