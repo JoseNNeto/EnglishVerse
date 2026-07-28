@@ -17,4 +17,7 @@ public interface PracticeRespostaUsuarioRepository extends JpaRepository<Practic
 
     boolean existsByAlunoIdAndAtividadeIdAndEstaCorretaTrue(Long alunoId, Long atividadeId);
     long countByAlunoIdAndAtividadeIdAndEstaCorretaTrue(Long alunoId, Long atividadeId);
+
+    void deleteByAtividadeId(Long atividadeId);
+    void deleteByAtividadeModuloId(Long moduloId);
 }

@@ -31,8 +31,14 @@ public class AuthenticationController {
     public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid LoginRequestDTO data) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.senha());
         Authentication auth = this.authenticationManager.authenticate(usernamePassword);
+        Usuario usuario = (Usuario) auth.getPrincipal();
+        if (data.perfil() != null && usuario.getPerfilResolvido() != data.perfil()) {
+            throw new org.springframework.web.server.ResponseStatusException(
+                    org.springframework.http.HttpStatus.FORBIDDEN,
+                    "O perfil selecionado não corresponde a esta conta.");
+        }
 
-        var token = tokenService.generateToken((Usuario) auth.getPrincipal());
+        var token = tokenService.generateToken(usuario);
 
         return ResponseEntity.ok(new LoginResponseDTO(token));
     }

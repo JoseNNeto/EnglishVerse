@@ -1,5 +1,11 @@
 package com.joseneto.englishverse.model;
 
+import java.util.List;
+import java.util.Map;
+
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
 import com.joseneto.englishverse.model.enums.TipoRecurso;
 import com.joseneto.englishverse.model.enums.MediaCategory;
 
@@ -49,6 +55,10 @@ public class RecursoApresentacao {
     // TEXT permite strings gigantes (maior que 255 caracteres)
     @Column(columnDefinition = "TEXT")
     private String transcricao;
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "blocos_jsonb", columnDefinition = "jsonb")
+    private List<Map<String, Object>> blocos;
 
     // Pra controlar se esse vídeo aparece antes ou depois
     private Integer ordem;

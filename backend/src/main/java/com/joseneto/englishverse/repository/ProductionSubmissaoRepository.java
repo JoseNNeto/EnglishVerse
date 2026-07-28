@@ -7,9 +7,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.joseneto.englishverse.model.ProductionSubmissao;
+import com.joseneto.englishverse.model.enums.StatusCorrecao;
 
 @Repository
 public interface ProductionSubmissaoRepository extends JpaRepository<ProductionSubmissao, Long> {
+    List<ProductionSubmissao> findAllByOrderByDataSubmissaoDesc();
+
     List<ProductionSubmissao> findByAlunoId(Long alunoId);
 
     // Busca todas as respostas de um desafio específico (pra tela de correção do professor)
@@ -20,4 +23,17 @@ public interface ProductionSubmissaoRepository extends JpaRepository<ProductionS
     long countByAlunoIdAndChallengeId(Long alunoId, Long challengeId);
 
     Optional<ProductionSubmissao> findFirstByAlunoIdAndChallengeIdOrderByDataSubmissaoDesc(Long alunoId, Long challengeId);
+
+    boolean existsByAlunoIdAndChallengeIdAndStatusCorrecao(
+        Long alunoId, Long challengeId, StatusCorrecao statusCorrecao);
+    long countByAlunoIdAndChallengeIdAndStatusCorrecao(
+        Long alunoId, Long challengeId, StatusCorrecao statusCorrecao);
+
+    List<ProductionSubmissao> findByChallengeModuloCriadoPorIdOrderByDataSubmissaoDesc(Long docenteId);
+
+    List<ProductionSubmissao> findByChallengeModuloCriadoPorIsNullAndAlunoIdInOrderByDataSubmissaoDesc(
+        List<Long> alunoIds);
+
+    void deleteByChallengeId(Long challengeId);
+    void deleteByChallengeModuloId(Long moduloId);
 }

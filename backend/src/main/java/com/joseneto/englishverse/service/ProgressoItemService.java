@@ -17,6 +17,7 @@ import com.joseneto.englishverse.model.ProductionChallenge;
 import com.joseneto.englishverse.model.RecursoApresentacao;
 import com.joseneto.englishverse.model.Usuario;
 import com.joseneto.englishverse.model.enums.ItemType;
+import com.joseneto.englishverse.model.enums.StatusCorrecao;
 import com.joseneto.englishverse.repository.ModuloRepository;
 import com.joseneto.englishverse.repository.PracticeAtividadeRepository;
 import com.joseneto.englishverse.repository.PracticeRespostaUsuarioRepository;
@@ -109,7 +110,8 @@ public class ProgressoItemService {
             case PRACTICE -> practiceRespostaRepository
                 .countByAlunoIdAndAtividadeIdAndEstaCorretaTrue(usuarioId, itemId) >= 2;
             case PRODUCTION -> productionSubmissaoRepository
-                .countByAlunoIdAndChallengeId(usuarioId, itemId) >= 2;
+                .countByAlunoIdAndChallengeIdAndStatusCorrecao(
+                    usuarioId, itemId, StatusCorrecao.APROVADA) >= 2;
         };
     }
 
@@ -132,8 +134,9 @@ public class ProgressoItemService {
                 ProductionChallenge production = productionRepository.findById(itemId)
                     .orElseThrow(() -> new RuntimeException("Production não encontrada"));
                 validarModulo(moduloId, production.getModulo().getId());
-                if (!productionSubmissaoRepository.existsByAlunoIdAndChallengeId(usuarioId, itemId)) {
-                    throw new RuntimeException("A Production precisa de uma submissão persistida");
+                if (!productionSubmissaoRepository.existsByAlunoIdAndChallengeIdAndStatusCorrecao(
+                        usuarioId, itemId, StatusCorrecao.APROVADA)) {
+                    throw new RuntimeException("A Production precisa da aprovação do professor");
                 }
             }
         }

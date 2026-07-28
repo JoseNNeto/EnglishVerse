@@ -150,7 +150,7 @@ public class GamificationService {
                 eventType = XpEventType.PRODUCTION_SUBMITTED;
                 sourceType = XpSourceType.PRODUCTION;
                 amount = PRODUCTION_XP;
-                description = "Production submitted";
+                description = "Production approved by teacher";
             }
             default -> throw new IllegalArgumentException("Tipo de item não suportado");
         }

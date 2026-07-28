@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.joseneto.englishverse.model.ProductionChallenge;
 import com.joseneto.englishverse.model.ProductionSubmissao;
 import com.joseneto.englishverse.model.Usuario;
+import com.joseneto.englishverse.model.enums.StatusCorrecao;
 import com.joseneto.englishverse.repository.ProductionChallengeRepository;
 import com.joseneto.englishverse.repository.ProductionSubmissaoRepository;
 import com.joseneto.englishverse.repository.UsuarioRepository;
@@ -40,6 +41,11 @@ public class ProductionSubmissaoService {
         // learning history without granting more XP.
         submissao.setAluno(aluno);
         submissao.setChallenge(challenge);
+        submissao.setStatusCorrecao(StatusCorrecao.PENDENTE);
+        submissao.setXpConcedido(false);
+        submissao.setFeedbackProfessor(null);
+        submissao.setNota(null);
+        submissao.setDataCorrecao(null);
         return submissaoRepository.save(submissao);
     }
 

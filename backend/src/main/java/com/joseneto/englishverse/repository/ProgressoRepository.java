@@ -22,4 +22,5 @@ public interface ProgressoRepository extends JpaRepository<Progresso, Long> {
     long countByAlunoIdAndStatus(Long alunoId, StatusProgresso status);
 
     long countByAlunoIdAndModuloTopicoIdAndStatus(Long alunoId, Long topicoId, StatusProgresso status);
+    void deleteByModuloId(Long moduloId);
 }

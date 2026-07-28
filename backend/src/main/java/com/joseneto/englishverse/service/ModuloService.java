@@ -9,6 +9,10 @@ import org.springframework.stereotype.Service;
 import com.joseneto.englishverse.model.Modulo;
 import com.joseneto.englishverse.repository.ModuloRepository;
 import com.joseneto.englishverse.repository.TopicoRepository;
+import com.joseneto.englishverse.model.Usuario;
+import com.joseneto.englishverse.model.enums.TipoPerfil;
+import java.util.LinkedHashMap;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ModuloService {
@@ -20,6 +24,39 @@ public class ModuloService {
 
     public List<Modulo> listarTodos() {
         return moduloRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Modulo> listarVisiveis(Usuario usuario) {
+        if (usuario.getPerfilResolvido() == TipoPerfil.DOCENTE) {
+            LinkedHashMap<Long, Modulo> visiveis = new LinkedHashMap<>();
+            moduloRepository.findByCriadoPorIdOrderByIdDesc(usuario.getId())
+                .forEach(modulo -> visiveis.put(modulo.getId(), modulo));
+            moduloRepository.findByCriadoPorIsNullAndPublicadoTrue()
+                .forEach(modulo -> visiveis.put(modulo.getId(), modulo));
+            return List.copyOf(visiveis.values());
+        }
+        LinkedHashMap<Long, Modulo> visiveis = new LinkedHashMap<>();
+        // Enquanto turmas/períodos estiverem em stand-by, todo módulo publicado
+        // deve entrar na biblioteca do aluno e ser agrupado pelo seu tópico/nível.
+        moduloRepository.findByPublicadoTrue()
+            .forEach(modulo -> visiveis.put(modulo.getId(), modulo));
+        return List.copyOf(visiveis.values());
+    }
+
+    @Transactional(readOnly = true)
+    public List<Modulo> listarVisiveisPorTopico(Usuario usuario, Long topicoId) {
+        return listarVisiveis(usuario).stream()
+            .filter(modulo -> modulo.getTopico().getId().equals(topicoId))
+            .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Modulo> buscarVisiveis(Usuario usuario, String titulo) {
+        String termo = titulo == null ? "" : titulo.toLowerCase();
+        return listarVisiveis(usuario).stream()
+            .filter(modulo -> modulo.getTitulo().toLowerCase().contains(termo))
+            .toList();
     }
     
     // Método extra pra facilitar tua vida no Front-end

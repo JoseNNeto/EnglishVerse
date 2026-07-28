@@ -12,4 +12,5 @@ public interface ProductionChallengeRepository extends JpaRepository<ProductionC
     List<ProductionChallenge> findByModuloId(Long moduloId);
     List<ProductionChallenge> findByModuloIdOrderByIdAsc(Long moduloId);
     long countByModuloId(Long moduloId);
+    void deleteByModuloId(Long moduloId);
 }

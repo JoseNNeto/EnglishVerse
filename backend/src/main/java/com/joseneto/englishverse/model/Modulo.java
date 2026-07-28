@@ -11,6 +11,10 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import com.joseneto.englishverse.model.enums.NivelDificuldade;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "modulos")
@@ -40,4 +44,13 @@ public class Modulo {
     // Botei um valor padrão 'false', pra tu não publicar aula incompleta sem querer
     @Column(nullable = false)
     private Boolean publicado = false;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "nivel_dificuldade")
+    private NivelDificuldade nivelDificuldade = NivelDificuldade.INICIANTE;
+
+    @ManyToOne
+    @JoinColumn(name = "criado_por_id")
+    @JsonIgnore
+    private Usuario criadoPor;
 }
