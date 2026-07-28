@@ -45,6 +45,7 @@ const translateTimelineDescription = (description: string) => description
   .replace(/^Presentation completed/, 'Presentation concluída')
   .replace(/^Practice completed/, 'Practice concluída')
   .replace(/^Production submitted/, 'Production enviada')
+  .replace(/^Production approved by teacher/, 'Production aprovada pelo professor')
   .replace(/^Practice stage completed/, 'Etapa de Practice concluída')
   .replace(/^Completed Orbit/, 'Módulo concluído')
   .replace(/^Constellation Conquered/, 'Tópico concluído')

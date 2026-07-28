@@ -17,12 +17,14 @@ import Login from '../pages/Auth/Login';
 import Signup from '../pages/Auth/Signup';
 import Layout from '../components/Layout/Layout';
 import ProtectedRoute from '../components/ProtectedRoute'; // Import ProtectedRoute
+import RoleRoute from '../components/RoleRoute';
+import TeacherStudio from '../pages/TeacherStudio';
 
 const router = createBrowserRouter([
   {
     element: <ProtectedRoute><Layout /></ProtectedRoute>, // Wrap Layout with ProtectedRoute
     children: [
-      { path: '/', element: <Home /> },
+      { path: '/', element: <RoleRoute role="DISCENTE"><Home /></RoleRoute> },
       { path: '/user', element: <User /> },
       { path: '/presentation/:id', element: <Presentation /> },
       { path: '/practice/marcar/:id', element: <PracticeMarcar /> },
@@ -36,6 +38,10 @@ const router = createBrowserRouter([
       { path: '/production/ouvir-completar/:id', element: <ProductionOuvirCompletar /> },
       { path: '/production/ouvir-texto/:id', element: <ProductionOuvirTexto /> },
       { path: '/production/postagem/:id', element: <ProductionPostagem /> },
+      {
+        path: '/teacher-studio',
+        element: <RoleRoute role="DOCENTE"><TeacherStudio /></RoleRoute>,
+      },
     ]
   },
   {

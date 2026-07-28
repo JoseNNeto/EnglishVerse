@@ -31,6 +31,7 @@ public class TokenService {
                     .setIssuer("englishverse-api")
                     .claim("nome", usuario.getNome())
                     .claim("id", usuario.getId()) // Adiciona o nome do usuário ao token
+                    .claim("perfil", usuario.getPerfilResolvido().name())
                     .setSubject(usuario.getEmail())
                     .setIssuedAt(Date.from(Instant.now()))
                     .setExpiration(Date.from(genExpirationDate()))

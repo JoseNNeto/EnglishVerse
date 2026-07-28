@@ -10,7 +10,7 @@ const THEME_OPTIONS = {
     label: 'Escuro',
     value: 'dark' as const,
     lamp: lampadaEscura,
-    backgroundColor: appPalette.dark.navAccent,
+    backgroundColor: '#1b2a4a',
     textColor: '#f0d726',
   },
   light: {
@@ -103,9 +103,9 @@ function ThemeMenu({
       sx={{
         position: 'absolute',
         top: 'calc(100% - 20px)',
-        right: -122,
-        width: 430,
-        height: 318,
+        right: -96,
+        width: 344,
+        height: 254,
         zIndex: 1300,
         overflow: 'visible',
         backgroundColor: 'transparent',
@@ -127,10 +127,10 @@ function ThemeMenu({
       <ThemeBubble
         option={unselectedOption}
         size="small"
-        left={86}
-        top={110}
-        lampLeft={30}
-        lampTop={108}
+        left={69}
+        top={88}
+        lampLeft={24}
+        lampTop={86}
         tailSide="left"
         onClick={() => onSelect(unselectedOption.value)}
       />
@@ -138,8 +138,8 @@ function ThemeMenu({
       <ThemeBubble
         option={selectedOption}
         size="large"
-        left={72}
-        top={204}
+        left={58}
+        top={163}
         tailSide="right"
         selected
         onClick={() => onSelect(selectedOption.value)}
@@ -150,14 +150,14 @@ function ThemeMenu({
 
 function HangingTheme({ selectedOption }: { selectedOption: ThemeOption }) {
   return (
-    <Box sx={{ position: 'absolute', left: 238, top: -8, width: 150, height: 316, zIndex: 3 }}>
+    <Box sx={{ position: 'absolute', left: 190, top: -6, width: 120, height: 253, zIndex: 3 }}>
       <Box
         sx={{
           position: 'absolute',
-          left: 49,
+          left: 39,
           top: 0,
           width: 3,
-          height: 236,
+          height: 189,
           borderRadius: 2,
           backgroundColor: appPalette.dark.accent,
         }}
@@ -165,11 +165,11 @@ function HangingTheme({ selectedOption }: { selectedOption: ThemeOption }) {
       <Typography
         sx={{
           position: 'absolute',
-          left: 14,
-          top: 44,
+          left: 11,
+          top: 35,
           color: appPalette.dark.accent,
           fontFamily: '"Brush Script MT", "Segoe Script", "Lucida Handwriting", cursive',
-          fontSize: '3.35rem',
+          fontSize: '2.68rem',
           fontStyle: 'italic',
           fontWeight: 400,
           lineHeight: 1,
@@ -186,10 +186,10 @@ function HangingTheme({ selectedOption }: { selectedOption: ThemeOption }) {
         alt=""
         sx={{
           position: 'absolute',
-          left: 17,
-          top: 228,
-          width: 68,
-          height: 68,
+          left: 14,
+          top: 182,
+          width: 54,
+          height: 54,
           objectFit: 'contain',
           transform: 'rotate(180deg)',
           filter: 'drop-shadow(0 0 10px rgba(240,215,38,0.5))',
@@ -241,8 +241,8 @@ function ThemeBubble({
             position: 'absolute',
             left: lampLeft,
             top: lampTop,
-            width: 52,
-            height: 52,
+            width: 42,
+            height: 42,
             objectFit: 'contain',
             filter: selected
               ? 'drop-shadow(0 0 9px rgba(240,215,38,0.55))'
@@ -257,8 +257,8 @@ function ThemeBubble({
           position: 'absolute',
           left,
           top,
-          width: large ? 198 : 162,
-          height: large ? 68 : 52,
+          width: large ? 158 : 130,
+          height: large ? 54 : 42,
           borderRadius: large ? '16px' : '14px',
           backgroundColor: option.backgroundColor,
           display: 'flex',
@@ -270,11 +270,11 @@ function ThemeBubble({
           '&::after': {
             content: '""',
             position: 'absolute',
-            bottom: -13,
-            left: tailSide === 'left' ? 10 : 'auto',
-            right: tailSide === 'right' ? 14 : 'auto',
-            width: 18,
-            height: 18,
+            bottom: -10,
+            left: tailSide === 'left' ? 8 : 'auto',
+            right: tailSide === 'right' ? 11 : 'auto',
+            width: 14,
+            height: 14,
             backgroundColor: option.backgroundColor,
             clipPath: tailSide === 'left'
               ? 'polygon(0 0, 100% 0, 0 100%)'
@@ -286,7 +286,7 @@ function ThemeBubble({
           sx={{
             color: option.textColor,
             fontFamily: 'Georgia, "Times New Roman", serif',
-            fontSize: large ? '1.9rem' : '1.38rem',
+            fontSize: large ? '1.52rem' : '1.1rem',
             fontWeight: 500,
             lineHeight: 1,
           }}

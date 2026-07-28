@@ -14,4 +14,6 @@ public interface ProgressoItemRepository extends JpaRepository<ProgressoItem, Lo
     Optional<ProgressoItem> findByAlunoIdAndModuloIdAndItemIdAndItemType(Long alunoId, Long moduloId, Long itemId, ItemType itemType);
     long countByAlunoIdAndModuloId(Long alunoId, Long moduloId);
     long countByAlunoIdAndModuloIdAndItemType(Long alunoId, Long moduloId, ItemType itemType);
+    void deleteByModuloIdAndItemIdAndItemType(Long moduloId, Long itemId, ItemType itemType);
+    void deleteByModuloId(Long moduloId);
 }

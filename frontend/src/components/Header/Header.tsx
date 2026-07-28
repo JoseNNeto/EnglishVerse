@@ -12,6 +12,7 @@ import { useThemeMode } from '../../contexts/ThemeContext';
 import { appPalette } from '../../theme/palette';
 import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import JourneyHeaderChip from '../Gamification/JourneyHeaderChip';
+import CoPresentOutlinedIcon from '@mui/icons-material/CoPresentOutlined';
 
 export default function Header() {
   const { isAuthenticated, user, logout } = useAuth();
@@ -86,7 +87,7 @@ export default function Header() {
             sx={{ height: '50px', width: '125px', cursor: 'pointer' }}
             alt="English Verse logo"
             src={LogoEnglishVerse}
-            onClick={() => navigate('/')}
+            onClick={() => navigate(user?.perfil === 'DOCENTE' ? '/teacher-studio' : '/')}
           />
 
           {isHomePage && (
@@ -126,7 +127,17 @@ export default function Header() {
             minWidth: isHomePage ? 'auto' : { md: '420px' },
             justifyContent: 'flex-end'
           }}>
-            {isAuthenticated && <JourneyHeaderChip />}
+            {isAuthenticated && user?.perfil === 'DISCENTE' && <JourneyHeaderChip />}
+            {isAuthenticated && user?.perfil === 'DOCENTE' && location.pathname !== '/teacher-studio' && (
+              <Button
+                variant="outlined"
+                startIcon={<CoPresentOutlinedIcon />}
+                onClick={() => navigate('/teacher-studio')}
+                sx={{ borderRadius: 3, textTransform: 'none', fontWeight: 800 }}
+              >
+                Teacher Studio
+              </Button>
+            )}
             <ThemeToggle />
 
             {isAuthenticated && user && (

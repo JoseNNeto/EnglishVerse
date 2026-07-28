@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.joseneto.englishverse.dtos.UsuarioRequestDTO;
 import com.joseneto.englishverse.model.Usuario;
+import com.joseneto.englishverse.model.enums.TipoPerfil;
 import com.joseneto.englishverse.repository.UsuarioRepository;
 
 @Service
@@ -36,8 +37,24 @@ public class UsuarioService {
         novoUsuario.setNome(usuarioDTO.nome());
         novoUsuario.setEmail(usuarioDTO.email());
         novoUsuario.setSenha(passwordEncoder.encode(usuarioDTO.senha()));
+        novoUsuario.setPerfil(validarPerfilInstitucional(usuarioDTO.email(), usuarioDTO.perfil()));
 
         return usuarioRepository.save(novoUsuario);
+    }
+
+    public TipoPerfil validarPerfilInstitucional(String email, TipoPerfil perfilInformado) {
+        String emailNormalizado = email == null ? "" : email.trim().toLowerCase();
+        TipoPerfil perfil = perfilInformado == null ? TipoPerfil.DISCENTE : perfilInformado;
+        if (perfil == TipoPerfil.DOCENTE
+                && !emailNormalizado.matches("^[^@.]+\\.[^@]+@belojardim\\.ifpe\\.edu\\.br$")) {
+            throw new RuntimeException(
+                    "Use o e-mail institucional docente nome.sobrenome@belojardim.ifpe.edu.br.");
+        }
+        if (perfil == TipoPerfil.DISCENTE
+                && emailNormalizado.endsWith("@belojardim.ifpe.edu.br")) {
+            throw new RuntimeException("Este e-mail pertence ao acesso docente.");
+        }
+        return perfil;
     }
 
     public Usuario atualizarNome(String email, String novoNome) {

@@ -19,4 +19,8 @@ public interface ModuloRepository extends JpaRepository<Modulo, Long> {
     Optional<Modulo> findByTitulo(String titulo);
 
     List<Modulo> findByTituloContainingIgnoreCase(String titulo);
+
+    List<Modulo> findByCriadoPorIdOrderByIdDesc(Long docenteId);
+
+    List<Modulo> findByCriadoPorIsNullAndPublicadoTrue();
 }

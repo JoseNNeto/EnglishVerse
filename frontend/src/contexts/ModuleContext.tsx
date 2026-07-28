@@ -18,10 +18,17 @@ export interface Modulo {
 interface RecursoApresentacao {
     id: number;
     moduloId: number;
-    tipoRecurso: 'VIDEO' | 'TEXTO' | 'AUDIO'; // Enum: TipoRecurso
+    tipoRecurso: 'VIDEO' | 'TEXTO' | 'AUDIO' | 'IMAGEM'; // Enum: TipoRecurso
     urlRecurso: string;
     letra?: string;
     transcricao?: string;
+    blocos?: Array<{
+        id: string;
+        tipo: 'TITULO' | 'SUBTITULO' | 'TEXTO' | 'DESTAQUE';
+        texto: string;
+        cor: string;
+        fundo: string;
+    }>;
     ordem: number;
     mediaCategory?: MediaCategory | null;
 }
@@ -97,6 +104,7 @@ interface ModuleContextType {
     markItemAsCompleted: (itemId: number, itemType: ItemType) => Promise<void>;
     recordPracticeCompletion: (itemId: number, resposta: Record<string, unknown>) => Promise<void>;
     submitProduction: (itemId: number, resposta: Record<string, unknown>, file?: File | null) => Promise<void>;
+    productionSubmissionVersion: number;
     moduloId: string | undefined;
 }
 
@@ -118,6 +126,7 @@ export const ModuleProvider = ({ children, moduloId }: ModuleProviderProps) => {
     const [allItems, setAllItems] = useState<ModuleItem[]>([]);
     const [activeItem, setActiveItem] = useState<ModuleItem | null>(null);
     const [completedItems, setCompletedItems] = useState<ProgressoItemResponseDTO[]>([]);
+    const [productionSubmissionVersion, setProductionSubmissionVersion] = useState(0);
 
     const { user } = useAuth(); // Consume useAuth
     const { applyReward } = useGamification();
@@ -126,7 +135,7 @@ export const ModuleProvider = ({ children, moduloId }: ModuleProviderProps) => {
 
     // --- API Call Functions ---
     const markItemAsCompleted = useCallback(async (itemId: number, type: ItemType) => {
-        if (!moduloId) return;
+        if (!moduloId || user?.perfil !== 'DISCENTE') return;
 
         try {
             const replay = completedItems.some(item =>
@@ -151,25 +160,27 @@ export const ModuleProvider = ({ children, moduloId }: ModuleProviderProps) => {
             // Check for 400 Bad Request which might indicate a duplicate, or other errors
             console.error('Failed to mark item as completed:', error);
         }
-    }, [moduloId, completedItems, applyReward]);
+    }, [moduloId, completedItems, applyReward, user?.perfil]);
 
     const recordPracticeCompletion = useCallback(async (
         itemId: number,
         resposta: Record<string, unknown>
     ) => {
+        if (user?.perfil !== 'DISCENTE') return;
         await api.post('/practice-respostas', {
             atividade: { id: itemId },
             resposta,
             estaCorreta: true,
         });
         await markItemAsCompleted(itemId, ItemType.PRACTICE);
-    }, [markItemAsCompleted]);
+    }, [markItemAsCompleted, user?.perfil]);
 
     const submitProduction = useCallback(async (
         itemId: number,
         resposta: Record<string, unknown>,
         file?: File | null
     ) => {
+        if (user?.perfil !== 'DISCENTE') return;
         let persistedResponse = resposta;
         if (file) {
             const formData = new FormData();
@@ -183,8 +194,8 @@ export const ModuleProvider = ({ children, moduloId }: ModuleProviderProps) => {
             challenge: { id: itemId },
             resposta: persistedResponse,
         });
-        await markItemAsCompleted(itemId, ItemType.PRODUCTION);
-    }, [markItemAsCompleted]);
+        setProductionSubmissionVersion(version => version + 1);
+    }, [user?.perfil]);
 
     // --- Navigation Functions ---
     const handleSelectItem = useCallback((item: ModuleItem) => {
@@ -273,7 +284,7 @@ export const ModuleProvider = ({ children, moduloId }: ModuleProviderProps) => {
 
 
                 // Call to start module progress
-                if (user && user.id) {
+                if (user && user.id && user.perfil === 'DISCENTE') {
                     try {
                         await api.post('/progresso/iniciar', null, {
                             params: {
@@ -312,6 +323,7 @@ export const ModuleProvider = ({ children, moduloId }: ModuleProviderProps) => {
         markItemAsCompleted,
         recordPracticeCompletion,
         submitProduction,
+        productionSubmissionVersion,
         moduloId
     };
 

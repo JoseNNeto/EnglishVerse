@@ -35,8 +35,27 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/ping").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/files/covers/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/files/content/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/usuarios").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/files/covers/upload").hasRole("DOCENTE")
+                        .requestMatchers(HttpMethod.POST, "/api/files/content/upload").hasRole("DOCENTE")
+                        .requestMatchers("/api/gamification/**").hasRole("DISCENTE")
+                        .requestMatchers(HttpMethod.POST,
+                                "/api/progresso/**", "/api/practice-respostas/**",
+                                "/api/submissoes").hasRole("DISCENTE")
+                        .requestMatchers(HttpMethod.PUT, "/api/progresso/**").hasRole("DISCENTE")
+                        .requestMatchers(HttpMethod.POST,
+                                "/api/modulos/**", "/api/topicos/**", "/api/recursos/**",
+                                "/api/practice/**", "/api/production/**").hasRole("DOCENTE")
+                        .requestMatchers(HttpMethod.PUT,
+                                "/api/modulos/**", "/api/topicos/**", "/api/recursos/**",
+                                "/api/practice/**", "/api/production/**",
+                                "/api/submissoes/*/feedback").hasRole("DOCENTE")
+                        .requestMatchers(HttpMethod.DELETE,
+                                "/api/modulos/**", "/api/topicos/**", "/api/recursos/**",
+                                "/api/practice/**", "/api/production/**").hasRole("DOCENTE")
                         .anyRequest().authenticated())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
 

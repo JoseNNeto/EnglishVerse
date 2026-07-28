@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import com.joseneto.englishverse.model.Usuario;
 
 import com.joseneto.englishverse.model.Modulo;
 import com.joseneto.englishverse.service.ModuloService;
@@ -25,20 +27,24 @@ public class ModuloController {
     private ModuloService moduloService;
 
     @GetMapping
-    public List<Modulo> listar() {
-        return moduloService.listarTodos();
+    public List<Modulo> listar(@AuthenticationPrincipal Usuario usuario) {
+        return moduloService.listarVisiveis(usuario);
     }
 
     @GetMapping("/search")
-    public List<Modulo> search(@RequestParam("q") String query) {
-        return moduloService.buscarPorTitulo(query);
+    public List<Modulo> search(
+            @AuthenticationPrincipal Usuario usuario,
+            @RequestParam("q") String query) {
+        return moduloService.buscarVisiveis(usuario, query);
     }
 
     // Endpoint especial: Listar módulos de um tópico X
     // Ex: GET /api/modulos/topico/1
     @GetMapping("/topico/{topicoId}")
-    public List<Modulo> listarPorTopico(@PathVariable Long topicoId) {
-        return moduloService.listarPorTopico(topicoId);
+    public List<Modulo> listarPorTopico(
+            @AuthenticationPrincipal Usuario usuario,
+            @PathVariable Long topicoId) {
+        return moduloService.listarVisiveisPorTopico(usuario, topicoId);
     }
 
     @GetMapping("/{id}")

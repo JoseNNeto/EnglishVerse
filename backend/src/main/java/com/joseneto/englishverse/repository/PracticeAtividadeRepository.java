@@ -12,4 +12,5 @@ public interface PracticeAtividadeRepository extends JpaRepository<PracticeAtivi
     List<PracticeAtividade> findByModuloId(Long moduloId);
     List<PracticeAtividade> findByModuloIdOrderByIdAsc(Long moduloId);
     long countByModuloId(Long moduloId);
+    void deleteByModuloId(Long moduloId);
 }

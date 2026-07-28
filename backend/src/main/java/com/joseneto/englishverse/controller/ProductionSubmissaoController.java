@@ -53,6 +53,11 @@ public class ProductionSubmissaoController {
     public List<ProductionSubmissao> listarPorAluno(@PathVariable Long alunoId) {
         return service.listarPorAluno(alunoId);
     }
+
+    @GetMapping("/minhas")
+    public List<ProductionSubmissao> listarMinhas(@AuthenticationPrincipal Usuario usuario) {
+        return service.listarPorAluno(usuario.getId());
+    }
     
     // Pra tela de correção do professor
     @GetMapping("/desafio/{challengeId}")

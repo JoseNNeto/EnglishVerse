@@ -10,9 +10,12 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.joseneto.englishverse.model.enums.TipoPerfil;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -38,7 +41,12 @@ public class Usuario implements UserDetails {
     private String email;
 
     @Column(nullable = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String senha; 
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "perfil")
+    private TipoPerfil perfil;
 
     @CreationTimestamp
     @Column(name = "data_criacao", updatable = false)
@@ -47,7 +55,17 @@ public class Usuario implements UserDetails {
     @Override
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        return List.of(new SimpleGrantedAuthority("ROLE_" + getPerfilResolvido().name()));
+    }
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    public TipoPerfil getPerfilResolvido() {
+        if (perfil != null) {
+            return perfil;
+        }
+        return email != null && email.toLowerCase().endsWith("@belojardim.ifpe.edu.br")
+                ? TipoPerfil.DOCENTE
+                : TipoPerfil.DISCENTE;
     }
 
     @Override

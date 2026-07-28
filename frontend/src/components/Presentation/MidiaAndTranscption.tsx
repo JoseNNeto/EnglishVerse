@@ -1,181 +1,191 @@
-/* eslint-disable react-hooks/static-components */
-import { Box, Typography, Tabs, Tab, Paper, CircularProgress } from '@mui/material';
-import { useState, useRef, useEffect } from 'react';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-import remarkBreaks from 'remark-breaks';
+import { Box, CircularProgress, Paper, Tab, Tabs, Typography } from '@mui/material';
+import { useEffect, useRef, useState } from 'react';
 import { useModule } from '../../contexts/ModuleContext';
+import type { ModuleItem } from '../../contexts/ModuleContext';
+import FormattedSupportText from './FormattedSupportText';
 
-function TabPanel(props: { children?: React.ReactNode; index: number; value: number; parentMaxHeight?: number; }) {
-    const { children, value, index, parentMaxHeight, ...other } = props;
-  
+type PresentationData = Extract<ModuleItem, { type: 'presentation' }>['data'];
+
+function getYouTubeEmbedUrl(url: string) {
+  try {
+    const parsed = new URL(url);
+    const hostname = parsed.hostname.toLowerCase().replace(/^www\./, '');
+    let videoId = '';
+    if (hostname === 'youtu.be') {
+      videoId = parsed.pathname.split('/').filter(Boolean)[0] || '';
+    } else if (
+      hostname === 'youtube.com'
+      || hostname.endsWith('.youtube.com')
+      || hostname === 'youtube-nocookie.com'
+    ) {
+      if (parsed.pathname === '/watch') {
+        videoId = parsed.searchParams.get('v') || '';
+      } else {
+        const parts = parsed.pathname.split('/').filter(Boolean);
+        if (['embed', 'shorts', 'live'].includes(parts[0])) videoId = parts[1] || '';
+      }
+    }
+    return /^[A-Za-z0-9_-]{11}$/.test(videoId)
+      ? `https://www.youtube.com/embed/${videoId}`
+      : null;
+  } catch {
+    return null;
+  }
+}
+
+function MediaViewer({ recurso }: { recurso: PresentationData }) {
+  if (recurso.tipoRecurso === 'VIDEO') {
+    if (!recurso.urlRecurso) return null;
+    const embedUrl = getYouTubeEmbedUrl(recurso.urlRecurso);
+    if (!embedUrl) return <Typography color="error">URL do vídeo inválida.</Typography>;
     return (
-      <div
-        role="tabpanel"
-        hidden={value !== index}
-        id={`simple-tabpanel-${index}`}
-        aria-labelledby={`simple-tab-${index}`}
-        {...other}
-      >
-        {value === index && (
-          <Box sx={{ p: 3, maxHeight: parentMaxHeight ? parentMaxHeight - 48 : undefined, overflowY: 'auto' }}> {/* Adjusted for Tabs height */}
-            <Typography component={'span'}>{children}</Typography>
-          </Box>
-        )}
-      </div>
+      <Box sx={{ position: 'relative', aspectRatio: '16 / 9', borderRadius: '14px', overflow: 'hidden' }}>
+        <Box
+          component="iframe"
+          src={embedUrl}
+          title="YouTube video player"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerPolicy="strict-origin-when-cross-origin"
+          allowFullScreen
+          sx={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 0 }}
+        />
+      </Box>
     );
   }
+  if (recurso.tipoRecurso === 'IMAGEM' && recurso.urlRecurso) {
+    return (
+      <Box
+        component="img"
+        src={recurso.urlRecurso}
+        alt="Imagem da Presentation"
+        sx={{ display: 'block', width: '100%', maxHeight: 560, objectFit: 'contain', borderRadius: '14px' }}
+      />
+    );
+  }
+  if (recurso.tipoRecurso === 'AUDIO' && recurso.urlRecurso) {
+    return (
+      <Paper sx={{
+        p: 3,
+        borderRadius: '14px',
+        bgcolor: theme => theme.palette.mode === 'light' ? '#1B2A4A' : '#282828',
+      }}>
+        <Box component="audio" controls src={recurso.urlRecurso} sx={{ display: 'block', width: '100%' }} />
+      </Paper>
+    );
+  }
+  if (recurso.tipoRecurso === 'TEXTO') return null;
+  return <Typography>Mídia do tipo “{recurso.tipoRecurso}” ainda não suportada.</Typography>;
+}
 
 export default function MidiaAndTranscption() {
-    const { loading, activeItem } = useModule();
-    const [value, setValue] = useState(0);
-    const mediaRef = useRef<HTMLDivElement>(null);
-    const [mediaHeight, setMediaHeight] = useState<number | undefined>(undefined);
+  const { loading, activeItem } = useModule();
+  const [activeTab, setActiveTab] = useState(0);
+  const mediaRef = useRef<HTMLDivElement>(null);
+  const [mediaHeight, setMediaHeight] = useState<number>();
 
-    const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
-      setValue(newValue);
-    };
+  useEffect(() => {
+    setActiveTab(0);
+  }, [activeItem?.data.id]);
 
-    useEffect(() => {
-        const observer = new ResizeObserver(entries => {
-            for (const entry of entries) {
-                setMediaHeight(entry.contentRect.height);
-                console.log('Measured Media Height:', entry.contentRect.height);
-            }
-        });
+  useEffect(() => {
+    const mediaElement = mediaRef.current;
+    if (!mediaElement) return undefined;
+    const observer = new ResizeObserver(entries => {
+      setMediaHeight(entries[0]?.contentRect.height);
+    });
+    observer.observe(mediaElement);
+    return () => observer.disconnect();
+  }, [activeItem?.data.id]);
 
-        if (mediaRef.current) {
-            observer.observe(mediaRef.current);
-        }
+  if (loading) {
+    return <CircularProgress sx={{ display: 'block', margin: 'auto', mt: 10 }} />;
+  }
+  if (!activeItem) {
+    return <Typography sx={{ color: '#e0e0e0' }}>Nenhum item selecionado.</Typography>;
+  }
+  if (activeItem.type !== 'presentation') {
+    return null;
+  }
 
-        return () => {
-            if (mediaRef.current) {
-                observer.unobserve(mediaRef.current);
-            }
-        };
-    }, []);
+  const presentationData = activeItem.data;
+  const supportTabs = [
+    ...(presentationData.letra
+      ? [{ label: 'Letra', content: presentationData.letra }]
+      : []),
+    ...(presentationData.transcricao
+      ? [{ label: 'Transcrição', content: presentationData.transcricao }]
+      : []),
+  ];
+  const selectedTab = Math.min(activeTab, Math.max(0, supportTabs.length - 1));
+  const hasMedia = Boolean(
+    presentationData.urlRecurso && presentationData.tipoRecurso !== 'TEXTO',
+  );
+  const showTwoColumns = hasMedia && supportTabs.length > 0;
 
-    const getYouTubeEmbedUrl = (url: string) => {
-        let videoId;
-        try {
-            const urlObj = new URL(url);
-            if (urlObj.hostname === 'youtu.be') {
-                videoId = urlObj.pathname.slice(1);
-            } else if (urlObj.hostname === 'www.youtube.com' || urlObj.hostname === 'youtube.com') {
-                videoId = urlObj.searchParams.get('v');
-            }
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        } catch (e) {
-            return null;
-        }
-        return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
-    };
+  return (
+    <Box>
+      <Typography variant="h4" sx={{ color: '#e0e0e0', mb: 1, fontStyle: 'italic' }}>
+        Presentation
+      </Typography>
+      <Typography variant="body1" sx={{ color: '#b3b3b3', mb: 3 }}>
+        Recurso: {presentationData.tipoRecurso
+          ? presentationData.tipoRecurso.charAt(0).toUpperCase()
+            + presentationData.tipoRecurso.slice(1).toLowerCase()
+          : ''}
+      </Typography>
 
-    const MediaViewer = ({ recurso }: { recurso: NonNullable<typeof presentationData> }) => {
-        if (recurso.tipoRecurso === 'VIDEO') {
-            const embedUrl = getYouTubeEmbedUrl(recurso.urlRecurso);
-            if (!embedUrl) return <Typography color="error">URL do vídeo inválida.</Typography>
+      <Box sx={{
+        display: 'grid',
+        gridTemplateColumns: {
+          xs: 'minmax(0, 1fr)',
+          md: showTwoColumns
+            ? 'minmax(0, 1.35fr) minmax(320px, 0.85fr)'
+            : 'minmax(0, 1fr)',
+        },
+        alignItems: 'stretch',
+        gap: 2,
+      }}>
+        {hasMedia && (
+          <Box ref={mediaRef} sx={{ minWidth: 0 }}>
+            <MediaViewer recurso={presentationData} />
+          </Box>
+        )}
 
-            return (
-                <Box sx={{ position: 'relative', paddingTop: '56.25%', borderRadius: '14px', overflow: 'hidden', mb: 3 }}>
-                    <iframe
-                        width="100%"
-                        height="100%"
-                        src={embedUrl}
-                        title="YouTube video player"
-                        frameBorder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        referrerPolicy="strict-origin-when-cross-origin"
-                        allowFullScreen
-                        style={{ position: 'absolute', top: 0, left: 0 }}
-                    ></iframe>
-                </Box>
-            );
-        }
-        return <Typography>Mídia do tipo '{recurso.tipoRecurso}' ainda não suportada.</Typography>
-    }
-
-    if (loading) {
-        return <CircularProgress sx={{ display: 'block', margin: 'auto', mt: 10 }} />;
-    }
-
-    if (!activeItem) {
-        return <Typography sx={{color: '#e0e0e0'}}>Nenhum item selecionado.</Typography>
-    }
-
-    if (activeItem.type !== 'presentation') {
-        return (
-            <Box sx={{ p: 4, backgroundColor: (theme) => theme.palette.mode === 'light' ? '#1B2A4A' : '#282828', color: '#e0e0e0', borderRadius: '14px', textAlign: 'center' }}>
-                <Typography variant="h5">Conteúdo de '{activeItem.type}'</Typography>
-                <Typography>A integração para este tipo de conteúdo será feita a seguir.</Typography>
+        {supportTabs.length > 0 && (
+          <Paper sx={{
+            minWidth: 0,
+            minHeight: { xs: 260, md: showTwoColumns ? 0 : 260 },
+            height: { md: showTwoColumns && mediaHeight ? mediaHeight : 'auto' },
+            maxHeight: { md: showTwoColumns && mediaHeight ? mediaHeight : 560 },
+            display: 'flex',
+            flexDirection: 'column',
+            bgcolor: theme => theme.palette.mode === 'light' ? '#1B2A4A' : '#282828',
+            color: '#e0e0e0',
+            borderRadius: '14px',
+            overflow: 'hidden',
+          }}>
+            <Tabs
+              value={selectedTab}
+              onChange={(_event, value: number) => setActiveTab(value)}
+              aria-label="Letra e transcrição"
+              sx={{ borderBottom: '1px solid #444', flexShrink: 0 }}
+            >
+              {supportTabs.map(tab => (
+                <Tab
+                  key={tab.label}
+                  label={tab.label}
+                  sx={{ color: '#b3b3b3', textTransform: 'none', fontSize: '16px' }}
+                />
+              ))}
+            </Tabs>
+            <Box sx={{ p: 3, overflowY: 'auto' }}>
+              <FormattedSupportText>
+                {supportTabs[selectedTab]?.content || ''}
+              </FormattedSupportText>
             </Box>
-        );
-    }
-
-    const presentationData = activeItem.data;
-
-    return (
-        <Box>
-            <Typography variant="h4" sx={{ color: '#e0e0e0', mb: 1, fontStyle: 'italic' }}>
-                Presentation
-            </Typography>
-            <Typography variant="body1" sx={{ color: '#b3b3b3', mb: 3 }}>
-                Recurso: {presentationData.tipoRecurso
-                    ? presentationData.tipoRecurso.charAt(0).toUpperCase() + presentationData.tipoRecurso.slice(1).toLowerCase()
-                    : ''
-                }
-            </Typography>
-            
-            <Box sx={{ display: 'flex', gap: 2, flexDirection: { xs: 'column', md: 'row' } }}>
-                <Box sx={{ flex: 1 }} ref={mediaRef}>
-                    <MediaViewer recurso={presentationData} />
-                </Box>
-
-                <Box sx={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', maxHeight: mediaHeight,  }}>
-                    <Box sx={{ borderBottom: 1, borderColor: 'divider', flexShrink: 0 }}>
-                        <Tabs value={value} onChange={handleChange} aria-label="lyrics and transcription tabs">
-                            <Tab label="Letra" sx={{color: value === 0 ? '#75c3ff' : '#b3b3b3', textTransform: 'none', fontSize: '16px'}}/>
-                            {/* <Tab label="Transcrição" sx={{color: value === 1 ? '#75c3ff' : '#b3b3b3', textTransform: 'none', fontSize: '16px'}}/> */}
-                        </Tabs>
-                    </Box>
-                    <Box sx={{ overflowY: 'auto', maxHeight:"40vh" }}>
-                        <TabPanel value={value} index={0}>
-                            {presentationData.letra ? (
-                                <Paper
-                                  sx={{
-                                    px: 2,
-                                    py: 0.5,
-                                    backgroundColor: 'transparent',
-                                    color: '#e0e0e0',
-                                    '& strong, & a, & mark': { color: '#75c3ff' },
-                                  }}
-                                >
-                                    <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>{presentationData.letra}</ReactMarkdown>
-                                </Paper>
-                            ) : (
-                                <Typography sx={{color: '#b3b3b3', p: 3}}>Nenhuma letra disponível para este recurso.</Typography>
-                            )}
-                        </TabPanel>
-                        <TabPanel value={value} index={1}>
-                            {presentationData.transcricao ? (
-                                <Paper
-                                  sx={{
-                                    p: 3,
-                                    backgroundColor: (theme) => theme.palette.mode === 'light' ? '#1B2A4A' : '#282828',
-                                    color: '#e0e0e0',
-                                    borderRadius: '14px',
-                                    '& strong, & a, & mark': { color: '#75c3ff' },
-                                  }}
-                                >
-                                    <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>{presentationData.transcricao}</ReactMarkdown>
-                                </Paper>
-                            ) : (
-                                <Typography sx={{color: '#b3b3b3', p: 3}}>Nenhuma transcrição disponível para este recurso.</Typography>
-                            )}
-                        </TabPanel>
-                    </Box>
-                </Box>
-            </Box>
-        </Box>
-    );
+          </Paper>
+        )}
+      </Box>
+    </Box>
+  );
 }

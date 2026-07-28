@@ -18,6 +18,9 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import com.joseneto.englishverse.model.enums.StatusCorrecao;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 
 @Entity
 @Table(name = "submissoes_producao") // Nome exato do banco
@@ -48,6 +51,19 @@ public class ProductionSubmissao {
     // Campo pro professor escrever depois
     @Column(name = "feedback_professor", columnDefinition = "TEXT")
     private String feedbackProfessor;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status_correcao")
+    private StatusCorrecao statusCorrecao = StatusCorrecao.PENDENTE;
+
+    @Column(name = "nota")
+    private Integer nota;
+
+    @Column(name = "xp_concedido")
+    private Boolean xpConcedido = false;
+
+    @Column(name = "data_correcao")
+    private LocalDateTime dataCorrecao;
 
     @CreationTimestamp
     @Column(name = "data_submissao", updatable = false)

@@ -11,4 +11,5 @@ import com.joseneto.englishverse.model.RecursoApresentacao;
 public interface RecursoApresentacaoRepository extends JpaRepository<RecursoApresentacao, Long> {
     List<RecursoApresentacao> findByModuloIdOrderByOrdemAsc(Long moduloId);
     long countByModuloId(Long moduloId);
+    void deleteByModuloId(Long moduloId);
 }

@@ -1,4 +1,6 @@
 package com.joseneto.englishverse.dtos;
 
-public record LoginRequestDTO(String email, String senha) {
+import com.joseneto.englishverse.model.enums.TipoPerfil;
+
+public record LoginRequestDTO(String email, String senha, TipoPerfil perfil) {
 }
