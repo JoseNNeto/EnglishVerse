@@ -30,6 +30,8 @@ services:
       - SPRING_DATASOURCE_USERNAME=neto
       - SPRING_DATASOURCE_PASSWORD=englishverse
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    volumes:
+      - backend_uploads:/app/uploads
 
   # Serviço do Frontend (React + Vite)
   frontend:
@@ -41,3 +43,6 @@ services:
       - "5173:80"
     depends_on:
       - backend
+
+volumes:
+  backend_uploads:
