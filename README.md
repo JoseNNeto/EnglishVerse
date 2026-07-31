@@ -1,49 +1,172 @@
 # EnglishVerse
 
-O EnglishVerse é uma plataforma educacional desenvolvida como uma aplicação web voltada para o ensino de língua inglesa, utilizando a cultura pop e recursos multimodais (como trechos de filmes, músicas, séries e poemas) para aumentar o engajamento dos estudantes. A ferramenta foi concebida para superar o desinteresse gerado por metodologias tradicionais, criando uma ponte entre o conteúdo pedagógico e o universo digital dos alunos.
+O EnglishVerse é uma plataforma web para ensino de língua inglesa por meio de cultura pop e conteúdos multimodais. A experiência de aprendizagem segue o modelo pedagógico PPP:
 
-Abaixo, detalho os principais aspectos da ferramenta e o planejamento para sua evolução futura:
+1. **Presentation:** exposição ao conteúdo por vídeos, áudios, imagens, textos, letras e transcrições.
+2. **Practice:** exercícios objetivos e interativos com correção automática.
+3. **Production:** atividades abertas, como textos, áudios, imagens e arquivos, avaliadas pelo docente.
 
-## 1. O que é o EnglishVerse?
+O projeto oferece jornadas diferentes para discentes e docentes, com autenticação JWT, controle de acesso por perfil, acompanhamento de progresso e gamificação.
 
-A plataforma funciona como um ecossistema de aprendizagem imersivo inspirado no visual de serviços de streaming (como a Netflix) para organizar conteúdos em módulos temáticos.
+## Funcionalidades atuais
 
-* **Fundamentação Pedagógica:** Utiliza o modelo PPP (Presentation, Practice, Production). O aluno primeiro é exposto ao conteúdo via mídia (Apresentação), realiza exercícios interativos (Prática) e, por fim, aplica o conhecimento de forma autônoma criando seus próprios textos ou áudios (Produção).
-* **Recursos Multimodais:** Integra vídeos do YouTube e músicas sincronizadas com transcrições, permitindo que o aprendizado ocorra de forma contextualizada.
-* **Tecnologia de Ponta:** Foi construído com uma arquitetura flexível (Spring Boot, React e PostgreSQL). O diferencial técnico é o uso de JSONB, que permite adicionar novos tipos de exercícios sem precisar alterar a estrutura do banco de dados, garantindo que a ferramenta seja escalável e adaptável.
+### Experiência do discente
 
-## 2. Próximos Passos e Evolução (Trabalhos Futuros)
+- Catálogo de tópicos e módulos publicados.
+- Continuação de módulos a partir do último item acessado.
+- Atividades de Presentation, Practice e Production.
+- Envio de respostas e arquivos para atividades de produção.
+- Progresso detalhado por módulo.
+- Jornada gamificada com XP, níveis, sequência diária, conquistas e Star Capsules.
+- Coleção de recompensas e itens equipáveis.
+- Feedback visual imediato ao receber XP.
+- Tema claro ou escuro persistido no navegador.
 
-Embora o protótipo atual seja funcional e valide a viabilidade técnica e pedagógica, o projeto prevê as seguintes etapas para se tornar um produto completo:
+### Experiência do docente
 
-* **Desenvolvimento do "Teacher Studio":** Atualmente, a inserção de conteúdos é técnica. O próximo passo essencial é criar uma interface administrativa para que professores sem conhecimento em programação possam criar seus próprios módulos e quizzes visualmente.
-* **Integração com Inteligência Artificial (IA):** Implementar APIs de IA Generativa (como o Google Gemini) para fornecer feedback imediato e automático nas atividades de produção (texto e áudio), eliminando a dependência de correção manual constante pelo professor.
-* **Gamificação Avançada:** Expandir os elementos de engajamento através de sistemas de pontuação (XP), rankings entre alunos, ofensivas diárias (streaks) e conquistas desbloqueáveis.
-* **Otimização Mobile:** Adaptar a interface para dispositivos móveis de forma nativa ou como um PWA, permitindo recursos como notificações push e modo offline.
-* **Validação em Sala de Aula:** Realizar testes longitudinais com turmas reais para medir o impacto pedagógico a longo prazo e o ganho efetivo de proficiência dos alunos.
+- Login e navegação exclusivos para o perfil `DOCENTE`.
+- Dashboard com resumo de turmas, alunos, módulos e correções pendentes.
+- Teacher Studio em `/teacher-studio`.
+- Criação, edição, publicação e exclusão de módulos próprios.
+- Editor visual para conteúdos de Presentation, Practice e Production.
+- Pré-visualização do conteúdo como ele será exibido ao aluno.
+- Upload de capas e mídias de atividades.
+- Classificação dos conteúdos por filme, série, música, poesia ou quadrinhos.
+- Correção de Productions com feedback, nota e status.
+- Liberação de XP ao discente quando uma Production é aprovada.
 
-Em resumo, o EnglishVerse já entregou uma base tecnológica sólida e inovadora, e o foco agora deve ser a autonomia do professor e a automação do feedback ao aluno.
+## Stack
 
-## 3. Como Rodar o Projeto
+| Camada               | Tecnologias                                                           |
+| -------------------- | --------------------------------------------------------------------- |
+| Frontend             | React 19, TypeScript, Vite, React Router, Material UI e Axios         |
+| Backend              | Java 17, Spring Boot 3.2, Spring Security, JWT, JPA/Hibernate e Maven |
+| Banco de dados       | PostgreSQL 16, incluindo colunas JSONB para atividades flexíveis     |
+| Infraestrutura local | Docker Compose, Nginx e volumes persistentes                          |
 
-O sistema foi empacotado utilizando contêineres para facilitar a execução. Certifique-se de ter o **Docker** e o **Docker Compose** instalados na sua máquina.
+## Estrutura do repositório
 
-1. Clone este repositório para o seu ambiente local.
-2. Abra o terminal na pasta raiz do projeto.
-3. Execute o comando abaixo para construir as imagens e subir os contêineres em segundo plano: 
+```text
+EnglishVerse/
+├── backend/                       # API Spring Boot
+│   ├── src/main/java/             # controllers, services, models, DTOs e repositories
+│   ├── src/main/resources/        # configurações da aplicação
+│   └── DOCUMENTACAO_BACKEND.md
+├── frontend/                      # SPA React
+│   ├── src/                       # páginas, componentes, contextos, rotas e serviços
+│   ├── FRONTEND_DOCUMENTATION.md
+│   └── nginx.conf
+├── docker-compose.yml
+└── README.md
+```
 
-   `docker-compose up -d --build`
-4. Aguarde a inicialização dos três serviços (Banco de Dados, Backend e Frontend).
-5. Acesse a aplicação no seu navegador através do endereço: `http://localhost:{port_da_aplicacao}`
+## Execução com Docker
 
-Para parar a execução e desligar os contêineres, utilize o comando:
-`docker-compose down`
----
+### Pré-requisitos
 
-> Apenas avisando que fiz esse projeto enquanto pagava mais 5 cadeiras e trabalhava em horário integral de segunda a sexta. Resumindo, tem algumas gambiarras e codigos gerados por IA. Mas como ele foi bem planejado vai ser bronca safada de dar manutenção e adicionar novas features :p
+- Docker Desktop ou Docker Engine
+- Docker Compose
+
+Na raiz do repositório, execute:
+
+```bash
+docker compose up -d --build
+```
+
+Serviços disponíveis:
+
+| Serviço        | Endereço                                                                                 |
+| --------------- | ----------------------------------------------------------------------------------------- |
+| Aplicação web | [http://localhost:5173](http://localhost:5173)                                             |
+| API             | [http://localhost:8080](http://localhost:8080)                                             |
+| Swagger UI      | [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html) |
+| PostgreSQL      | `localhost:5433`                                                                        |
+
+Para acompanhar a inicialização:
+
+```bash
+docker compose logs -f
+```
+
+Para encerrar os contêineres:
+
+```bash
+docker compose down
+```
+
+Os dados do PostgreSQL são mantidos em `./postgres-data`. Os arquivos enviados ao backend são armazenados no volume Docker `backend_uploads`.
+
+> As credenciais presentes no `docker-compose.yml` e a chave JWT do `application.properties` são padrões de desenvolvimento. Use segredos externos em ambientes publicados.
+
+## Execução local para desenvolvimento
+
+O banco de dados deve estar disponível em `localhost:5433`. É possível subir apenas o PostgreSQL:
+
+```bash
+docker compose up -d postgres_db
+```
+
+Backend:
+
+```bash
+cd backend
+./mvnw spring-boot:run
+```
+
+No Windows PowerShell:
+
+```powershell
+cd backend
+.\mvnw.cmd spring-boot:run
+```
+
+Frontend, em outro terminal:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Em desenvolvimento, o Vite encaminha chamadas iniciadas por `/api` para `http://localhost:8080`. O destino pode ser alterado com `VITE_API_PROXY_TARGET`. Para utilizar uma URL de API explícita no cliente Axios, configure `VITE_API_URL`.
+
+## Autenticação e perfis
+
+O cadastro e o login recebem o campo `perfil`, com os valores:
+
+- `DISCENTE`
+- `DOCENTE`
+
+Contas docentes exigem e-mail institucional no formato `nome.sobrenome@belojardim.ifpe.edu.br`. O JWT expira em duas horas e contém `id`, `nome`, `sub` (e-mail) e `perfil`.
+
+## Verificações úteis
+
+```bash
+# Frontend
+cd frontend
+npm run lint
+npm run build
+
+# Backend
+cd backend
+./mvnw test
+```
+
+## Documentação técnica
+
+- [Documentação do frontend](frontend/FRONTEND_DOCUMENTATION.md)
+- [Documentação do backend](backend/DOCUMENTACAO_BACKEND.md)
+- API interativa: [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
 
 ## Contato
 
-* **GitHub:** https://github.com/JoseNNeto
-* **Email:** josenunesalmeidaneto@gmail.com
-* **Linkedin**: https://www.linkedin.com/in/jose-nunes-de-almeida-neto/
+### José Neto
+
+- GitHub: [JoseNNeto](https://github.com/JoseNNeto)
+- E-mail: <josenunesalmeidaneto@gmail.com>
+- LinkedIn: [José Nunes de Almeida Neto](https://www.linkedin.com/in/jose-nunes-de-almeida-neto/)
+
+### Raíssa Beatriz
+
+- E-mail: <raissab2468@gmail.com>
+- LinkedIn: [Raíssa Beatriz](https://www.linkedin.com/in/raíssa-beatriz)
