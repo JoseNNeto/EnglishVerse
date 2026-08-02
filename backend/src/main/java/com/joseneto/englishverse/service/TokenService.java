@@ -19,7 +19,6 @@ import io.jsonwebtoken.security.Keys;
 @Service
 public class TokenService {
 
-    // TODO: Mover para application.properties
     @Value("${api.security.token.secret}")
     private String secret;
     private SecretKey secretKey;
