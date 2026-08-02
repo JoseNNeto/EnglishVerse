@@ -30,12 +30,13 @@ export default function Header() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (searchQuery.trim()) {
-        setSearchParams({ q: searchQuery.trim() });
-      } else {
-        searchParams.delete('q');
-        setSearchParams(searchParams);
-      }
+      const normalizedQuery = searchQuery.trim();
+      setSearchParams(currentParams => {
+        const nextParams = new URLSearchParams(currentParams);
+        if (normalizedQuery) nextParams.set('q', normalizedQuery);
+        else nextParams.delete('q');
+        return nextParams;
+      }, { replace: true });
     }, 500);
 
     return () => {

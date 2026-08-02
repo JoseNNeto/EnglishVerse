@@ -754,22 +754,16 @@ function formatFileSize(size?: string) {
 }
 
 function UploadedFilePreview({ file }: { file: UploadedFileInfo }) {
+  const requestPath = fileRequestPath(file.fileDownloadUri);
   const [blobUrl, setBlobUrl] = useState('');
-  const [fileLoading, setFileLoading] = useState(true);
-  const [fileError, setFileError] = useState(false);
+  const [fileLoading, setFileLoading] = useState(Boolean(requestPath));
+  const [fileError, setFileError] = useState(!requestPath);
 
   useEffect(() => {
     let disposed = false;
     let objectUrl = '';
-    const requestPath = fileRequestPath(file.fileDownloadUri);
-
-    setBlobUrl('');
-    setFileError(false);
-    setFileLoading(true);
 
     if (!requestPath) {
-      setFileError(true);
-      setFileLoading(false);
       return undefined;
     }
 
@@ -790,7 +784,7 @@ function UploadedFilePreview({ file }: { file: UploadedFileInfo }) {
       disposed = true;
       if (objectUrl) URL.revokeObjectURL(objectUrl);
     };
-  }, [file.fileDownloadUri]);
+  }, [requestPath]);
 
   const size = formatFileSize(file.size);
 
@@ -866,7 +860,7 @@ function SubmissionResponse({ response }: { response: Record<string, unknown> })
           </Typography>
         </Box>
       ))}
-      {uploadedFile && <UploadedFilePreview file={uploadedFile} />}
+      {uploadedFile && <UploadedFilePreview key={uploadedFile.fileDownloadUri} file={uploadedFile} />}
       {!entries.length && !uploadedFile && (
         <Typography color="text.secondary">Nenhuma resposta foi registrada.</Typography>
       )}

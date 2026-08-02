@@ -10,7 +10,7 @@ interface ProductionChallenge {
   id: number;
   instrucaoDesafio: string;
   midiaDesafioUrl?: string;
-  dadosDesafio: Record<string, any>;
+  dadosDesafio: Record<string, unknown>;
 }
 
 export default function ProductionOuvirCompletar() {
@@ -47,7 +47,7 @@ export default function ProductionOuvirCompletar() {
         ) : error ? (
           <Typography color="error">{error}</Typography>
         ) : data ? (
-          <ProductionOuvirCompletarContent data={data} />
+          <ProductionOuvirCompletarContent key={data.id} data={data} />
         ) : (
           <Typography>No data available.</Typography>
         )}

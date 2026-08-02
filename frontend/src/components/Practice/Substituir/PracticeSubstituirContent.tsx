@@ -1,5 +1,5 @@
 import { Box, Typography, Paper, Button, Menu, MenuItem } from '@mui/material';
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useModule } from '../../../contexts/ModuleContext';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ReactMarkdown from 'react-markdown';
@@ -8,7 +8,7 @@ interface PracticeSubstituirContentProps {
     data: {
         id: number;
         instrucao: string;
-        dadosAtividade: Record<string, any>;
+        dadosAtividade: Record<string, unknown>;
         modulo?: { id: number; };
         moduloId?: number;
     };
@@ -29,13 +29,13 @@ const getYouTubeEmbedUrl = (url: string) => {
     try {
         const urlObj = new URL(url);
         videoId = urlObj.searchParams.get('v') || urlObj.pathname.slice(1);
-    } catch (e) { return null; }
+    } catch { return null; }
     return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
 };
 
 export default function PracticeSubstituirContent({ data }: PracticeSubstituirContentProps) {
     const { recordPracticeCompletion, handleNextItem } = useModule();
-    const substituirData = data.dadosAtividade as SubstituirData;
+    const substituirData = data.dadosAtividade as unknown as SubstituirData;
 
     const initialText = useMemo(() => substituirData.initialText || [], [substituirData.initialText]);
     const substitutions = useMemo(() => substituirData.substitutions || {}, [substituirData.substitutions]);
@@ -47,12 +47,6 @@ export default function PracticeSubstituirContent({ data }: PracticeSubstituirCo
     const [checkStatus, setCheckStatus] = useState<'unchecked' | 'correct' | 'incorrect'>('unchecked');
     const [isCorrectMap, setIsCorrectMap] = useState<Record<string, boolean>>({});
     
-    useEffect(() => {
-        setTextParts(initialText);
-        setCheckStatus('unchecked');
-        setIsCorrectMap({});
-    }, [data.id, initialText]);
-
     const handleClick = (event: React.MouseEvent<HTMLElement>, wordId: string) => {
         if (checkStatus !== 'unchecked') return;
         setAnchorEl(event.currentTarget);

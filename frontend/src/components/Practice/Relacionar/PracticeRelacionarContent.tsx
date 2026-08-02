@@ -4,7 +4,7 @@ import { DndContext, closestCenter, PointerSensor, useSensor, useSensors, useDro
 import type { DragEndEvent, DragStartEvent } from '@dnd-kit/core';
 import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import { useModule } from '../../../contexts/ModuleContext';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -14,7 +14,7 @@ interface PracticeRelacionarContentProps {
     data: {
         id: number;
         instrucao: string;
-        dadosAtividade: Record<string, any>;
+        dadosAtividade: Record<string, unknown>;
         modulo?: { id: number; };
         moduloId?: number;
     };
@@ -38,7 +38,7 @@ const getYouTubeEmbedUrl = (url: string) => {
     try {
         const urlObj = new URL(url);
         videoId = urlObj.searchParams.get('v') || urlObj.pathname.slice(1);
-    } catch (e) { return null; }
+    } catch { return null; }
     return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
 };
 
@@ -58,7 +58,7 @@ function DraggableQuote({ id, text }: { id: UniqueIdentifier, text: string }) {
     );
 }
 
-function DroppableCharacter({ char, quote, onRemoveQuote, status }: { char: Character, quote?: { id: UniqueIdentifier, text: string }, onRemoveQuote: Function, status: 'correct' | 'incorrect' | 'default' }) {
+function DroppableCharacter({ char, quote, onRemoveQuote, status }: { char: Character, quote?: { id: UniqueIdentifier, text: string }, onRemoveQuote: (quoteId: UniqueIdentifier, characterId: UniqueIdentifier) => void, status: 'correct' | 'incorrect' | 'default' }) {
     const { setNodeRef, isOver } = useDroppable({ id: char.id });
     const borderColor = status === 'correct' ? '#a8c97f' : status === 'incorrect' ? '#8b2020' : '#b3b3b3';
     return (
@@ -98,7 +98,7 @@ function DroppableColumn({ id, title, items }: { id: UniqueIdentifier, title: st
 
 export default function PracticeRelacionarContent({ data }: PracticeRelacionarContentProps) {
     const { recordPracticeCompletion, handleNextItem } = useModule();
-    const relacionarData = data.dadosAtividade as RelacionarData;
+    const relacionarData = data.dadosAtividade as unknown as RelacionarData;
 
     const initialContainers = useMemo(() => ({
         unassigned: relacionarData.quotes || [],
@@ -109,12 +109,6 @@ export default function PracticeRelacionarContent({ data }: PracticeRelacionarCo
     const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
     const [checkStatus, setCheckStatus] = useState<'unchecked' | 'correct' | 'incorrect'>('unchecked');
     const [feedback, setFeedback] = useState<Record<string, 'correct' | 'incorrect' | 'default'>>({});
-
-    useEffect(() => {
-        setContainers(initialContainers);
-        setCheckStatus('unchecked');
-        setFeedback({});
-    }, [data.id, initialContainers]);
 
     const sensors = useSensors(useSensor(PointerSensor));
 

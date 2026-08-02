@@ -9,7 +9,7 @@ import { ModuleProvider } from '../../contexts/ModuleContext';
 interface ProductionChallenge {
   id: number;
   instrucaoDesafio: string;
-  dadosDesafio: Record<string, any>;
+  dadosDesafio: Record<string, unknown>;
   modulo: { id: number; nome: string; };
 }
 
@@ -60,7 +60,7 @@ export default function ProductionArquivo() {
           </Box>
         )}
         {data && (
-          <ModuleProvider moduloId={data.modulo.id.toString()}>
+          <ModuleProvider key={data.id} moduloId={data.modulo.id.toString()}>
             <ProductionArquivoPageContent data={data} />
           </ModuleProvider>
         )}

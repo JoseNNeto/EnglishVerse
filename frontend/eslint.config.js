@@ -20,4 +20,14 @@ export default defineConfig([
       globals: globals.browser,
     },
   },
+  {
+    // Context modules intentionally export both their Provider and consumer hook.
+    files: [
+      'src/contexts/**/*.tsx',
+      'src/components/MediaClassification/MediaClassification.tsx',
+    ],
+    rules: {
+      'react-refresh/only-export-components': 'off',
+    },
+  },
 ])

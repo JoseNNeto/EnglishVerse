@@ -57,6 +57,59 @@ Antes de trocar de máquina ou responsável, faça backup do banco e do volume d
 uploads. Clonar o repositório sozinho **não** recupera esses dados. Não versione
 senhas, dumps, uploads reais nem o diretório `postgres-data`.
 
+## Implantação centralizada recomendada — não implementada
+
+O `docker-compose.yml` atual foi preparado para desenvolvimento local. Cada
+computador que o executa cria seu próprio PostgreSQL: os módulos iniciais aparecem
+porque são recriados pelos seeders, enquanto os módulos do Teacher Studio existem
+somente no banco em que o professor os cadastrou.
+
+Para compartilhar módulos entre professores e alunos, a arquitetura recomendada é
+uma única instalação central:
+
+```text
+Usuários
+   │ HTTPS
+   ▼
+Domínio e proxy reverso
+   ├── Frontend
+   └── /api → Backend → PostgreSQL central
+                         └── volume persistente de uploads
+```
+
+O frontend, o backend, o PostgreSQL e o proxy reverso podem continuar em
+contêineres Docker. O que precisa ser fornecido externamente é uma máquina
+permanentemente acessível — servidor institucional ou VPS —, endereço DNS e um
+destino separado para os backups. Um domínio é recomendado para HTTPS e uso
+público, embora o acesso técnico por IP possa ser usado em ambientes restritos.
+
+### Preparação necessária antes de publicar
+
+1. Criar uma configuração Compose específica de produção; não publicar o Compose
+   local sem revisão.
+2. Expor publicamente somente `80` e `443`. PostgreSQL e backend devem permanecer
+   na rede interna do Docker.
+3. Configurar domínio, DNS, proxy reverso e HTTPS, por exemplo com Caddy ou Nginx.
+4. Fornecer credenciais do banco e segredo JWT pelo `.env` do servidor e rotacionar
+   qualquer valor que já tenha aparecido no histórico do Git.
+5. Restringir o CORS ao domínio oficial em vez de aceitar `*`.
+6. Manter PostgreSQL e uploads em volumes persistentes.
+7. Criar backups automáticos, externos ao servidor, e testar a restauração.
+8. Migrar para a instalação central um dump do banco atual e uma cópia do volume
+   de uploads, caso o conteúdo local precise ser preservado.
+9. Validar cadastro, login, jornada PPP, Teacher Studio, correções, XP e uploads no
+   endereço público antes da entrega.
+10. Definir quem será responsável por domínio, servidor, custos, monitoramento,
+    atualizações e resposta a incidentes.
+
+Para uso temporário apenas na mesma rede, um computador pode hospedar o Docker e
+os demais podem acessar o IP local desse computador. Isso não substitui um deploy
+central para acesso externo e depende de o computador hospedeiro permanecer
+ligado.
+
+Não registre neste documento senhas reais, chaves, tokens, IPs privados ou
+credenciais do provedor.
+
 ## Validação no momento do handoff
 
 | Verificação | Estado | Observação |
@@ -64,8 +117,10 @@ senhas, dumps, uploads reais nem o diretório `postgres-data`.
 | `git status` | OK | antes desta revisão, a branch estava limpa e sincronizada com o remoto |
 | `docker compose config --quiet` | OK | configuração válida |
 | `docker compose build` | não executado | Docker Desktop instalado, mas o mecanismo Linux estava desligado |
-| `npm run lint` | não executado | Node/npm não estavam instalados no ambiente da revisão |
-| `npm run build` | não executado | Node/npm não estavam instalados no ambiente da revisão |
+| `npm ci` | OK | 390 pacotes instalados com Node 24.18.1 e npm 11.16.0 |
+| `npm run lint` | OK | 55 erros e 1 aviso corrigidos em 2 de agosto de 2026 |
+| `npm run build` | OK | build Vite 7.3.6 concluído em 2 de agosto de 2026 |
+| `npm audit` | atenção | 14 de 16 vulnerabilidades corrigidas; permanecem 2 alertas do mesmo advisory de React Router |
 | `./mvnw test` | não executado | Java/JAVA_HOME não estavam disponíveis no ambiente da revisão |
 
 Quem assumir deve executar as verificações pendentes antes de integrar a
@@ -76,7 +131,8 @@ isso não representa cobertura funcional suficiente.
 
 ### Antes de integrar ou publicar
 
-1. Rodar lint, build e testes em uma máquina/CI com Node 20 e Java 17.
+1. Rodar os testes do backend com Java 17. Lint e build do frontend já foram
+   validados com Node 24, mas devem também ser cobertos pela CI.
 2. Fazer um teste manual completo: cadastro/login de ambos os perfis, execução de
    uma trilha PPP, envio/correção de Production, XP e uploads.
 3. Abrir o PR `feat/Raissa` → `main` e registrar no PR o resultado dessas validações.
@@ -90,6 +146,13 @@ isso não representa cobertura funcional suficiente.
 
 - Criar testes de serviços, autorização, progresso, gamificação e Teacher Studio,
   além de testes do frontend e um workflow de CI.
+- Acompanhar o advisory
+  [GHSA-qwww-vcr4-c8h2](https://github.com/advisories/GHSA-qwww-vcr4-c8h2).
+  Os dois alertas restantes afetam apenas as APIs RSC instáveis, que não são usadas
+  pelo projeto. A correção publicada exige React Router 8.3, uma atualização
+  principal que deve ser feita separadamente com testes de regressão.
+- Dividir o bundle principal do frontend, atualmente com cerca de 1,12 MB antes de
+  gzip, usando carregamento sob demanda para as telas maiores.
 - Adotar migrations versionadas (Flyway ou Liquibase) antes de produção. Hoje o
   projeto combina `ddl-auto=update` com um migrador específico de gamificação.
 - Dividir `frontend/src/pages/TeacherStudio.tsx` (mais de 3 mil linhas) e os grandes

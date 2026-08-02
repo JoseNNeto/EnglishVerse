@@ -9,7 +9,7 @@ import { ModuleProvider } from '../../contexts/ModuleContext';
 interface PracticeAtividade {
   id: number;
   instrucao: string;
-  dadosAtividade: Record<string, any>;
+  dadosAtividade: Record<string, unknown>;
   modulo: { id: number; nome: string; };
 }
 
@@ -61,7 +61,7 @@ export default function PracticeSelecionar() {
           </Box>
         )}
         {data && (
-          <ModuleProvider moduloId={data.modulo.id.toString()}>
+          <ModuleProvider key={data.id} moduloId={data.modulo.id.toString()}>
             <PracticeSelecionarPageContent data={data} />
           </ModuleProvider>
         )}

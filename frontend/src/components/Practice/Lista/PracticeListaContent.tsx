@@ -1,5 +1,5 @@
 import { Box, Typography, Button, Grid, TextField } from '@mui/material';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useModule } from '../../../contexts/ModuleContext';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ReactMarkdown from 'react-markdown';
@@ -8,7 +8,7 @@ interface PracticeListaContentProps {
     data: {
         id: number;
         instrucao: string;
-        dadosAtividade: Record<string, any>;
+        dadosAtividade: Record<string, unknown>;
         modulo?: { id: number; };
         moduloId?: number;
     };
@@ -30,7 +30,7 @@ const getYouTubeEmbedUrl = (url: string) => {
         } else if (urlObj.hostname === 'www.youtube.com' || urlObj.hostname === 'youtube.com') {
             videoId = urlObj.searchParams.get('v');
         }
-    } catch (e) {
+    } catch {
         return null;
     }
     return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
@@ -38,19 +38,11 @@ const getYouTubeEmbedUrl = (url: string) => {
 
 export default function PracticeListaContent({ data }: PracticeListaContentProps) {
     const { recordPracticeCompletion, handleNextItem } = useModule();
-    const listaPalavrasData = data.dadosAtividade as ListaPalavrasData;
+    const listaPalavrasData = data.dadosAtividade as unknown as ListaPalavrasData;
 
     const [inputs, setInputs] = useState<string[]>(Array(listaPalavrasData.numberOfInputs || 0).fill(''));
     const [checkStatus, setCheckStatus] = useState<'unchecked' | 'correct' | 'incorrect'>('unchecked');
     const [inputStatus, setInputStatus] = useState<('correct' | 'incorrect' | 'default')[]>(Array(listaPalavrasData.numberOfInputs || 0).fill('default'));
-
-    useEffect(() => {
-        const numInputs = listaPalavrasData.numberOfInputs || 0;
-        setInputs(Array(numInputs).fill(''));
-        setCheckStatus('unchecked');
-        setInputStatus(Array(numInputs).fill('default'));
-    }, [data.id, listaPalavrasData.numberOfInputs]);
-
 
     const handleInputChange = (index: number, value: string) => {
         if (checkStatus !== 'unchecked') return;

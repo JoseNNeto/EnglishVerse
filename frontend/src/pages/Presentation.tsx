@@ -60,7 +60,7 @@ function PresentationContent() {
           <LinearProgress variant="determinate" value={progressValue} sx={{ height: 8, borderRadius: 5, backgroundColor: '#282828', '& .MuiLinearProgress-bar': { backgroundColor: '#a8c97f' } }} />
         </Box>
         {activeItem && <ActiveMediaClassification category={activeItem.data.mediaCategory} />}
-        <ModuleItemViewer />
+        <ModuleItemViewer key={activeItem ? `${activeItem.type}-${activeItem.data.id}` : 'empty'} />
         <Descrition />
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
             {isModuleComplete ? (

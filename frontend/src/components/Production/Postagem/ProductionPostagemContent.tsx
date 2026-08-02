@@ -1,7 +1,7 @@
 
 import { Box, Typography, Paper, Button, TextareaAutosize, styled, useTheme } from '@mui/material';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useModule } from '../../../contexts/ModuleContext';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -24,7 +24,7 @@ interface ProductionPostagemContentProps {
     data: {
         id: number;
         instrucaoDesafio: string;
-        dadosDesafio: Record<string, any>;
+        dadosDesafio: Record<string, unknown>;
         modulo?: { id: number; };
         moduloId?: number;
     };
@@ -44,12 +44,6 @@ export default function ProductionPostagemContent({ data }: ProductionPostagemCo
     const [text, setText] = useState('');
     const [file, setFile] = useState<File | null>(null);
     const [checkStatus, setCheckStatus] = useState<'unchecked' | 'correct' | 'incorrect'>('unchecked');
-
-    useEffect(() => {
-        setText('');
-        setFile(null);
-        setCheckStatus('unchecked');
-    }, [data.id]);
 
     const onDrop = useCallback((acceptedFiles: File[]) => {
         if (acceptedFiles.length > 0) {
