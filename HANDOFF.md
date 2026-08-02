@@ -65,9 +65,9 @@ senhas, dumps, uploads reais nem o diretório `postgres-data`.
 | `docker compose config --quiet` | OK | configuração válida |
 | `docker compose build` | não executado | Docker Desktop instalado, mas o mecanismo Linux estava desligado |
 | `npm ci` | OK | 390 pacotes instalados com Node 24.18.1 e npm 11.16.0 |
-| `npm run lint` | falhou | 55 erros e 1 aviso; veja as pendências abaixo |
-| `npm run build` | OK | build Vite 7.2.2 concluído em 2 de agosto de 2026 |
-| `npm audit` | atenção | 16 vulnerabilidades: 12 altas, 3 moderadas e 1 baixa |
+| `npm run lint` | OK | 55 erros e 1 aviso corrigidos em 2 de agosto de 2026 |
+| `npm run build` | OK | build Vite 7.3.6 concluído em 2 de agosto de 2026 |
+| `npm audit` | atenção | 14 de 16 vulnerabilidades corrigidas; permanecem 2 alertas do mesmo advisory de React Router |
 | `./mvnw test` | não executado | Java/JAVA_HOME não estavam disponíveis no ambiente da revisão |
 
 Quem assumir deve executar as verificações pendentes antes de integrar a
@@ -78,8 +78,8 @@ isso não representa cobertura funcional suficiente.
 
 ### Antes de integrar ou publicar
 
-1. Corrigir o lint do frontend e rodar os testes do backend com Java 17. O build
-   do frontend já foi validado com Node 24, mas deve também ser coberto pela CI.
+1. Rodar os testes do backend com Java 17. Lint e build do frontend já foram
+   validados com Node 24, mas devem também ser cobertos pela CI.
 2. Fazer um teste manual completo: cadastro/login de ambos os perfis, execução de
    uma trilha PPP, envio/correção de Production, XP e uploads.
 3. Abrir o PR `feat/Raissa` → `main` e registrar no PR o resultado dessas validações.
@@ -93,13 +93,12 @@ isso não representa cobertura funcional suficiente.
 
 - Criar testes de serviços, autorização, progresso, gamificação e Teacher Studio,
   além de testes do frontend e um workflow de CI.
-- Corrigir os 55 erros do ESLint. Os grupos mais recorrentes são tipos `any`,
-  atualização síncrona de estado dentro de efeitos e arquivos incompatíveis com
-  a regra de Fast Refresh.
-- Revisar as 16 vulnerabilidades relatadas pelo npm. Há correções disponíveis,
-  mas atualizações automáticas não foram aplicadas para evitar mudanças de versão
-  sem teste de regressão.
-- Dividir o bundle principal do frontend, atualmente com cerca de 1,1 MB antes de
+- Acompanhar o advisory
+  [GHSA-qwww-vcr4-c8h2](https://github.com/advisories/GHSA-qwww-vcr4-c8h2).
+  Os dois alertas restantes afetam apenas as APIs RSC instáveis, que não são usadas
+  pelo projeto. A correção publicada exige React Router 8.3, uma atualização
+  principal que deve ser feita separadamente com testes de regressão.
+- Dividir o bundle principal do frontend, atualmente com cerca de 1,12 MB antes de
   gzip, usando carregamento sob demanda para as telas maiores.
 - Adotar migrations versionadas (Flyway ou Liquibase) antes de produção. Hoje o
   projeto combina `ddl-auto=update` com um migrador específico de gamificação.
