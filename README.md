@@ -73,6 +73,10 @@ Na raiz do repositório, execute:
 docker compose up -d --build
 ```
 
+Os valores padrão são adequados apenas para desenvolvimento. Para sobrescrevê-los,
+copie `.env.example` para `.env` e altere as credenciais e o segredo JWT antes de
+subir os contêineres.
+
 Serviços disponíveis:
 
 | Serviço        | Endereço                                                                                 |
@@ -154,6 +158,7 @@ cd backend
 
 ## Documentação técnica
 
+- [Estado atual e guia de handoff](HANDOFF.md)
 - [Documentação do frontend](frontend/FRONTEND_DOCUMENTATION.md)
 - [Documentação do backend](backend/DOCUMENTACAO_BACKEND.md)
 - API interativa: [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
