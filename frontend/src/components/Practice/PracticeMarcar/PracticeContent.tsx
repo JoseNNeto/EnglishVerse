@@ -1,5 +1,5 @@
 import { Box, Typography, Button, Grid } from '@mui/material';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useModule } from '../../../contexts/ModuleContext';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ReactMarkdown from 'react-markdown';
@@ -8,7 +8,7 @@ interface PracticeMarcarContentProps {
     data: {
         id: number;
         instrucao: string;
-        dadosAtividade: Record<string, any>;
+        dadosAtividade: Record<string, unknown>;
         modulo?: { id: number; };
         moduloId?: number;
     };
@@ -25,12 +25,7 @@ export default function PracticeMarcarContent({ data }: PracticeMarcarContentPro
     const [selectedOption, setSelectedOption] = useState<string | null>(null);
     const [checkStatus, setCheckStatus] = useState<'unchecked' | 'correct' | 'incorrect'>('unchecked');
 
-    useEffect(() => {
-        setSelectedOption(null);
-        setCheckStatus('unchecked');
-    }, [data.id]);
-
-    const marcarData = data.dadosAtividade as MarcarData;
+    const marcarData = data.dadosAtividade as unknown as MarcarData;
 
     const handleCheckAnswer = async () => {
         if (!selectedOption) return;

@@ -1,6 +1,6 @@
 import { Box, Typography, Button, Paper, Chip, useTheme } from '@mui/material';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { useModule } from '../../../contexts/ModuleContext';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ReactMarkdown from 'react-markdown';
@@ -9,7 +9,7 @@ interface PracticeSelecionarContentProps {
     data: {
         id: number;
         instrucao: string;
-        dadosAtividade: Record<string, any>;
+        dadosAtividade: Record<string, unknown>;
         modulo?: { id: number; };
         moduloId?: number;
     };
@@ -31,7 +31,7 @@ const getYouTubeEmbedUrl = (url: string) => {
         } else if (urlObj.hostname === 'www.youtube.com' || urlObj.hostname === 'youtube.com') {
             videoId = urlObj.searchParams.get('v');
         }
-    } catch (e) {
+    } catch {
         return null;
     }
     return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
@@ -43,13 +43,7 @@ export default function PracticeSelecionarContent({ data }: PracticeSelecionarCo
     const [selectedWords, setSelectedWords] = useState<string[]>([]);
     const [checkStatus, setCheckStatus] = useState<'unchecked' | 'correct' | 'incorrect'>('unchecked');
 
-    // Reset state when a new practice item is loaded
-    useEffect(() => {
-        setSelectedWords([]);
-        setCheckStatus('unchecked');
-    }, [data.id]);
-
-    const selecaoData = data.dadosAtividade as SelecaoData;
+    const selecaoData = data.dadosAtividade as unknown as SelecaoData;
     const lyrics = selecaoData.texto_base || '';
     const words = useMemo(() => lyrics.split(/(\s+|\/|,)/).filter(w => w.trim() !== ''), [lyrics]);
     const embedUrl = getYouTubeEmbedUrl(selecaoData.video_url || '');

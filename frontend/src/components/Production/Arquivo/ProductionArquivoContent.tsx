@@ -1,7 +1,7 @@
 
 import { Box, Typography, Button, TextareaAutosize, styled, Paper, useTheme } from '@mui/material';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useModule } from '../../../contexts/ModuleContext';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -25,7 +25,7 @@ interface ProductionArquivoContentProps {
         id: number;
         instrucaoDesafio: string;
         midiaDesafioUrl?: string;
-        dadosDesafio: Record<string, any>;
+        dadosDesafio: Record<string, unknown>;
         modulo?: { id: number; };
         moduloId?: number;
     };
@@ -43,12 +43,6 @@ export default function ProductionArquivoContent({ data }: ProductionArquivoCont
     const [comment, setComment] = useState('');
     const [file, setFile] = useState<File | null>(null);
     const [checkStatus, setCheckStatus] = useState<'unchecked' | 'correct' | 'incorrect'>('unchecked');
-
-    useEffect(() => {
-        setComment('');
-        setFile(null);
-        setCheckStatus('unchecked');
-    }, [data.id]);
 
     const onDrop = useCallback((acceptedFiles: File[]) => {
         if (acceptedFiles.length > 0) {

@@ -36,6 +36,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     const [user, setUser] = useState<User | null>(null);
     const [isLoading, setIsLoading] = useState(true);
 
+    /* eslint-disable react-hooks/set-state-in-effect -- one-time session hydration from localStorage */
     useEffect(() => {
         // When the app loads, try to get the token from localStorage
         const storedToken = localStorage.getItem('authToken');
@@ -65,6 +66,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         }
         setIsLoading(false);
     }, []);
+    /* eslint-enable react-hooks/set-state-in-effect */
 
     const login = (newToken: string) => {
         try {

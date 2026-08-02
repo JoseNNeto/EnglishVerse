@@ -1,5 +1,5 @@
 import { Box, Typography, Button, TextField } from '@mui/material';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useModule } from '../../../contexts/ModuleContext';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ReactMarkdown from 'react-markdown';
@@ -8,7 +8,7 @@ interface PracticeCompletarContentProps {
     data: {
         id: number;
         instrucao: string;
-        dadosAtividade: Record<string, any>;
+        dadosAtividade: Record<string, unknown>;
         modulo?: { id: number; };
         moduloId?: number;
     };
@@ -31,7 +31,7 @@ const getYouTubeEmbedUrl = (url: string) => {
         } else if (urlObj.hostname === 'www.youtube.com' || urlObj.hostname === 'youtube.com') {
             videoId = urlObj.searchParams.get('v');
         }
-    } catch (e) {
+    } catch {
         return null;
     }
     return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
@@ -42,13 +42,7 @@ export default function PracticeCompletarContent({ data }: PracticeCompletarCont
     const [answer, setAnswer] = useState('');
     const [checkStatus, setCheckStatus] = useState<'unchecked' | 'correct' | 'incorrect'>('unchecked');
 
-    useEffect(() => {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        setAnswer('');
-        setCheckStatus('unchecked');
-    }, [data.id]);
-
-    const completarData = data.dadosAtividade as CompletarData;
+    const completarData = data.dadosAtividade as unknown as CompletarData;
     const embedUrl = getYouTubeEmbedUrl(completarData.video_url || '');
     const imageUrl = completarData.imagem_url;
 

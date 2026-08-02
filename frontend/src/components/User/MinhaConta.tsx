@@ -1,24 +1,19 @@
 
 import { Box, Typography, Avatar, TextField, Button, Snackbar, Alert } from '@mui/material';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import api from '../../services/api';
+import axios from 'axios';
 
 export default function MinhaConta() {
   const { user, login } = useAuth();
 
-  const [nome, setNome] = useState('');
+  const [nome, setNome] = useState(user?.nome ?? '');
   const [senhaAntiga, setSenhaAntiga] = useState('');
   const [senhaNova, setSenhaNova] = useState('');
   const [confirmarSenha, setConfirmarSenha] = useState('');
 
   const [snackbar, setSnackbar] = useState<{ open: boolean; message: string; severity: 'success' | 'error' } | null>(null);
-
-  useEffect(() => {
-    if (user) {
-      setNome(user.nome);
-    }
-  }, [user]);
 
   const handleNomeSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -48,9 +43,11 @@ export default function MinhaConta() {
       setSenhaAntiga('');
       setSenhaNova('');
       setConfirmarSenha('');
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error(error);
-      const errorMessage = error.response?.data || 'Não foi possível alterar a senha. Verifique a senha antiga.';
+      const errorMessage = axios.isAxiosError<string>(error) && typeof error.response?.data === 'string'
+        ? error.response.data
+        : 'Não foi possível alterar a senha. Verifique a senha antiga.';
       setSnackbar({ open: true, message: errorMessage, severity: 'error' });
     }
   };

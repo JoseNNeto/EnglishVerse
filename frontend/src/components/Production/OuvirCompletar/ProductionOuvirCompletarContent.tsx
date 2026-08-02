@@ -7,7 +7,7 @@ interface ProductionOuvirCompletarContentProps {
         id: number;
         instrucaoDesafio: string;
         midiaDesafioUrl?: string;
-        dadosDesafio: Record<string, any>;
+        dadosDesafio: Record<string, unknown>;
     };
 }
 
@@ -27,14 +27,14 @@ const getYouTubeEmbedUrl = (url: string) => {
         } else if (urlObj.hostname === 'www.youtube.com' || urlObj.hostname === 'youtube.com') {
             videoId = urlObj.searchParams.get('v');
         }
-    } catch (e) {
+    } catch {
         return null;
     }
     return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
 };
 
 export default function ProductionOuvirCompletarContent({ data }: ProductionOuvirCompletarContentProps) {
-    const ouvirCompletarData = data.dadosDesafio as OuvirCompletarData;
+    const ouvirCompletarData = data.dadosDesafio as unknown as OuvirCompletarData;
     const embedUrl = getYouTubeEmbedUrl(data.midiaDesafioUrl || '');
     const [answers, setAnswers] = useState<string[]>(Array(ouvirCompletarData.blankPositions?.length || 0).fill(''));
 

@@ -4,6 +4,7 @@ import api from '../../services/api';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { StatusProgresso } from '../../contexts/ModuleContext';
+import axios from 'axios';
 
 // Define interfaces mirroring backend DTOs
 export interface ProgressoEmAndamentoResponseDTO {
@@ -60,8 +61,8 @@ export default function ContinuarAprendendo() {
       } else {
         navigate(`/presentation/${moduloId}`);
       }
-    } catch (error: any) {
-      if (error.response && error.response.status === 404) {
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error) && error.response?.status === 404) {
         navigate(`/presentation/${moduloId}`);
       } else {
         console.error("Erro ao buscar último acesso:", error);

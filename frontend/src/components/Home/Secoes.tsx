@@ -6,6 +6,7 @@ import api from '../../services/api';
 import { useAuth } from '../../contexts/AuthContext';
 import { useGamification } from '../../contexts/GamificationContext';
 import type { ModuleJourney } from '../../types/gamification';
+import axios from 'axios';
 
 // Interfaces based on backend models
 interface Modulo {
@@ -47,8 +48,8 @@ const TopicCard = ({ topic, journey }: { topic: Modulo, journey?: ModuleJourney 
           // Se não houver último acesso (pouco provável se está em andamento, mas por segurança)
           navigate(`/presentation/${topic.id}`);
         }
-      } catch (error: any) {
-        if (error.response && error.response.status === 404) {
+      } catch (error: unknown) {
+        if (axios.isAxiosError(error) && error.response?.status === 404) {
           // Nenhum item foi concluído ainda, então vai para o início
           navigate(`/presentation/${topic.id}`);
         } else {

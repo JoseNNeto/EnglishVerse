@@ -84,10 +84,6 @@ export default function MidiaAndTranscption() {
   const [mediaHeight, setMediaHeight] = useState<number>();
 
   useEffect(() => {
-    setActiveTab(0);
-  }, [activeItem?.data.id]);
-
-  useEffect(() => {
     const mediaElement = mediaRef.current;
     if (!mediaElement) return undefined;
     const observer = new ResizeObserver(entries => {

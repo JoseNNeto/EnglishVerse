@@ -1,6 +1,6 @@
 
 import { Box, Typography, Button, TextareaAutosize, Paper, useTheme } from '@mui/material';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useModule } from '../../../contexts/ModuleContext';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ReactMarkdown from 'react-markdown';
@@ -10,7 +10,7 @@ interface ProductionTextoContentProps {
         id: number;
         instrucaoDesafio: string;
         midiaDesafioUrl?: string;
-        dadosDesafio: Record<string, any>;
+        dadosDesafio: Record<string, unknown>;
         modulo?: { id: number; };
         moduloId?: number;
     };
@@ -22,18 +22,13 @@ export default function ProductionTextoContent({ data }: ProductionTextoContentP
     const [text, setText] = useState('');
     const [checkStatus, setCheckStatus] = useState<'unchecked' | 'correct'>('unchecked');
 
-    useEffect(() => {
-        setText('');
-        setCheckStatus('unchecked');
-    }, [data.id]);
-
     const getYouTubeEmbedUrl = (url: string) => {
         if (!url) return null;
         let videoId;
         try {
             const urlObj = new URL(url);
             videoId = urlObj.searchParams.get('v') || urlObj.pathname.slice(1);
-        } catch (e) { return null; }
+        } catch { return null; }
         return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
     };
 

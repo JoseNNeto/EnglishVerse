@@ -1,6 +1,6 @@
 
 import { Box, Typography, Paper, Button, TextareaAutosize, useTheme } from '@mui/material';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useModule } from '../../../contexts/ModuleContext';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ReactMarkdown from 'react-markdown';
@@ -10,7 +10,7 @@ interface ProductionOuvirTextoContentProps {
         id: number;
         instrucaoDesafio: string;
         midiaDesafioUrl?: string;
-        dadosDesafio: Record<string, any>;
+        dadosDesafio: Record<string, unknown>;
         modulo?: { id: number; };
         moduloId?: number;
     };
@@ -28,24 +28,18 @@ const getYouTubeEmbedUrl = (url: string) => {
     try {
         const urlObj = new URL(url);
         videoId = urlObj.searchParams.get('v') || urlObj.pathname.slice(1).split('?')[0];
-    } catch (e) { return null; }
+    } catch { return null; }
     return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
 };
 
 export default function ProductionOuvirTextoContent({ data }: ProductionOuvirTextoContentProps) {
     const theme = useTheme();
     const { submitProduction, handleNextItem } = useModule();
-    const ouvirTextoData = data.dadosDesafio as OuvirTextoData;
+    const ouvirTextoData = data.dadosDesafio as unknown as OuvirTextoData;
     
     const numberOfBlanks = ouvirTextoData.textParts?.filter(p => typeof p === 'object').length || 0;
     const [answers, setAnswers] = useState<string[]>(Array(numberOfBlanks).fill(''));
     const [checkStatus, setCheckStatus] = useState<'unchecked' | 'correct'>('unchecked');
-
-    useEffect(() => {
-        setAnswers(Array(numberOfBlanks).fill(''));
-        setCheckStatus('unchecked');
-    }, [data.id, numberOfBlanks]);
-
 
     const handleAnswerChange = (index: number, value: string) => {
         const newAnswers = [...answers];

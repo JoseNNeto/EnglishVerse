@@ -39,7 +39,7 @@ interface PracticeAtividade {
     moduloId: number;
     tipoAtividade: 'MULTIPLA_ESCOLHA' | 'PREENCHER_LACUNA' | 'SELECIONAR_PALAVRAS' | 'LISTA_PALAVRAS' | 'RELACIONAR_COLUNAS' | 'SUBSTITUIR_PALAVRAS'; // Enum: TipoAtividade
     instrucao: string;
-    dadosAtividade: Record<string, any>; // JSONB as a generic object
+    dadosAtividade: Record<string, unknown>; // JSONB validated by each activity component
     mediaCategory?: MediaCategory | null;
 }
 
@@ -50,7 +50,7 @@ interface ProductionChallenge {
     tipoDesafio: 'AUDIO' | 'TEXTO_LONGO' | 'FOTO_E_TEXTO' | 'UPLOAD_ARQUIVO' | 'COMPLETAR_IMAGEM'; // Enum: TipoDesafio
     instrucaoDesafio: string;
     midiaDesafioUrl?: string;
-    dadosDesafio: Record<string, any>; // JSONB as a generic object
+    dadosDesafio: Record<string, unknown>; // JSONB validated by each challenge component
     mediaCategory?: MediaCategory | null;
 }
 
