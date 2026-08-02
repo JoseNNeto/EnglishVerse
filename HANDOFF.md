@@ -64,8 +64,10 @@ senhas, dumps, uploads reais nem o diretório `postgres-data`.
 | `git status` | OK | antes desta revisão, a branch estava limpa e sincronizada com o remoto |
 | `docker compose config --quiet` | OK | configuração válida |
 | `docker compose build` | não executado | Docker Desktop instalado, mas o mecanismo Linux estava desligado |
-| `npm run lint` | não executado | Node/npm não estavam instalados no ambiente da revisão |
-| `npm run build` | não executado | Node/npm não estavam instalados no ambiente da revisão |
+| `npm ci` | OK | 390 pacotes instalados com Node 24.18.1 e npm 11.16.0 |
+| `npm run lint` | falhou | 55 erros e 1 aviso; veja as pendências abaixo |
+| `npm run build` | OK | build Vite 7.2.2 concluído em 2 de agosto de 2026 |
+| `npm audit` | atenção | 16 vulnerabilidades: 12 altas, 3 moderadas e 1 baixa |
 | `./mvnw test` | não executado | Java/JAVA_HOME não estavam disponíveis no ambiente da revisão |
 
 Quem assumir deve executar as verificações pendentes antes de integrar a
@@ -76,7 +78,8 @@ isso não representa cobertura funcional suficiente.
 
 ### Antes de integrar ou publicar
 
-1. Rodar lint, build e testes em uma máquina/CI com Node 20 e Java 17.
+1. Corrigir o lint do frontend e rodar os testes do backend com Java 17. O build
+   do frontend já foi validado com Node 24, mas deve também ser coberto pela CI.
 2. Fazer um teste manual completo: cadastro/login de ambos os perfis, execução de
    uma trilha PPP, envio/correção de Production, XP e uploads.
 3. Abrir o PR `feat/Raissa` → `main` e registrar no PR o resultado dessas validações.
@@ -90,6 +93,14 @@ isso não representa cobertura funcional suficiente.
 
 - Criar testes de serviços, autorização, progresso, gamificação e Teacher Studio,
   além de testes do frontend e um workflow de CI.
+- Corrigir os 55 erros do ESLint. Os grupos mais recorrentes são tipos `any`,
+  atualização síncrona de estado dentro de efeitos e arquivos incompatíveis com
+  a regra de Fast Refresh.
+- Revisar as 16 vulnerabilidades relatadas pelo npm. Há correções disponíveis,
+  mas atualizações automáticas não foram aplicadas para evitar mudanças de versão
+  sem teste de regressão.
+- Dividir o bundle principal do frontend, atualmente com cerca de 1,1 MB antes de
+  gzip, usando carregamento sob demanda para as telas maiores.
 - Adotar migrations versionadas (Flyway ou Liquibase) antes de produção. Hoje o
   projeto combina `ddl-auto=update` com um migrador específico de gamificação.
 - Dividir `frontend/src/pages/TeacherStudio.tsx` (mais de 3 mil linhas) e os grandes
