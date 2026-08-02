@@ -57,6 +57,59 @@ Antes de trocar de máquina ou responsável, faça backup do banco e do volume d
 uploads. Clonar o repositório sozinho **não** recupera esses dados. Não versione
 senhas, dumps, uploads reais nem o diretório `postgres-data`.
 
+## Implantação centralizada recomendada — não implementada
+
+O `docker-compose.yml` atual foi preparado para desenvolvimento local. Cada
+computador que o executa cria seu próprio PostgreSQL: os módulos iniciais aparecem
+porque são recriados pelos seeders, enquanto os módulos do Teacher Studio existem
+somente no banco em que o professor os cadastrou.
+
+Para compartilhar módulos entre professores e alunos, a arquitetura recomendada é
+uma única instalação central:
+
+```text
+Usuários
+   │ HTTPS
+   ▼
+Domínio e proxy reverso
+   ├── Frontend
+   └── /api → Backend → PostgreSQL central
+                         └── volume persistente de uploads
+```
+
+O frontend, o backend, o PostgreSQL e o proxy reverso podem continuar em
+contêineres Docker. O que precisa ser fornecido externamente é uma máquina
+permanentemente acessível — servidor institucional ou VPS —, endereço DNS e um
+destino separado para os backups. Um domínio é recomendado para HTTPS e uso
+público, embora o acesso técnico por IP possa ser usado em ambientes restritos.
+
+### Preparação necessária antes de publicar
+
+1. Criar uma configuração Compose específica de produção; não publicar o Compose
+   local sem revisão.
+2. Expor publicamente somente `80` e `443`. PostgreSQL e backend devem permanecer
+   na rede interna do Docker.
+3. Configurar domínio, DNS, proxy reverso e HTTPS, por exemplo com Caddy ou Nginx.
+4. Fornecer credenciais do banco e segredo JWT pelo `.env` do servidor e rotacionar
+   qualquer valor que já tenha aparecido no histórico do Git.
+5. Restringir o CORS ao domínio oficial em vez de aceitar `*`.
+6. Manter PostgreSQL e uploads em volumes persistentes.
+7. Criar backups automáticos, externos ao servidor, e testar a restauração.
+8. Migrar para a instalação central um dump do banco atual e uma cópia do volume
+   de uploads, caso o conteúdo local precise ser preservado.
+9. Validar cadastro, login, jornada PPP, Teacher Studio, correções, XP e uploads no
+   endereço público antes da entrega.
+10. Definir quem será responsável por domínio, servidor, custos, monitoramento,
+    atualizações e resposta a incidentes.
+
+Para uso temporário apenas na mesma rede, um computador pode hospedar o Docker e
+os demais podem acessar o IP local desse computador. Isso não substitui um deploy
+central para acesso externo e depende de o computador hospedeiro permanecer
+ligado.
+
+Não registre neste documento senhas reais, chaves, tokens, IPs privados ou
+credenciais do provedor.
+
 ## Validação no momento do handoff
 
 | Verificação | Estado | Observação |
