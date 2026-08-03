@@ -1,0 +1,213 @@
+erDiagram
+    topicos {
+        bigint id PK
+        varchar nome UK
+        text descricao
+    }
+
+    usuarios {
+        bigint id PK
+        varchar nome
+        varchar email UK
+        varchar senha
+        varchar perfil
+        timestamp data_criacao
+    }
+
+    modulos {
+        bigint id PK
+        bigint topico_id FK
+        bigint criado_por_id FK
+        varchar titulo
+        text descricao
+        varchar imagem_capa_url
+        boolean publicado
+        varchar nivel_dificuldade
+    }
+
+    recursos_apresentacao {
+        bigint id PK
+        bigint modulo_id FK
+        varchar tipo_recurso
+        varchar media_category
+        varchar url_recurso
+        text letra
+        text transcricao
+        jsonb blocos_jsonb
+        integer ordem
+    }
+
+    practice_atividades {
+        bigint id PK
+        bigint modulo_id FK
+        varchar tipo_atividade
+        varchar media_category
+        text instrucao
+        jsonb dados_atividade_jsonb
+    }
+
+    practice_respostas_usuario {
+        bigint id PK
+        bigint atividade_id FK
+        bigint aluno_id FK
+        jsonb resposta_jsonb
+        boolean esta_correta
+        timestamp data_resposta
+    }
+
+    production_challenges {
+        bigint id PK
+        bigint modulo_id FK
+        varchar tipo_desafio
+        varchar media_category
+        text instrucao_desafio
+        varchar midia_desafio_url
+        jsonb dados_desafio_jsonb
+    }
+
+    submissoes_producao {
+        bigint id PK
+        bigint challenge_id FK
+        bigint aluno_id FK
+        jsonb resposta_jsonb
+        text feedback_professor
+        varchar status_correcao
+        integer nota
+        boolean xp_concedido
+        timestamp data_correcao
+        timestamp data_submissao
+    }
+
+    progresso_modulos_usuarios {
+        bigint id PK
+        bigint aluno_id FK, UK
+        bigint modulo_id FK, UK
+        varchar status
+        timestamp data_inicio
+        timestamp data_conclusao
+    }
+
+    progresso_itens {
+        bigint id PK
+        bigint aluno_id FK, UK
+        bigint modulo_id FK
+        bigint item_id UK "Referencia logica"
+        varchar item_type UK "PRESENTATION, PRACTICE ou PRODUCTION"
+        timestamp data_conclusao
+    }
+
+    turmas {
+        bigint id PK
+        bigint docente_id FK
+        varchar nome
+        varchar periodo
+        varchar idioma
+    }
+
+    turma_alunos {
+        bigint turma_id PK, FK
+        bigint aluno_id PK, FK
+    }
+
+    turma_modulos {
+        bigint turma_id PK, FK
+        bigint modulo_id PK, FK
+    }
+
+    achievements {
+        bigint id PK
+        varchar code UK
+        varchar name
+        varchar description
+        varchar icon_key
+        varchar category
+        integer xp_reward
+    }
+
+    user_gamification_profiles {
+        bigint user_id PK, FK
+        integer total_xp
+        varchar current_level
+        integer current_streak
+        integer longest_streak
+        date last_valid_activity_date
+        timestamp created_at
+        timestamp updated_at
+        bigint version
+    }
+
+    xp_events {
+        bigint id PK
+        bigint user_id FK
+        varchar type
+        varchar source_type
+        bigint source_id "Referencia logica"
+        integer xp_amount
+        varchar description
+        timestamp event_date_time
+        varchar unique_key UK
+    }
+
+    user_achievements {
+        bigint id PK
+        bigint user_id FK, UK
+        bigint achievement_id FK, UK
+        timestamp unlocked_at
+    }
+
+    category_star_capsules {
+        bigint id PK
+        bigint user_id FK, UK
+        varchar category UK
+        varchar status
+        integer reward_xp
+        varchar special_reward_type
+        varchar special_reward_code
+        timestamp earned_at
+        timestamp opened_at
+    }
+
+    user_reward_items {
+        bigint id PK
+        bigint user_id FK
+        bigint source_capsule_id FK, UK
+        varchar reward_type
+        varchar reward_code
+        varchar name
+        varchar description
+        varchar asset_url
+        integer quantity
+        boolean equipped
+        timestamp unlocked_at
+    }
+
+    topicos ||--o{ modulos : organiza
+    usuarios o|--o{ modulos : cria
+
+    modulos ||--o{ recursos_apresentacao : apresenta
+    modulos ||--o{ practice_atividades : pratica
+    modulos ||--o{ production_challenges : produz
+
+    practice_atividades ||--o{ practice_respostas_usuario : recebe
+    usuarios ||--o{ practice_respostas_usuario : responde
+    production_challenges ||--o{ submissoes_producao : recebe
+    usuarios ||--o{ submissoes_producao : envia
+
+    usuarios ||--o{ progresso_modulos_usuarios : acompanha
+    modulos ||--o{ progresso_modulos_usuarios : registra
+    usuarios ||--o{ progresso_itens : conclui
+    modulos ||--o{ progresso_itens : agrupa
+
+    usuarios ||--o{ turmas : leciona
+    turmas ||--o{ turma_alunos : possui
+    usuarios ||--o{ turma_alunos : participa
+    turmas ||--o{ turma_modulos : disponibiliza
+    modulos ||--o{ turma_modulos : integra
+
+    usuarios ||--o| user_gamification_profiles : possui
+    usuarios ||--o{ xp_events : acumula
+    usuarios ||--o{ user_achievements : desbloqueia
+    achievements ||--o{ user_achievements : concede
+    usuarios ||--o{ category_star_capsules : recebe
+    usuarios ||--o{ user_reward_items : coleciona
+    category_star_capsules ||--o| user_reward_items : origina

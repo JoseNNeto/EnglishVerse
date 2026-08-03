@@ -8,6 +8,12 @@ O EnglishVerse é uma plataforma web para ensino de língua inglesa por meio de 
 
 O projeto oferece jornadas diferentes para discentes e docentes, com autenticação JWT, controle de acesso por perfil, acompanhamento de progresso e gamificação.
 
+## Design e documentação visual
+
+- [Figma — design atual do EnglishVerse](https://www.figma.com/design/vLfIEYqEUt6WQsWdF7ZcIN/NETO_IMPORTANTE--Copy-?node-id=0-1&t=c8UaLrGOlRbq6W5M-1)
+- [Miro — quadro legado do projeto](https://miro.com/app/board/uXjVJ1ZyoZU=/?share_link_id=234038937183)
+- [DER atualizado do banco de dados](./docs/DIAGRAMA-BANCO-DADOS.md)
+
 ## Funcionalidades atuais
 
 ### Experiência do discente
